@@ -1,0 +1,122 @@
+name: Update Citation Counts
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Every Monday 6:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update-citations:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch citations from Google Scholar profile
+        run: |
+          python3 << 'PYEOF'
+          import json, urllib.request, re, datetime, time
+
+          SCHOLAR_ID = "EjmzseUAAAAJ"
+          URL = f"https://scholar.google.com/citations?user={SCHOLAR_ID}&hl=en&sortby=pubdate&cstart=0&pagesize=100"
+
+          headers = {
+            "User-Agent": "Mozilla/5.0 (compatible; academic-citation-bot/1.0)"
+          }
+          req = urllib.request.Request(URL, headers=headers)
+
+          try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+              html = resp.read().decode("utf-8", errors="ignore")
+          except Exception as e:
+            print(f"Fetch error: {e}")
+            exit(0)
+
+          # Map paper title keywords → citation key
+          paper_map = {
+            "Incentivizing Consistent": "2510.20867",   # CESAR
+            "Adaptive Divergence":      "2510.18053",   # ADRPO
+            "Fine-tuning Flow Matching Generative Models with Intermediate": "2510.18072",  # AC-Flow
+            "Prance":                   "2407.05010",   # PRANCE
+            "Online Reward-Weighted":   "ORW-CFM-W2",  # ORW-CFM-W2
+            "Learnable Behavior Control": "LBC",        # LBC
+            "Generalized Data Distribution Iteration": "GDI",   # GDI
+            "Variational Supervised Contrastive": "VarCon",     # VarCon
+            "Sp-vla":                   "SP-VLA",       # SP-VLA
+            "ProteinZero":              "ProteinZero",  # ProteinZero
+            "Optimal Transport for Treatment Effect": "OT-Treat", # OT-Treat
+            "Entire Space Counterfactual": "ES-CF",     # Entire Space CF
+            "Entropy Regularization Free": "ERF",       # Entropy Reg Free
+            "Critic PI2":               "CriticPI2",    # Critic PI2
+            "Casa":                     "CASA",         # CASA (both versions)
+            "Efficient Design":         "EffDesign",    # Efficient Design NeurIPS24
+          }
+
+          # Each paper block: title cell followed by citation count cell
+          # Pattern: data-title="..." ... <a ...>(\d+)</a>.*?cites=
+          results = {}
+          # Find all citation rows: look for title+cited-by count pairs
+          rows = re.findall(
+            r'<tr[^>]*class="[^"]*gsc_a_tr[^"]*"[^>]*>(.*?)</tr>',
+            html, re.DOTALL
+          )
+          for row in rows:
+            title_m = re.search(r'class="gsc_a_at"[^>]*>(.*?)</a>', row, re.DOTALL)
+            cite_m  = re.search(r'class="gsc_a_ac[^"]*"[^>]*>(?:<a[^>]*>)?(\d+)', row, re.DOTALL)
+            if not title_m or not cite_m:
+              continue
+            title = re.sub(r'<[^>]+>', '', title_m.group(1)).strip()
+            count = int(cite_m.group(1))
+            for keyword, key in paper_map.items():
+              if keyword.lower() in title.lower():
+                results[key] = count
+                print(f"  {key} ({title[:50]}...): {count}")
+                break
+
+          # Also grab total citation count from stats table
+          total_m = re.search(r'gsc_rsb_std[^>]*>(\d+)<', html)
+          if total_m:
+            results["_total"] = int(total_m.group(1))
+            print(f"  Total citations: {results['_total']}")
+
+          if not results:
+            print("No results parsed — Scholar may have blocked; keeping existing file")
+            exit(0)
+
+          citations_path = "_data/citations.json"
+          try:
+            with open(citations_path) as f:
+              existing = json.load(f)
+          except:
+            existing = {}
+
+          # Sanity check: _total must be >= sum of tracked paper citations
+          tracked_sum = sum(v for k, v in results.items() if not k.startswith("_"))
+          if "_total" in results:
+            if results["_total"] < tracked_sum:
+              print(f"WARN: Scholar returned total={results['_total']} < tracked_sum={tracked_sum}; discarding bad total")
+              del results["_total"]
+            else:
+              print(f"  Total sanity check passed: {results['_total']} >= {tracked_sum}")
+          else:
+            print(f"  No total from Scholar (bot-blocked?); keeping existing _total={existing.get('_total','?')}")
+
+          existing.update(results)
+          existing["_updated"] = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+          existing["_source"] = "Google Scholar (EjmzseUAAAAJ)"
+
+          with open(citations_path, "w") as f:
+            json.dump(existing, f, indent=2)
+
+          print(f"\nUpdated {len(results)} papers in {citations_path}")
+          PYEOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add _data/citations.json
+          git diff --staged --quiet || git commit -m "chore: auto-update citations from Google Scholar [skip ci]"
+          git push

@@ -1,0 +1,86 @@
+{
+  "updated": "2026-06-01",
+  "papers": [
+    {
+      "id": "2605.29888",
+      "title": "LaRA: Layer-wise Representation Analysis for Detecting Data Contamination in RL Post-Training",
+      "authors": "Minju Gwak, Minseo Kwak, Dongseok Lee et al.",
+      "summary": "Reinforcement learning (RL) post-training has shown to improve reasoning in large language models (LLMs). However, there has been little exploration on the problem of data contamination in RL post-tra…",
+      "date": "2026-05-28",
+      "tag": "RL Training",
+      "url": "https://arxiv.org/abs/2605.29888"
+    },
+    {
+      "id": "2605.26606",
+      "title": "Spend Your Rollouts Where It Counts: Rollout Allocation for Group-Based RL Post-Training",
+      "authors": "Woojeong Kim, Ziyi Yang, Jing Nathan Yan et al.",
+      "summary": "Reinforcement learning (RL) is the dominant paradigm for post-training large language models. However, in the online, on-policy setting, rollout generation dominates the computational cost of training…",
+      "date": "2026-05-26",
+      "tag": "RL Training",
+      "url": "https://arxiv.org/abs/2605.26606"
+    },
+    {
+      "id": "2605.26184",
+      "title": "GAC: Noise-Aware Adaptive Mixing for Hybrid SFT-RL Post-Training",
+      "authors": "Yuelin Hu, Zhenbo Yu, Zhengxue Cheng et al.",
+      "summary": "Hybrid post-training usually combines supervised fine-tuning and reinforcement learning, but fixed mixing schedules cannot adapt when the relative noise of the two signals changes over time. We propos…",
+      "date": "2026-05-25",
+      "tag": "RL Training",
+      "url": "https://arxiv.org/abs/2605.26184"
+    },
+    {
+      "id": "2605.25477",
+      "title": "EXPO-FT: Sample-Efficient Reinforcement Learning Finetuning for Vision-Language-Action Models",
+      "authors": "Perry Dong, Kuo-Han Hung, Tian Gao et al.",
+      "summary": "The ability to efficiently and reliably learn new tasks has been a foundational challenge in robotics. Vision-Language-Action (VLA) models have demonstrated strong generalization across diverse manipu…",
+      "date": "2026-05-25",
+      "tag": "Multimodal",
+      "url": "https://arxiv.org/abs/2605.25477"
+    },
+    {
+      "id": "2605.23522",
+      "title": "Precise: SDE-Consistent Stochastic Sampling for RL Post-Training of Flow-Matching Models",
+      "authors": "Jade Zou, Tao Huang, Weijie Kong et al.",
+      "summary": "Reinforcement learning (RL) has become an effective way to improve prompt alignment and perceptual quality in diffusion and flow-matching generators. A critical step for applying online RL to flow mat…",
+      "date": "2026-05-22",
+      "tag": "Flow Matching",
+      "url": "https://arxiv.org/abs/2605.23522"
+    },
+    {
+      "id": "2605.22072",
+      "title": "Faithful-MR1: Faithful Multimodal Reasoning via Anchoring and Reinforcing Visual Attention",
+      "authors": "Changyuan Tian, Zhicong Lu, Huaxing Liu et al.",
+      "summary": "Reinforcement learning with verifiable rewards (RLVR) has emerged as a promising paradigm for advancing complex reasoning in large language models, and recent work extends RLVR to multimodal large lan…",
+      "date": "2026-05-21",
+      "tag": "Multimodal",
+      "url": "https://arxiv.org/abs/2605.22072"
+    },
+    {
+      "id": "2605.17003",
+      "title": "Learning-Zone Energy: Online Data Selection for Efficient RL Post-Training",
+      "authors": "Peng Cui, Boyao Yang, Jun Zhu",
+      "summary": "Reinforcement Learning (RL) post-training has emerged as the dominant paradigm for eliciting mathematical reasoning in Large Language Models (LLMs), yet prevailing techniques such as GRPO and DAPO dis…",
+      "date": "2026-05-16",
+      "tag": "RL Training",
+      "url": "https://arxiv.org/abs/2605.17003"
+    },
+    {
+      "id": "2605.13276",
+      "title": "D-VLA: A High-Concurrency Distributed Asynchronous Reinforcement Learning Framework for Vision-Language-Action Models",
+      "authors": "Yucheng Guo, Yongjian Guo, Zhong Guan et al.",
+      "summary": "The rapid evolution of Embodied AI has enabled Vision-Language-Action (VLA) models to excel in multimodal perception and task execution. However, applying Reinforcement Learning (RL) to these massive …",
+      "date": "2026-05-13",
+      "tag": "Multimodal",
+      "url": "https://arxiv.org/abs/2605.13276"
+    },
+    {
+      "id": "2605.09262",
+      "title": "Reinforcing Multimodal Reasoning Against Visual Degradation",
+      "authors": "Rui Liu, Dian Yu, Haolin Liu et al.",
+      "summary": "Reinforcement Learning has significantly advanced the reasoning capabilities of Multimodal Large Language Models (MLLMs), yet the resulting policies remain brittle against real-world visual degradatio…",
+      "date": "2026-05-10",
+      "tag": "Multimodal",
+      "url": "https://arxiv.org/abs/2605.09262"
+    }
+  ]
+}

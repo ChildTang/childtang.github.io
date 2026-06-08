@@ -1,0 +1,131 @@
+---
+layout: archive
+permalink: /year-archive/
+title: "Blog"
+author_profile: true
+redirect_from:
+  - /wordpress/blog-posts/
+---
+
+<style>
+/* ── Blog hero banner ── */
+.blog-hero {
+  background: linear-gradient(135deg, #5c7a7c 0%, #90A5A7 55%, #7a9496 100%);
+  border-radius: 14px;
+  padding: 34px 28px 28px;
+  margin: 0 0 1.8em;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(144,165,167,0.32);
+  position: relative;
+  overflow: hidden;
+}
+.blog-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.07), transparent);
+  pointer-events: none;
+}
+.blog-hero > * { position: relative; z-index: 1; }
+.blog-hero h1 {
+  font-size: 1.9em;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.blog-hero p {
+  color: rgba(255,255,255,0.88);
+  font-size: 0.92em;
+  margin: 0;
+}
+
+/* ── Year section header ── */
+.archive__subtitle {
+  font-size: 0.75em !important;
+  font-weight: 800 !important;
+  color: #90A5A7 !important;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin: 28px 0 12px !important;
+  padding-bottom: 7px;
+  border-bottom: 2px solid #dde8e9 !important;
+}
+
+/* ── Blog post cards ── */
+.list__item {
+  background: #fff;
+  border: 1.5px solid #dde8e9;
+  border-radius: 12px;
+  padding: 18px 22px 16px;
+  margin-bottom: 12px;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.list__item:hover {
+  border-color: #90A5A7;
+  box-shadow: 0 4px 18px rgba(144,165,167,.2);
+  transform: translateY(-2px);
+}
+.archive__item-title {
+  font-size: 1.02em !important;
+  font-weight: 800 !important;
+  line-height: 1.38 !important;
+  margin: 0 0 5px !important;
+}
+.archive__item-title a {
+  color: #1a2332 !important;
+  text-decoration: none !important;
+}
+.archive__item-title a:hover { color: #607b7d !important; }
+.archive__item-excerpt {
+  font-size: 0.84em !important;
+  color: #555 !important;
+  line-height: 1.55 !important;
+  margin: 4px 0 0 !important;
+}
+.page__date {
+  font-size: 0.77em !important;
+  color: #90A5A7 !important;
+  font-weight: 700 !important;
+  margin: 3px 0 0 !important;
+}
+.page__date .fa { color: #90A5A7 !important; }
+.page__meta { font-size: 0.77em !important; color: #90A5A7 !important; }
+
+/* ── Dark mode ── */
+body.dark-mode .blog-hero { box-shadow: 0 6px 24px rgba(0,0,0,.4) !important; }
+body.dark-mode .list__item {
+  background: #161b22 !important;
+  border-color: #2d3a3b !important;
+}
+body.dark-mode .list__item:hover {
+  border-color: #90A5A7 !important;
+  box-shadow: 0 4px 18px rgba(144,165,167,.15) !important;
+}
+body.dark-mode .archive__item-title a { color: #e6edf3 !important; }
+body.dark-mode .archive__item-title a:hover { color: #90A5A7 !important; }
+body.dark-mode .archive__item-excerpt { color: #8b949e !important; }
+body.dark-mode .archive__subtitle {
+  color: #90A5A7 !important;
+  border-bottom-color: #21262d !important;
+}
+</style>
+
+<div class="blog-hero">
+  <h1>📝 Blog</h1>
+  <p>Notes on RL, generative models, and research observations</p>
+  <a href="/blog/reading-papers/" style="display:inline-block;margin-top:14px;padding:8px 18px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.5);border-radius:8px;color:#fff;font-size:0.85em;font-weight:700;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">📚 What's Happening in My Field →</a>
+</div>
+
+{% include base_path %}
+{% capture written_year %}'None'{% endcapture %}
+{% for post in site.posts %}
+  {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+  {% if year != written_year %}
+    <h2 id="{{ year | slugify }}" class="archive__subtitle">{{ year }}</h2>
+    {% capture written_year %}{{ year }}{% endcapture %}
+  {% endif %}
+  {% include archive-single.html %}
+{% endfor %}

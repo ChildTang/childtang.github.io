@@ -1,0 +1,553 @@
+{% include base_path %}
+
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="192x192" href="{{ base_path }}/images/favicon-192x192.png">
+<link rel="icon" type="image/svg+xml" href="{{ base_path }}/images/favicon.svg"/>
+<link rel="icon" type="image/png" href="{{ base_path }}/images/favicon-32x32.png" sizes="32x32"/>
+<link rel="icon" type="image/png" href="{{ base_path }}/images/favicon-192x192.png" sizes="192x192"/>
+<link rel="icon" href="/images/favicon.ico"/>
+<link rel="manifest" href="{{ base_path }}/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="{{ base_path }}/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="{{ base_path }}/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="{{ base_path }}/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="{{ base_path }}/assets/css/academicons.css"/>
+
+{% if page.mathjax %}
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+{% endif %}
+
+<!-- Custom global styles for modern academic look -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Inter font — non-render-blocking (media="print" trick defers parse until after first paint) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+
+<style>
+  /* ── Typography upgrade ── */
+  body, .page__content, .sidebar, .author__bio, .author__urls {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  }
+
+  /* ── Author sidebar polished ── */
+  .author__avatar img {
+    border-radius: 50%;
+    border: 3px solid #1565c0;
+    box-shadow: 0 4px 20px rgba(21,101,192,0.22);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .author__avatar img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 28px rgba(21,101,192,0.3);
+  }
+  .author__name {
+    font-size: 1.18em;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #1a2332;
+  }
+  .author__bio {
+    font-size: 0.88em;
+    color: #444;
+    line-height: 1.6;
+    margin-top: 6px;
+  }
+  .author__urls-wrapper .btn {
+    font-size: 0.82em;
+    padding: 4px 8px;
+  }
+  .author__urls a {
+    font-size: 0.84em;
+    color: #1565c0 !important;
+    transition: color 0.2s;
+  }
+  .author__urls a:hover { color: #0d47a1 !important; }
+
+  /* ── Masthead / nav — gradient underline ── */
+  .masthead {
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .masthead::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, #1565c0 0%, #7c4dff 50%, #00897b 100%);
+  }
+  .masthead__inner-wrap { max-width: 1280px; }
+  .site-title {
+    font-weight: 800 !important;
+    letter-spacing: -0.02em;
+    color: #1a2332 !important;
+  }
+  .greedy-nav a {
+    font-weight: 600;
+    font-size: 0.9em;
+    letter-spacing: 0.01em;
+    color: #333 !important;
+    transition: color 0.2s;
+  }
+  .greedy-nav a:hover { color: #1565c0 !important; }
+  .greedy-nav .visible-links a::before {
+    background: #1565c0;
+  }
+
+  /* ── Page layout ── */
+  .page__content {
+    font-size: 0.95em;
+    line-height: 1.7;
+  }
+  .page__content h2 {
+    font-weight: 800;
+    font-size: 1.3em;
+    color: #1a2332;
+    margin-top: 1.8em;
+    letter-spacing: -0.01em;
+  }
+  .page__content h3 { font-weight: 700; color: #1a2332; }
+  .page__content a { color: #1565c0; }
+  .page__content a:hover { text-decoration: underline; }
+  .page__content p { margin-bottom: 1em; }
+
+  /* ── Publications archive page ── */
+  .archive__item-title {
+    font-size: 0.98em;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .archive__item-title a { color: #1565c0; }
+  .archive__item-excerpt {
+    font-size: 0.85em;
+    color: #555;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .list__item {
+    border-bottom: 1px solid #eef0f3;
+    padding: 12px 0;
+  }
+
+  /* ── Blockquote ── */
+  .page__content blockquote {
+    background: #f0f4ff;
+    border-left: 4px solid #1565c0;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 20px;
+    color: #333;
+    font-size: 0.95em;
+    font-style: normal;
+  }
+
+  /* ── Footer ── */
+  .page__footer {
+    background: #0d1b2a;
+    color: #8899aa;
+    border-top: 3px solid #1565c0;
+  }
+  .page__footer a { color: #7eb8f7; }
+  .page__footer-follow .social-icons .fa { color: #7eb8f7; }
+
+  /* ── Sidebar wider on xl ── */
+  @media (min-width: 80em) {
+    .sidebar.sticky { padding-top: 2em; }
+  }
+
+  /* ── Smooth scrolling ── */
+  html { scroll-behavior: smooth; }
+
+  /* ── Reading progress bar (blog posts only) ── */
+  #reading-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    z-index: 9999;
+    background: linear-gradient(to right, #1565c0, #7c4dff, #00897b);
+    transition: width 0.08s linear;
+    pointer-events: none;
+  }
+
+  /* ── Anti-flash: apply dark background before body loads ── */
+  html.dark-mode-pending { background: #0d1117; }
+  /* ── Global Dark Mode (applied from homepage toggle, persisted in localStorage) ── */
+  body.dark-mode { background: #0d1117 !important; color: #c9d1d9 !important; }
+  body.dark-mode .page__content { color: #c9d1d9 !important; }
+  body.dark-mode .masthead { background: #161b22 !important; box-shadow: 0 1px 8px rgba(0,0,0,0.4) !important; }
+  body.dark-mode .masthead::after { background: linear-gradient(to right, #1565c0 0%, #7c4dff 50%, #00897b 100%) !important; }
+  body.dark-mode .site-title { color: #e6edf3 !important; }
+  body.dark-mode .greedy-nav, body.dark-mode .greedy-nav a { background: #161b22 !important; color: #8b949e !important; }
+  body.dark-mode .greedy-nav a:hover { color: #58a6ff !important; }
+  body.dark-mode .sidebar { background: #0d1117 !important; }
+  body.dark-mode .author__name { color: #e6edf3 !important; }
+  body.dark-mode .author__bio { color: #8b949e !important; }
+  body.dark-mode .author__urls a { color: #58a6ff !important; }
+  body.dark-mode .page__title { color: #e6edf3 !important; }
+  body.dark-mode .page__content h2, body.dark-mode .page__content h3 { color: #e6edf3 !important; }
+  body.dark-mode .page__content a { color: #58a6ff !important; }
+  body.dark-mode .page__content blockquote { background: #1c2333 !important; color: #adbac7 !important; border-left-color: #388bfd !important; }
+  /* paragraphs inherit #c9d1d9 from .page__content — no dim override */
+  body.dark-mode .page__footer { background: #010409 !important; border-top-color: #21262d !important; }
+  body.dark-mode .page__footer a { color: #58a6ff !important; }
+  body.dark-mode .page__inner-wrap, body.dark-mode #main, body.dark-mode .page { background: #0d1117 !important; }
+  body.dark-mode .list__item { border-bottom-color: #21262d !important; }
+  body.dark-mode .archive__item-title a { color: #58a6ff !important; }
+  body.dark-mode .archive__item-excerpt { color: #8b949e !important; }
+  body.dark-mode .author__avatar img:hover { box-shadow: 0 8px 28px rgba(88,166,255,0.25) !important; }
+
+  /* ── Dark mode: /publications/ archive page ── */
+  body.dark-mode .pub-cv-entry { background: #161b22 !important; border-color: #30363d !important; }
+  body.dark-mode .pub-cv-entry:hover { border-color: #58a6ff !important; box-shadow: 0 4px 16px rgba(88,166,255,.15) !important; }
+  body.dark-mode .pub-cv-title a { color: #e6edf3 !important; }
+  body.dark-mode .pub-cv-title a:hover { color: #58a6ff !important; }
+  body.dark-mode .pub-cv-authors { color: #8b949e !important; }
+  body.dark-mode .pub-cv-venue { background: #1c2333 !important; color: #58a6ff !important; }
+  body.dark-mode .scholar-link { background: #1565c0 !important; }
+
+  /* ── Dark mode: /contact/ page ── */
+  body.dark-mode .contact-card { background: #161b22 !important; border-color: #30363d !important; }
+  body.dark-mode .contact-card:hover { border-color: #388bfd !important; }
+  body.dark-mode .contact-card .cc-title { color: #e6edf3 !important; }
+  body.dark-mode .contact-card .cc-link a { color: #58a6ff !important; }
+
+  /* ── Dark mode: /404/ page ── */
+  body.dark-mode .notfound-code { color: #58a6ff !important; }
+  body.dark-mode .notfound-msg  { color: #e6edf3 !important; }
+  body.dark-mode .notfound-sub  { color: #8b949e !important; }
+  body.dark-mode .notfound-btn.secondary { background: #21262d !important; color: #58a6ff !important; }
+</style>
+<!-- dark-mode class is applied synchronously by default.html body-open script; no DOMContentLoaded needed -->
+
+{% if page.date %}
+<!-- Blog post specific styles — academic grade, eye-protective -->
+<style>
+  /*
+   * Color rationale (护眼 / ICLR-grade):
+   *   Page bg   #eef1f1  — 10% tint of #90A5A7, removes harsh glare
+   *   Content   #ffffff  — pure white card, crisp contrast for reading
+   *   Text      #2d3748  — dark slate (not pure black), reduces eye strain
+   *   Accent    #90A5A7  — muted steel-teal for decorative elements
+   *   Links     #2c6e8a  — desaturated academic blue-teal, not jarring
+   */
+
+  /* ── Page background: soft warm teal tint ── */
+  html, body {
+    background: #eef1f1 !important;
+  }
+
+  /* ── Content area: matches page background, no card effect ── */
+  .page__inner-wrap,
+  #main, .page, .initial-content,
+  .page__content-wrapper {
+    background: #eef1f1 !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Sidebar: same background ── */
+  .sidebar.sticky {
+    background: #eef1f1 !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Body text: dark slate (softer than #000) ── */
+  .page--post .page__content,
+  .page--post .page__content p,
+  .page--post .page__content li {
+    color: #2d3748;
+    line-height: 1.78;
+    font-size: 0.96em;
+  }
+
+  /* ── Headings ── */
+  .page--post .page__content h2 {
+    border-left: 4px solid #90A5A7;
+    padding-left: 14px;
+    color: #1a2332;
+    font-weight: 800;
+    margin-top: 2em;
+  }
+  .page--post .page__content h3 {
+    color: #2d3748;
+    font-weight: 700;
+    margin-top: 1.6em;
+  }
+
+  /* ── Links: muted academic teal-blue ── */
+  .page--post .page__content a {
+    color: #2c6e8a;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(44,110,138,0.25);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .page--post .page__content a:hover {
+    color: #1a4f66;
+    border-bottom-color: rgba(26,79,102,0.6);
+  }
+
+  /* ── Blockquote: slightly darker than page bg ── */
+  .page--post .page__content blockquote {
+    background: #dde8e8;
+    border-left: 4px solid #90A5A7;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 20px;
+    color: #3d5461;
+    font-style: normal;
+    font-size: 0.95em;
+  }
+
+  /* ── Inline code ── */
+  .page--post .page__content code {
+    background: #ffffff;
+    border: 1px solid #c8d8d8;
+    border-radius: 4px;
+    font-size: 0.875em;
+    color: #2d5a6b;
+    padding: 1px 5px;
+  }
+  /* ── Code block: white to stand out on teal-tinted bg ── */
+  .page--post .page__content pre {
+    background: #ffffff;
+    border: 1px solid #c8d8d8;
+    border-top: 3px solid #90A5A7;  /* accent top bar */
+    border-radius: 0 0 8px 8px;
+    overflow-x: auto;               /* horizontal scroll, never clip */
+    white-space: pre;
+    padding: 14px 18px;
+    margin: 1.2em 0;
+    position: relative;
+    font-size: 0.875em;
+    color: #2d3748;
+    line-height: 1.6;
+  }
+  .page--post .page__content pre code {
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+  }
+  /* Copy button toolbar */
+  .code-wrap {
+    position: relative;
+    margin: 1.2em 0;
+  }
+  .code-wrap pre {
+    margin: 0 !important;
+  }
+  .code-copy-btn {
+    position: absolute;
+    top: -1px;
+    right: 0;
+    background: #90A5A7;
+    color: #fff;
+    border: none;
+    border-radius: 0 0 0 6px;
+    padding: 2px 11px;
+    font-size: 0.72em;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.15s;
+    z-index: 10;
+  }
+  .code-copy-btn:hover { background: #6e8e90; }
+  .code-copy-btn.copied { background: #4caf7d; }
+
+  /* ── Horizontal rules: subtle teal tint ── */
+  .page--post .page__content hr {
+    border: none;
+    border-top: 2px solid #dce5e6;
+    margin: 2em 0;
+  }
+
+  /* ── Images: preserve natural aspect ratio, never overflow ── */
+  .page--post .page__content figure img,
+  .page--post .page__content p img {
+    max-width: 100%;   /* prevent overflow, but never force-stretch */
+    height: auto;      /* always preserve aspect ratio */
+    display: block;
+    margin: 0 auto;
+    border-radius: 6px;
+  }
+
+  /* ── Reading progress bar: #90A5A7 teal gradient ── */
+  #reading-progress {
+    background: linear-gradient(to right, #90A5A7, #607d8b, #90A5A7) !important;
+  }
+
+  /* ─────────────── Dark mode ─────────────── */
+  /* html needs its own !important rule here — the blog-post `html { background: #eef1f1 !important }` above
+     would otherwise win over the inline style set by the anti-flash script.
+     html.dark-mode-pending covers page-load; html:has(body.dark-mode) covers runtime toggle. */
+  html.dark-mode-pending,
+  html:has(body.dark-mode) {
+    background: #0d1117 !important;
+  }
+  body.dark-mode {
+    background: #0d1117 !important;
+  }
+  body.dark-mode .page__inner-wrap,
+  body.dark-mode #main,
+  body.dark-mode .page,
+  body.dark-mode .initial-content,
+  body.dark-mode .page__content-wrapper {
+    background: #0d1117 !important;
+    box-shadow: none !important;
+  }
+  body.dark-mode .sidebar.sticky {
+    background: #0d1117 !important;
+    box-shadow: none !important;
+  }
+  body.dark-mode .page--post .page__content,
+  body.dark-mode .page--post .page__content p,
+  body.dark-mode .page--post .page__content li { color: #b5c2c8 !important; }
+  body.dark-mode .page--post .page__content h2 {
+    color: #e2eaec !important;
+    border-left-color: #90A5A7 !important;
+  }
+  body.dark-mode .page--post .page__content h3 { color: #c8d6da !important; }
+  body.dark-mode .page--post .page__content a { color: #7cb9ca !important; border-bottom-color: rgba(124,185,202,0.3) !important; }
+  body.dark-mode .page--post .page__content a:hover { color: #a8d4e0 !important; }
+  body.dark-mode .page--post .page__content blockquote {
+    background: #1c2b30 !important;
+    color: #8faab1 !important;
+    border-left-color: #90A5A7 !important;
+  }
+  body.dark-mode .page--post .page__content code {
+    background: #1c2428 !important;
+    border-color: #2d3f45 !important;
+    color: #7fb3bf !important;
+  }
+  body.dark-mode .page--post .page__content pre {
+    background: #131d21 !important;
+    border-color: #2d3f45 !important;
+    border-top-color: #90A5A7 !important;
+    color: #b5c2c8 !important;
+  }
+  body.dark-mode .code-copy-btn { background: #3a5c63 !important; }
+  body.dark-mode .code-copy-btn:hover { background: #4e7880 !important; }
+  body.dark-mode .page--post .page__content hr { border-top-color: #2a3f47 !important; }
+
+</style>
+
+<!-- Reading progress bar + code copy buttons (blog posts only) -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    /* Reading progress bar */
+    var bar = document.createElement('div');
+    bar.id = 'reading-progress';
+    document.body.insertBefore(bar, document.body.firstChild);
+    window.addEventListener('scroll', function() {
+      var total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (total > 0 ? (window.scrollY / total * 100) : 0) + '%';
+    }, { passive: true });
+
+    /* Code block copy buttons — toolbar above code, never overlaps content */
+    document.querySelectorAll('.page__content pre').forEach(function(pre) {
+      /* wrap in .code-wrap */
+      var wrap = document.createElement('div');
+      wrap.className = 'code-wrap';
+      pre.parentNode.insertBefore(wrap, pre);
+      wrap.appendChild(pre);
+
+      /* Copy button anchored to top-right corner of the accent border */
+      var btn = document.createElement('button');
+      btn.textContent = 'Copy';
+      btn.className = 'code-copy-btn';
+      btn.addEventListener('click', function() {
+        var src = (pre.querySelector('code') || pre).innerText;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(src).then(function() {
+            btn.textContent = '✓ Copied';
+            btn.classList.add('copied');
+            setTimeout(function() {
+              btn.textContent = 'Copy';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        }
+      });
+      wrap.appendChild(btn);
+    });
+  });
+</script>
+{% endif %}
+
+<!-- Breadcrumb font size fix (Minimal Mistakes default is 0.75em / 12px — too small) -->
+<style>
+.breadcrumbs { font-size: 0.9em !important; }
+.breadcrumbs ol { font-size: inherit !important; }
+.breadcrumbs li { font-size: inherit !important; }
+</style>
+
+<!-- og:image fallback (MM seo.html has no site-level og:image fallback, only Twitter does) -->
+{% unless page.header.image or page.header.overlay_image %}
+<meta property="og:image" content="{{ site.url }}/images/profile.jpg">
+{% endunless %}
+
+<!-- noindex for non-content pages (404, redirect stubs) — MM seo.html never emits a robots meta -->
+{% if page.sitemap == false %}
+<meta name="robots" content="noindex, nofollow">
+{% endif %}
+
+<!-- JSON-LD: Person schema — helps Google show rich researcher profile in search results -->
+{% if page.url == "/" or page.url == "/about/" or page.url == "" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jiajun Fan",
+  "url": "{{ site.url }}",
+  "image": "{{ site.url }}/images/profile.jpg",
+  "jobTitle": "CS Ph.D. Student",
+  "affiliation": {
+    "@type": "EducationalOrganization",
+    "name": "University of Illinois Urbana-Champaign",
+    "url": "https://illinois.edu"
+  },
+  "alumniOf": [
+    {"@type": "EducationalOrganization", "name": "Tsinghua University"},
+    {"@type": "EducationalOrganization", "name": "Nankai University"}
+  ],
+  "award": ["ICLR 2023 Oral (Top 1.2%, Rank 5/4176)", "NeurIPS 2025", "ICLR 2026", "ICML 2022", "IEEE TPAMI 2026"],
+  "description": "{{ site.description }}",
+  "sameAs": [
+    "https://scholar.google.com/citations?user=EjmzseUAAAAJ",
+    "https://www.linkedin.com/in/jiajun-fan-57b12b26b",
+    "https://openreview.net/profile?id=~Jiajun_Fan1",
+    "https://orcid.org/0000-0002-0263-2103"
+  ],
+  "knowsAbout": [
+    "Reinforcement Learning",
+    "Agentic Reinforcement Learning",
+    "Post-Training of Generative Models",
+    "Self-Improvement",
+    "Flow Matching",
+    "Diffusion Models",
+    "Multimodal Reasoning",
+    "Audio Language Models",
+    "Deep Reinforcement Learning"
+  ]
+}
+</script>
+{% endif %}
+
+<!-- end custom head snippets -->

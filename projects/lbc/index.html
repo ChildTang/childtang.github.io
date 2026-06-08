@@ -1,0 +1,537 @@
+---
+layout: null
+permalink: /projects/lbc/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="LBC: Learnable Behavior Control — ICLR 2023 Oral">
+  <meta property="og:description" content="Breaking 24 Atari human world records via sample-efficient behavior selection. Achieves superhuman performance with orders-of-magnitude less data.">
+  <meta property="og:image" content="https://www.jiajunfan.com/images/profile.jpg">
+  <meta property="og:url" content="https://www.jiajunfan.com/projects/lbc/">
+  <link rel="canonical" href="https://www.jiajunfan.com/projects/lbc/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LBC: Learnable Behavior Control — ICLR 2023 Oral">
+  <meta name="twitter:description" content="Breaking 24 Atari human world records via sample-efficient behavior selection. Achieves superhuman performance with orders-of-magnitude less data.">
+  <meta name="twitter:image" content="https://www.jiajunfan.com/images/profile.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LBC — 24 Atari World Records | ICLR 2023 Oral</title>
+<meta name="description" content="Learnable Behavior Control: Breaking Atari Human World Records. ICLR 2023 Oral, Top 5/4176.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="icon" href="/images/favicon.ico">
+<meta name="robots" content="index,follow">
+<script>try{if(localStorage.getItem('darkMode')==='true'){document.documentElement.style.background='#0d1117';}}catch(e){}</script>
+<style>
+:root { --accent: #2563eb; --accent-light: #eff6ff; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#fff;color:#111827;line-height:1.75;font-size:16px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+
+/* ── Site masthead (matches jiajunfan.com MM theme) ── */
+.site-masthead{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:200}
+.site-masthead::after{content:'';display:block;height:3px;background:linear-gradient(to right,#1565c0 0%,#7c4dff 50%,#00897b 100%)}
+.masthead-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.masthead-title{font-weight:800;font-size:1.05em;color:#1a2332!important;text-decoration:none!important;letter-spacing:-.02em}
+.masthead-nav{display:flex;gap:2px;align-items:center}
+.masthead-nav a{font-weight:600;font-size:0.88em;color:#333!important;text-decoration:none!important;padding:6px 10px;border-radius:6px;transition:color .2s,background .2s;letter-spacing:.01em}
+.masthead-nav a:hover{color:#1565c0!important;background:#f0f4ff}
+.masthead-nav a.nav-active{color:#1565c0!important;font-weight:700}
+@media(max-width:560px){.masthead-nav a{font-size:0.78em;padding:5px 6px}.masthead-title{font-size:0.95em}}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(to bottom,#f8faff,#fff);border-top:4px solid var(--accent);padding:56px 24px 44px;text-align:center}
+.hero-inner{max-width:860px;margin:0 auto}
+.venue-badge{display:inline-block;background:var(--accent);color:#fff;padding:5px 18px;border-radius:999px;font-size:0.78em;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:22px}
+.hero h1{font-size:clamp(1.8em,4vw,2.75em);font-weight:900;color:#0f172a;line-height:1.2;max-width:820px;margin:0 auto 18px}
+.hero .short{font-size:1.05em;color:#4b5563;margin-bottom:22px;font-weight:500}
+.authors{font-size:0.9em;color:#4b5563;max-width:720px;margin:0 auto 10px;line-height:2}
+.authors .me{font-weight:800;color:#111}
+.co-author{color:inherit}
+.affil{font-size:0.82em;color:#6b7280;margin-bottom:30px;line-height:1.6}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 26px;border-radius:999px;font-size:0.88em;font-weight:700;transition:opacity .18s,transform .18s;letter-spacing:0.01em}
+.btn:hover{opacity:.88;transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn-neutral{background:#374151;color:#fff}
+
+/* ── Container & Sections ── */
+.container{max-width:900px;margin:0 auto;padding:0 28px}
+section{padding:60px 0 48px}
+section:nth-child(even){background:#f9fafb}
+section p{color:#374151;margin-bottom:14px;font-size:0.97em;line-height:1.78}
+section p:last-child{margin-bottom:0}
+
+/* ── Headings ── */
+h2{font-size:1.45em;font-weight:800;color:#0f172a;margin-bottom:22px;line-height:1.3}
+h3{font-size:1.1em;font-weight:700;color:#1e293b;margin-bottom:10px}
+
+/* ── TL;DR ── */
+.tldr{background:var(--accent-light);border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:0;font-size:0.96em;color:#1e293b}
+.tldr strong{color:var(--accent);font-weight:800}
+
+/* ── Stat/Result Cards ── */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin:24px 0}
+.result-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.result-card .rnum{font-size:2.1em;font-weight:900;color:var(--accent);line-height:1.1}
+.result-card .rdesc{font-size:0.77em;color:#6b7280;margin-top:8px;line-height:1.5}
+
+/* ── Stat Mini (hero) ── */
+.stats-mini{display:flex;flex-wrap:wrap;gap:24px 40px;justify-content:center;margin-top:16px}
+.sm{text-align:center}
+.sm-num{font-size:2em;font-weight:900;color:var(--accent);line-height:1}
+.sm-label{font-size:0.76em;color:#6b7280;margin-top:4px}
+
+/* ── Records Wall ── */
+.records-wall{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:16px;padding:32px;text-align:center;color:#fff;margin-bottom:24px}
+.records-title{font-size:0.78em;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin-bottom:8px}
+.records-number{font-size:5em;font-weight:900;line-height:1;color:#fff;margin-bottom:4px}
+.records-sub{font-size:0.9em;color:#bfdbfe;margin-bottom:20px}
+
+/* ── Method/Feature Cards ── */
+.method-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin:20px 0}
+.method-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.method-card h3{font-size:0.9em;font-weight:800;color:#0f172a;margin-bottom:8px}
+.method-card p{font-size:0.83em;color:#6b7280;line-height:1.65;margin:0}
+
+.method-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:16px;margin:20px 0}
+.step{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.step .step-num{width:36px;height:36px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.9em;margin:0 auto 12px}
+.step h4{font-size:0.87em;font-weight:800;color:#0f172a;margin-bottom:7px}
+.step p{font-size:0.8em;color:#6b7280;margin:0;line-height:1.55}
+
+/* ── Problem/Solution Cards ── */
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
+.problem-card{background:#fff5f5;border:1.5px solid #fecaca;border-radius:12px;padding:18px}
+.problem-card h3{font-size:0.88em;font-weight:800;color:#dc2626;margin-bottom:8px}
+.solution-card{background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:18px}
+.solution-card h3{font-size:0.88em;font-weight:800;color:#16a34a;margin-bottom:8px}
+.problem-card p,.solution-card p{font-size:0.84em;color:#374151;margin:0;line-height:1.65}
+
+/* ── Comparison Tables ── */
+.compare-table{width:100%;border-collapse:collapse;margin:22px 0;font-size:0.9em}
+.compare-table th{background:#f1f5f9;color:#374151;padding:12px 16px;text-align:left;font-weight:700;border-bottom:2px solid #e2e8f0;font-size:0.86em;text-transform:uppercase;letter-spacing:.03em}
+.compare-table td{padding:11px 16px;border-bottom:1px solid #f1f5f9;color:#374151}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .highlight td{background:var(--accent-light);font-weight:700;border-left:3px solid var(--accent)}
+.badge-win{background:#d1fae5;color:#065f46;padding:2px 9px;border-radius:6px;font-weight:800;font-size:0.82em}
+.badge-record{background:#fef3c7;color:#92400e;padding:2px 9px;border-radius:6px;font-weight:800;font-size:0.82em}
+
+/* ── Key Insight / Callout ── */
+.key-insight{background:var(--accent-light);border:1.5px solid var(--accent);border-radius:12px;padding:18px 22px;margin:20px 0}
+.key-insight p{margin:0;font-size:0.93em;color:#1e293b}
+
+/* ── Diff boxes (ADRPO style) ── */
+.diff-boxes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.diff-box{border-radius:12px;padding:18px 20px}
+.diff-box.old{background:#fef2f2;border:1.5px solid #fca5a5}
+.diff-box.new{background:#f0fdf4;border:1.5px solid #86efac}
+.diff-box h4{font-size:0.83em;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.diff-box.old h4{color:#dc2626}
+.diff-box.new h4{color:#16a34a}
+.diff-box ul{padding-left:16px;font-size:0.84em;color:#374151;line-height:1.8}
+
+/* ── Figures ── */
+figure{margin:0}
+figure img{width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border:1px solid #e5e7eb}
+figcaption{font-size:0.83em;color:#6b7280;margin-top:12px;text-align:center;line-height:1.6}
+.fig-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:20px}
+
+/* ── Games Grid ── */
+.games-grid{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.game-pill{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82em;font-weight:600;color:#374151}
+
+/* ── Publication Timeline ── */
+.timeline{position:relative;padding-left:26px;margin:8px 0}
+.timeline-line{position:absolute;left:9px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),#d1d5db)}
+.timeline-item{position:relative;margin-bottom:22px;padding-left:6px}
+.timeline-dot{position:absolute;left:-21px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff}
+.dot-accepted{background:#16a34a;box-shadow:0 0 0 2px #16a34a}
+.dot-submitted{background:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.dot-rejected{background:#9ca3af;box-shadow:0 0 0 2px #9ca3af}
+.timeline-date{font-size:0.76em;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:2px}
+.timeline-title{font-weight:700;font-size:0.93em;color:#111;margin-bottom:3px}
+.timeline-desc{font-size:0.83em;color:#6b7280;line-height:1.6}
+
+/* ── BibTeX ── */
+
+.bib-copy-btn{display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;
+  padding:6px 16px;border-radius:8px;border:none;cursor:pointer;font-size:0.82em;
+  font-weight:700;background:#334155;color:#e2e8f0;transition:background .18s;}
+.bib-copy-btn:hover{background:#475569;}
+.bib-copy-btn.copied{background:#16a34a;color:#fff;}
+
+.bibtex-block{background:#1e293b;color:#e2e8f0;border-radius:12px;padding:22px 24px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:0.82em;line-height:1.7}
+
+/* ── Footer ── */
+footer{background:#f8f9fa;color:#6b7280;text-align:center;padding:28px 24px;font-size:.84em;border-top:1px solid #e5e7eb}
+footer a{color:var(--accent);font-weight:600}
+
+
+/* ── Oral Star Badge ── */
+.oral-star{display:block;font-size:0.8em;font-weight:600;letter-spacing:0;margin-top:5px;opacity:0.95}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+}
+
+/* ── Dark mode ── */
+body.dark-mode{background:#0d1117;color:#c9d1d9}
+body.dark-mode a{color:#58a6ff !important}
+body.dark-mode .site-masthead{background:#161b22;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+body.dark-mode .masthead-title{color:#e6edf3 !important}
+body.dark-mode .masthead-nav a{color:#c9d1d9 !important}
+body.dark-mode .masthead-nav a:hover{color:#58a6ff !important;background:#21262d}
+body.dark-mode .masthead-nav a.nav-active{color:#58a6ff !important}
+body.dark-mode .hero{background:linear-gradient(to bottom,#161b22,#0d1117)}
+body.dark-mode .hero h1{color:#e6edf3}
+body.dark-mode .hero .short{color:#adbac7}
+body.dark-mode .authors{color:#adbac7}
+body.dark-mode .authors .me{color:#e6edf3}
+body.dark-mode .affil{color:#8b949e}
+body.dark-mode .btn-secondary{background:#161b22}
+body.dark-mode .btn-neutral{background:#21262d}
+body.dark-mode section:nth-child(even){background:#161b22}
+body.dark-mode section p{color:#adbac7}
+body.dark-mode h2,body.dark-mode h3,body.dark-mode h4{color:#e6edf3}
+body.dark-mode .tldr{background:#161b22;color:#c9d1d9}
+body.dark-mode .key-insight{background:#161b22}
+body.dark-mode .key-insight p{color:#c9d1d9}
+body.dark-mode .result-card,
+body.dark-mode .method-card,
+body.dark-mode .step{background:#161b22;border-color:#30363d}
+body.dark-mode .method-card p,
+body.dark-mode .step p,
+body.dark-mode .result-card .rdesc{color:#8b949e}
+body.dark-mode .compare-table th{background:#21262d;color:#c9d1d9;border-bottom-color:#30363d}
+body.dark-mode .compare-table td{color:#adbac7;border-bottom-color:#21262d}
+body.dark-mode .compare-table .highlight td{background:#1e3a5f !important;color:#e6edf3 !important}
+body.dark-mode div[style*="color:#1565c0"]{color:#60a5fa !important}
+body.dark-mode div[style*="color:#e65100"]{color:#fb923c !important}
+body.dark-mode div[style*="color:#1b5e20"]{color:#4ade80 !important}
+body.dark-mode figure img{border-color:#30363d !important}
+body.dark-mode figcaption{color:#8b949e}
+body.dark-mode .game-pill{background:#21262d;border-color:#30363d;color:#c9d1d9}
+body.dark-mode .records-wall{background:linear-gradient(135deg,#161b22,#1e293b)}
+body.dark-mode .timeline-desc,
+body.dark-mode .timeline-title{color:#c9d1d9}
+body.dark-mode .problem-card{background:#2d1518;border-color:#5c2626}
+body.dark-mode .solution-card,
+body.dark-mode .diff-box.new{background:#13261a;border-color:#265c33}
+body.dark-mode .diff-box.old{background:#2d1518;border-color:#5c2626}
+body.dark-mode .problem-card p,
+body.dark-mode .solution-card p,
+body.dark-mode .diff-box ul{color:#c9d1d9}
+body.dark-mode footer{background:#161b22;color:#8b949e;border-top-color:#30363d}
+body.dark-mode ul li{color:#adbac7}
+body.dark-mode figure figcaption,
+body.dark-mode figcaption{color:#8b949e !important}
+body.dark-mode .records-number,body.dark-mode .records-sub{color:#fff !important}
+body.dark-mode section p[style*="color:#555"],
+body.dark-mode section p[style*="color:#444"],
+body.dark-mode p[style*="color:#666"]{color:#adbac7 !important}
+body.dark-mode div[style*="color:#555"]{color:#adbac7 !important}
+/* Quantitative Comparison inline cards */
+body.dark-mode div[style*="background:#f5f3ff"],
+body.dark-mode div[style*="background:#f8faff"]{background:#161b22 !important;border-color:#30363d !important}
+body.dark-mode div[style*="color:#4c1d95"],
+body.dark-mode div[style*="color:#374151"]{color:#79c0ff !important}
+
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .fig-grid-2{grid-template-columns:1fr}
+  .problem-grid{grid-template-columns:1fr}
+  .diff-boxes{grid-template-columns:1fr}
+  .method-grid{grid-template-columns:1fr}
+  .method-steps{grid-template-columns:1fr}
+  .results-grid{grid-template-columns:1fr 1fr}
+}
+@media print {
+  .site-masthead { display: none !important; }
+}
+</style>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Learnable Behavior Control: Breaking Atari Human World Records via Sample-Efficient Behavior Selection",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Jiajun Fan"
+    },
+    {
+      "@type": "Person",
+      "name": "Yuzheng Zhuang"
+    },
+    {
+      "@type": "Person",
+      "name": "Yuecheng Liu"
+    },
+    {
+      "@type": "Person",
+      "name": "Jianye Hao"
+    },
+    {
+      "@type": "Person",
+      "name": "Bin Wang"
+    },
+    {
+      "@type": "Person",
+      "name": "Jiangcheng Zhu"
+    },
+    {
+      "@type": "Person",
+      "name": "Hao Wang"
+    },
+    {
+      "@type": "Person",
+      "name": "Shu-Tao Xia"
+    }
+  ],
+  "datePublished": "2023",
+  "publisher": {
+    "@type": "Organization",
+    "name": "ICLR 2023"
+  },
+  "url": "https://www.jiajunfan.com/projects/lbc/",
+  "sameAs": "https://openreview.net/forum?id=FeWvD0L_a4",
+  "keywords": "reinforcement learning, Atari, exploration, behavior control, world records"
+}</script>
+</head>
+<body id="top">
+<script>try{if(localStorage.getItem('darkMode')==='true')document.body.classList.add('dark-mode');}catch(e){}</script>
+
+<header class="site-masthead">
+  <div class="masthead-inner">
+    <a class="masthead-title" href="/">Jiajun Fan</a>
+    <nav class="masthead-nav" aria-label="Site navigation">
+      <a href="/publications/">Publications</a>
+      <a href="/projects/" class="nav-active">Projects</a>
+      <a href="/year-archive/">Blog</a>
+      <a href="/cv/">CV</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero"><div class="hero-inner">
+  <div class="venue-badge">
+    ICLR 2023
+    <span class="oral-star">⭐ Oral · Ranked 5/4176</span>
+  </div>
+  <h1>Learnable Behavior Control: Breaking Atari Human World Records via Sample-Efficient Behavior Selection</h1>
+  <p class="short">LBC: A unified framework for behavior control in deep RL — superhuman performance with a fraction of the data</p>
+  <div class="authors">
+    <strong>Jiajun Fan</strong>&thinsp;<sup>1</sup>,
+    Yuzheng Zhuang&thinsp;<sup>1</sup>,
+    Yuecheng Liu&thinsp;<sup>1</sup>,
+    Jianye Hao&thinsp;<sup>1</sup>,
+    Bin Wang&thinsp;<sup>1</sup>,
+    Jiangcheng Zhu&thinsp;<sup>1</sup>,
+    Hao Wang&thinsp;<sup>2</sup>,
+    Shu-Tao Xia&thinsp;<sup>1</sup>
+  </div>
+  <div class="affil"><sup>1</sup>Tsinghua University / Huawei Noah's Ark Lab &nbsp;&nbsp; <sup>2</sup>Rutgers University</div>
+  <div class="btn-row">
+    <a class="btn btn-primary" href="https://arxiv.org/abs/2209.05765">arXiv</a>
+    <a class="btn btn-secondary" href="https://openreview.net/forum?id=FeWvD0L_a4">📄 Paper (OpenReview)</a>
+    <a class="btn btn-neutral" href="/">🏠 Author Homepage</a>
+  </div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- Records wall -->
+<section style="padding-top:40px;">
+  <div class="records-wall">
+    <div class="records-title">World Records Broken</div>
+    <div class="records-number">24</div>
+    <div class="records-sub">Atari Human World Records</div>
+    <div class="stats-mini">
+      <div class="sm"><div class="sm-num">10,077%</div><div class="sm-label">Mean Human-Normalized Score</div></div>
+      <div class="sm"><div class="sm-num">500×</div><div class="sm-label">More Sample-Efficient than Agent57</div></div>
+      <div class="sm"><div class="sm-num">1B</div><div class="sm-label">Training Frames (vs 78B for Agent57)</div></div>
+    </div>
+  </div>
+
+  <div class="tldr">
+    <strong>TL;DR</strong> — Population-based RL methods improve exploration by running diverse policies, but are <em>fundamentally limited by a fixed, predefined population</em>. LBC breaks this limitation by learning a hybrid behavior mapping over all policies, enabling a dramatically enlarged behavior space — and achieves superhuman performance with 500× less data.
+  </div>
+</section>
+
+<section>
+  <h2>🧩 The Core Idea</h2>
+  <p>Population-based methods fix a set of exploratory policies and select between them. LBC instead constructs a <strong>continuous, learnable behavior mapping space</strong> that blends all policies, then uses a <strong>bandit-based meta-controller</strong> to learn which behaviors to select at each moment:</p>
+  <div class="method-grid">
+    <div class="method-card">
+      <h3>📐 Hybrid Behavior Mapping</h3>
+      <p>Instead of selecting from a fixed population, LBC parameterizes a <em>convex combination space</em> over all policies — infinite diversity from a finite set of base agents.</p>
+    </div>
+    <div class="method-card">
+      <h3>🎰 Bandit Meta-Controller</h3>
+      <p>A lightweight bandit algorithm learns which behavior mapping to activate for each episode, balancing exploration across the behavior space with exploitation of known good behaviors.</p>
+    </div>
+    <div class="method-card">
+      <h3>🔗 Off-Policy Integration</h3>
+      <p>LBC is integrated into distributed off-policy actor-critic methods — compatible with existing RL infrastructure without major architectural changes.</p>
+    </div>
+    <div class="method-card">
+      <h3>📊 Unified Perspective</h3>
+      <p>Provides a unified view of diverse RL algorithms as special cases of behavior control, opening new directions for understanding exploration in deep RL.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🏆 24 World Records Broken</h2>
+  <p>LBC broke <strong>24 Atari human world records</strong> within just 1 billion training frames:</p>
+  <div class="games-grid">
+    <div class="game-pill">Alien 👾</div>
+    <div class="game-pill">Amidar</div>
+    <div class="game-pill">Assault 🔫</div>
+    <div class="game-pill">Asterix ⭐</div>
+    <div class="game-pill">Atlantis 🌊</div>
+    <div class="game-pill">Battle Zone</div>
+    <div class="game-pill">Beam Rider</div>
+    <div class="game-pill">Centipede 🐛</div>
+    <div class="game-pill">Gopher</div>
+    <div class="game-pill">Kangaroo 🦘</div>
+    <div class="game-pill">Krull</div>
+    <div class="game-pill">Ms. Pac-Man</div>
+    <div class="game-pill">Phoenix</div>
+    <div class="game-pill">Q*bert</div>
+    <div class="game-pill">Road Runner 🏎</div>
+    <div class="game-pill">Seaquest 🐠</div>
+    <div class="game-pill">Tutankham</div>
+    <div class="game-pill">Up'n Down</div>
+    <div class="game-pill">Video Pinball</div>
+    <div class="game-pill">Wizard of Wor</div>
+    <div class="game-pill">Yars Revenge</div>
+    <div class="game-pill">Zaxxon</div>
+    <div class="game-pill">+ 2 more</div>
+  </div>
+
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+  <table class="compare-table" style="margin-top:20px;">
+    <thead>
+      <tr><th>Method</th><th>Human-Norm. Score</th><th>Frames Used</th><th>World Records</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Agent57 (DeepMind)</td><td>~1,079%</td><td>78 Billion</td><td>0</td></tr>
+      <tr><td>NGU (DeepMind)</td><td>~1,698%</td><td>10 Billion</td><td>0</td></tr>
+      <tr><td>R2D2 (DeepMind)</td><td>~4,421%</td><td>10 Billion</td><td>~3</td></tr>
+      <tr class="highlight">
+        <td><strong>LBC (Ours) 🏆</strong></td>
+        <td><strong>10,077% <span class="badge-win">Best</span></strong></td>
+        <td><strong>1 Billion <span class="badge-win">78× less</span></strong></td>
+        <td><strong>24 <span class="badge-record">Records!</span></strong></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>📊 Quantitative Comparison</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0 20px;font-size:0.84em;">
+  <div style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:10px;padding:12px 14px;">
+    <div style="font-weight:800;color:#4c1d95;margin-bottom:6px;">LBC (Ours)</div>
+    <div>📈 <strong>10,077%</strong> mean human-normalized score</div>
+    <div>🎯 <strong>24</strong> world records</div>
+    <div>⚡ <strong>1B</strong> training frames</div>
+  </div>
+  <div style="background:#f8faff;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;">
+    <div style="font-weight:800;color:#374151;margin-bottom:6px;">Agent57 (Prior SOTA)</div>
+    <div>📈 <strong>4,359%</strong> mean human-normalized score</div>
+    <div>🎯 <strong>0</strong> world records</div>
+    <div>⚡ <strong>500B+</strong> training frames (500× more)</div>
+  </div>
+  <div style="background:#f8faff;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;">
+    <div style="font-weight:800;color:#374151;margin-bottom:6px;">R2D2</div>
+    <div>📈 <strong>4,038%</strong> mean human-normalized score</div>
+    <div>⚡ <strong>78B</strong> training frames</div>
+  </div>
+</div>
+
+<h2>📅 Publication Journey</h2>
+  <div style="position:relative;padding-left:24px;margin:8px 0">
+    <div style="position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#1565c0,#a5d6a7)"></div>
+    <div style="position:relative;margin-bottom:18px;padding-left:4px">
+      <div style="position:absolute;left:-20px;top:5px;width:12px;height:12px;background:#1565c0;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #1565c0"></div>
+      <div style="font-size:.78em;font-weight:800;color:#1565c0;text-transform:uppercase;letter-spacing:.05em">Sep 2022</div>
+      <div style="font-weight:700;font-size:.93em">Submitted to ICLR 2023 (Submission #219)</div>
+      <div style='font-size:.83em;color:#555'>Submitted to The Eleventh International Conference on Learning Representations.</div>
+    </div>
+    <div style="position:relative;margin-bottom:18px;padding-left:4px">
+      <div style="position:absolute;left:-20px;top:5px;width:12px;height:12px;background:#e65100;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #e65100"></div>
+      <div style="font-size:.78em;font-weight:800;color:#e65100;text-transform:uppercase;letter-spacing:.05em">Nov 2022</div>
+      <div style="font-weight:700;font-size:.93em">Reviews received</div>
+      <div style='font-size:.83em;color:#555'>Paper received strong interest from reviewers and area chairs.</div>
+    </div>
+    <div style="position:relative;margin-bottom:18px;padding-left:4px">
+      <div style="position:absolute;left:-20px;top:5px;width:12px;height:12px;background:#1b5e20;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #1b5e20"></div>
+      <div style="font-size:.78em;font-weight:800;color:#1b5e20;text-transform:uppercase;letter-spacing:.05em">Jan 2023</div>
+      <div style="font-weight:700;font-size:.93em">✅ Accepted — Notable Top 5% · Oral · Ranked 5/4,176</div>
+      <div style='font-size:.83em;color:#555'>Accepted as an <strong>oral presentation</strong> — ranked 5th out of 4,176 submissions. <a href="https://openreview.net/forum?id=FeWvD0L_a4">OpenReview</a></div>
+    </div>
+    <div style="position:relative;margin-bottom:18px;padding-left:4px">
+      <div style="position:absolute;left:-20px;top:5px;width:12px;height:12px;background:#1b5e20;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #1b5e20"></div>
+      <div style="font-size:.78em;font-weight:800;color:#1b5e20;text-transform:uppercase;letter-spacing:.05em">May 2023</div>
+      <div style="font-weight:700;font-size:.93em">Presented at ICLR 2023 · Kigali, Rwanda</div>
+      
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📖 BibTeX</h2>
+  <button class="bib-copy-btn" aria-label="Copy BibTeX citation">📋 Copy BibTeX</button>
+  <pre class="bibtex-block" tabindex="0"><code>@inproceedings{fan2023learnable,
+  title={Learnable Behavior Control: Breaking Atari Human World Records
+         via Sample-Efficient Behavior Selection},
+  author={Jiajun Fan and Yuzheng Zhuang and Yuecheng Liu and Jianye HAO
+          and Bin Wang and Jiangcheng Zhu and Hao Wang and Shu-Tao Xia},
+  booktitle={The Eleventh International Conference on Learning Representations},
+  year={2023},
+  url={https://openreview.net/forum?id=FeWvD0L_a4}
+}</code></pre>
+</section>
+
+</div>
+
+<footer>
+  <p>LBC · ICLR 2023 Oral (Notable Top 5%, Ranked 5/4176) &nbsp;|&nbsp; <a href="/">Jiajun Fan</a> &nbsp;|&nbsp; <a href="https://openreview.net/forum?id=FeWvD0L_a4">Paper</a> &nbsp;|&nbsp; <a href="/publications/">All Publications</a> &nbsp;|&nbsp; <a href="#top">↑ Back to top</a></p>
+</footer>
+
+<script>
+// Dark mode: respect site-wide preference stored in localStorage
+(function(){
+  try { if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode'); } catch(e){}
+})();
+
+document.querySelectorAll('.bib-copy-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var pre=btn.nextElementSibling;
+    var text=pre?pre.innerText||pre.textContent:'';
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent='✅ Copied!';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='📋 Copy BibTeX';btn.classList.remove('copied');},2000);
+      });
+    } else {
+      btn.textContent='⚠️ Copy not supported';
+      setTimeout(function(){btn.textContent='📋 Copy BibTeX';},2000);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

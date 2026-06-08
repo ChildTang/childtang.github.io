@@ -1,0 +1,475 @@
+---
+layout: null
+permalink: /projects/ac-flow/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AC-Flow: Fine-tuning Flow Matching Generative Models with Intermediate Feedback — arXiv 2025">
+  <meta property="og:description" content="Actor-Critic framework for fine-tuning flow matching models using intermediate trajectory feedback, enabling stable RL training without reward hacking.">
+  <meta property="og:image" content="https://www.jiajunfan.com/images/profile.jpg">
+  <meta property="og:url" content="https://www.jiajunfan.com/projects/ac-flow/">
+  <link rel="canonical" href="https://www.jiajunfan.com/projects/ac-flow/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AC-Flow: Fine-tuning Flow Matching Generative Models with Intermediate Feedback — arXiv 2025">
+  <meta name="twitter:description" content="Actor-Critic framework for fine-tuning flow matching models using intermediate trajectory feedback, enabling stable RL training without reward hacking.">
+  <meta name="twitter:image" content="https://www.jiajunfan.com/images/profile.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AC-Flow — Actor-Critic for Flow Matching | Preprint 2025</title>
+<meta name="description" content="Fine-tuning Flow Matching Generative Models with Intermediate Feedback. arXiv 2025.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="icon" href="/images/favicon.ico">
+<meta name="robots" content="index,follow">
+<script>try{if(localStorage.getItem('darkMode')==='true'){document.documentElement.style.background='#0d1117';}}catch(e){}</script>
+<style>
+:root { --accent: #059669; --accent-light: #ecfdf5; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#fff;color:#111827;line-height:1.75;font-size:16px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+
+/* ── Site masthead (matches jiajunfan.com MM theme) ── */
+.site-masthead{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:200}
+.site-masthead::after{content:'';display:block;height:3px;background:linear-gradient(to right,#1565c0 0%,#7c4dff 50%,#00897b 100%)}
+.masthead-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.masthead-title{font-weight:800;font-size:1.05em;color:#1a2332!important;text-decoration:none!important;letter-spacing:-.02em}
+.masthead-nav{display:flex;gap:2px;align-items:center}
+.masthead-nav a{font-weight:600;font-size:0.88em;color:#333!important;text-decoration:none!important;padding:6px 10px;border-radius:6px;transition:color .2s,background .2s;letter-spacing:.01em}
+.masthead-nav a:hover{color:#1565c0!important;background:#f0f4ff}
+.masthead-nav a.nav-active{color:#1565c0!important;font-weight:700}
+@media(max-width:560px){.masthead-nav a{font-size:0.78em;padding:5px 6px}.masthead-title{font-size:0.95em}}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(to bottom,#f8faff,#fff);border-top:4px solid var(--accent);padding:56px 24px 44px;text-align:center}
+.hero-inner{max-width:860px;margin:0 auto}
+.venue-badge{display:inline-block;background:var(--accent);color:#fff;padding:5px 18px;border-radius:999px;font-size:0.78em;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:22px}
+.hero h1{font-size:clamp(1.8em,4vw,2.75em);font-weight:900;color:#0f172a;line-height:1.2;max-width:820px;margin:0 auto 18px}
+.hero .short{font-size:1.05em;color:#4b5563;margin-bottom:22px;font-weight:500}
+.authors{font-size:0.9em;color:#4b5563;max-width:720px;margin:0 auto 10px;line-height:2}
+.authors .me{font-weight:800;color:#111}
+.co-author{color:inherit}
+.affil{font-size:0.82em;color:#6b7280;margin-bottom:30px;line-height:1.6}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 26px;border-radius:999px;font-size:0.88em;font-weight:700;transition:opacity .18s,transform .18s;letter-spacing:0.01em}
+.btn:hover{opacity:.88;transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn-neutral{background:#374151;color:#fff}
+
+/* ── Container & Sections ── */
+.container{max-width:900px;margin:0 auto;padding:0 28px}
+section{padding:60px 0 48px}
+section:nth-child(even){background:#f9fafb}
+section p{color:#374151;margin-bottom:14px;font-size:0.97em;line-height:1.78}
+section p:last-child{margin-bottom:0}
+
+/* ── Headings ── */
+h2{font-size:1.45em;font-weight:800;color:#0f172a;margin-bottom:22px;line-height:1.3}
+h3{font-size:1.1em;font-weight:700;color:#1e293b;margin-bottom:10px}
+
+/* ── TL;DR ── */
+.tldr{background:var(--accent-light);border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:0;font-size:0.96em;color:#1e293b}
+.tldr strong{color:var(--accent);font-weight:800}
+
+/* ── Stat/Result Cards ── */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin:24px 0}
+.result-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.result-card .rnum{font-size:2.1em;font-weight:900;color:var(--accent);line-height:1.1}
+.result-card .rdesc{font-size:0.77em;color:#6b7280;margin-top:8px;line-height:1.5}
+
+/* ── Stat Mini (hero) ── */
+.stats-mini{display:flex;flex-wrap:wrap;gap:24px 40px;justify-content:center;margin-top:16px}
+.sm{text-align:center}
+.sm-num{font-size:2em;font-weight:900;color:var(--accent);line-height:1}
+.sm-label{font-size:0.76em;color:#6b7280;margin-top:4px}
+
+/* ── Records Wall ── */
+.records-wall{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:16px;padding:32px;text-align:center;color:#fff;margin-bottom:24px}
+.records-title{font-size:0.78em;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin-bottom:8px}
+.records-number{font-size:5em;font-weight:900;line-height:1;color:#fff;margin-bottom:4px}
+.records-sub{font-size:0.9em;color:#bfdbfe;margin-bottom:20px}
+
+/* ── Method/Feature Cards ── */
+.method-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin:20px 0}
+.method-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.method-card h3{font-size:0.9em;font-weight:800;color:#0f172a;margin-bottom:8px}
+.method-card p{font-size:0.83em;color:#6b7280;line-height:1.65;margin:0}
+
+.method-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:16px;margin:20px 0}
+.step{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.step .step-num{width:36px;height:36px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.9em;margin:0 auto 12px}
+.step h4{font-size:0.87em;font-weight:800;color:#0f172a;margin-bottom:7px}
+.step p{font-size:0.8em;color:#6b7280;margin:0;line-height:1.55}
+
+/* ── Problem/Solution Cards ── */
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
+.problem-card{background:#fff5f5;border:1.5px solid #fecaca;border-radius:12px;padding:18px}
+.problem-card h3{font-size:0.88em;font-weight:800;color:#dc2626;margin-bottom:8px}
+.solution-card{background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:18px}
+.solution-card h3{font-size:0.88em;font-weight:800;color:#16a34a;margin-bottom:8px}
+.problem-card p,.solution-card p{font-size:0.84em;color:#374151;margin:0;line-height:1.65}
+
+/* ── Comparison Tables ── */
+.compare-table{width:100%;border-collapse:collapse;margin:22px 0;font-size:0.9em}
+.compare-table th{background:#f1f5f9;color:#374151;padding:12px 16px;text-align:left;font-weight:700;border-bottom:2px solid #e2e8f0;font-size:0.86em;text-transform:uppercase;letter-spacing:.03em}
+.compare-table td{padding:11px 16px;border-bottom:1px solid #f1f5f9;color:#374151}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .highlight td{background:var(--accent-light);font-weight:700;border-left:3px solid var(--accent)}
+.badge-win{background:#d1fae5;color:#065f46;padding:2px 9px;border-radius:6px;font-weight:800;font-size:0.82em}
+.badge-record{background:#fef3c7;color:#92400e;padding:2px 9px;border-radius:6px;font-weight:800;font-size:0.82em}
+
+/* ── Key Insight / Callout ── */
+.key-insight{background:var(--accent-light);border:1.5px solid var(--accent);border-radius:12px;padding:18px 22px;margin:20px 0}
+.key-insight p{margin:0;font-size:0.93em;color:#1e293b}
+
+/* ── Diff boxes (ADRPO style) ── */
+.diff-boxes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.diff-box{border-radius:12px;padding:18px 20px}
+.diff-box.old{background:#fef2f2;border:1.5px solid #fca5a5}
+.diff-box.new{background:#f0fdf4;border:1.5px solid #86efac}
+.diff-box h4{font-size:0.83em;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.diff-box.old h4{color:#dc2626}
+.diff-box.new h4{color:#16a34a}
+.diff-box ul{padding-left:16px;font-size:0.84em;color:#374151;line-height:1.8}
+
+/* ── Figures ── */
+figure{margin:0}
+figure img{width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border:1px solid #e5e7eb}
+figcaption{font-size:0.83em;color:#6b7280;margin-top:12px;text-align:center;line-height:1.6}
+.fig-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:20px}
+
+/* ── Games Grid ── */
+.games-grid{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.game-pill{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82em;font-weight:600;color:#374151}
+
+/* ── Publication Timeline ── */
+.timeline{position:relative;padding-left:26px;margin:8px 0}
+.timeline-line{position:absolute;left:9px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),#d1d5db)}
+.timeline-item{position:relative;margin-bottom:22px;padding-left:6px}
+.timeline-dot{position:absolute;left:-21px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff}
+.dot-accepted{background:#16a34a;box-shadow:0 0 0 2px #16a34a}
+.dot-submitted{background:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.dot-rejected{background:#9ca3af;box-shadow:0 0 0 2px #9ca3af}
+.timeline-date{font-size:0.76em;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:2px}
+.timeline-title{font-weight:700;font-size:0.93em;color:#111;margin-bottom:3px}
+.timeline-desc{font-size:0.83em;color:#6b7280;line-height:1.6}
+
+/* ── BibTeX ── */
+
+.bib-copy-btn{display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;
+  padding:6px 16px;border-radius:8px;border:none;cursor:pointer;font-size:0.82em;
+  font-weight:700;background:#334155;color:#e2e8f0;transition:background .18s;}
+.bib-copy-btn:hover{background:#475569;}
+.bib-copy-btn.copied{background:#16a34a;color:#fff;}
+
+.bibtex-block{background:#1e293b;color:#e2e8f0;border-radius:12px;padding:22px 24px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:0.82em;line-height:1.7}
+
+/* ── Footer ── */
+footer{background:#f8f9fa;color:#6b7280;text-align:center;padding:28px 24px;font-size:.84em;border-top:1px solid #e5e7eb}
+footer a{color:var(--accent);font-weight:600}
+
+
+/* ── Innovations Grid ── */
+.innovations{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:20px 0}
+.inn-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.inn-num{width:32px;height:32px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.9em;margin-bottom:12px}
+.inn-title{font-weight:800;font-size:0.95em;color:#0f172a;margin-bottom:8px}
+.inn-desc{font-size:0.83em;color:#6b7280;line-height:1.65}
+
+/* ── Compare Cards ── */
+.compare-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
+.cc{border-radius:12px;padding:20px 22px}
+.cc-old{background:#fef2f2;border:1.5px solid #fca5a5}
+.cc-old h3{font-size:0.9em;font-weight:800;color:#dc2626;margin-bottom:10px}
+.cc-new{background:#f0fdf4;border:1.5px solid #86efac}
+.cc-new h3{font-size:0.9em;font-weight:800;color:#16a34a;margin-bottom:10px}
+.cc ul{padding-left:16px;font-size:0.84em;color:#374151;line-height:1.8}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+}
+
+/* ── Dark mode ── */
+body.dark-mode{background:#0d1117;color:#c9d1d9}
+body.dark-mode a{color:#58a6ff !important}
+body.dark-mode .site-masthead{background:#161b22;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+body.dark-mode .masthead-title{color:#e6edf3 !important}
+body.dark-mode .masthead-nav a{color:#c9d1d9 !important}
+body.dark-mode .masthead-nav a:hover{color:#58a6ff !important;background:#21262d}
+body.dark-mode .masthead-nav a.nav-active{color:#58a6ff !important}
+body.dark-mode .hero{background:linear-gradient(to bottom,#161b22,#0d1117)}
+body.dark-mode .hero h1{color:#e6edf3}
+body.dark-mode .hero .short{color:#adbac7}
+body.dark-mode .authors{color:#adbac7}
+body.dark-mode .authors .me{color:#e6edf3}
+body.dark-mode .affil{color:#8b949e}
+body.dark-mode .btn-secondary{background:#161b22}
+body.dark-mode .btn-neutral{background:#21262d}
+body.dark-mode section:nth-child(even){background:#161b22}
+body.dark-mode section p{color:#adbac7}
+body.dark-mode h2,body.dark-mode h3,body.dark-mode h4{color:#e6edf3}
+body.dark-mode .tldr{background:#161b22;color:#c9d1d9}
+body.dark-mode .key-insight{background:#161b22}
+body.dark-mode .key-insight p{color:#c9d1d9}
+body.dark-mode .result-card,
+body.dark-mode .method-card,
+body.dark-mode .step{background:#161b22;border-color:#30363d}
+body.dark-mode .method-card p,
+body.dark-mode .step p,
+body.dark-mode .result-card .rdesc{color:#8b949e}
+body.dark-mode .compare-table th{background:#21262d;color:#c9d1d9;border-bottom-color:#30363d}
+body.dark-mode .compare-table td{color:#adbac7;border-bottom-color:#21262d}
+body.dark-mode figure img{border-color:#30363d !important}
+body.dark-mode figcaption{color:#8b949e}
+body.dark-mode .game-pill{background:#21262d;border-color:#30363d;color:#c9d1d9}
+body.dark-mode .records-wall{background:linear-gradient(135deg,#161b22,#1e293b)}
+body.dark-mode .timeline-desc,
+body.dark-mode .timeline-title{color:#c9d1d9}
+body.dark-mode .problem-card{background:#2d1518;border-color:#5c2626}
+body.dark-mode .solution-card,
+body.dark-mode .diff-box.new{background:#13261a;border-color:#265c33}
+body.dark-mode .diff-box.old{background:#2d1518;border-color:#5c2626}
+body.dark-mode .problem-card p,
+body.dark-mode .solution-card p,
+body.dark-mode .diff-box ul{color:#c9d1d9}
+body.dark-mode footer{background:#161b22;color:#8b949e;border-top-color:#30363d}
+body.dark-mode ul li{color:#adbac7}
+body.dark-mode figure figcaption,
+body.dark-mode figcaption{color:#8b949e !important}
+body.dark-mode .records-number,body.dark-mode .records-sub{color:#fff !important}
+body.dark-mode section p[style*="color:#555"],
+body.dark-mode section p[style*="color:#444"],
+body.dark-mode p[style*="color:#666"]{color:#adbac7 !important}
+body.dark-mode div[style*="color:#555"]{color:#adbac7 !important}
+body.dark-mode ul[style*="color:#444"]{color:#adbac7 !important}
+
+body.dark-mode .inn-card{background:#161b22;border-color:#30363d}
+body.dark-mode .inn-title{color:#e6edf3}
+body.dark-mode .inn-desc{color:#8b949e}
+body.dark-mode .cc-old{background:#2d1518;border-color:#5c2626}
+body.dark-mode .cc-old h3{color:#fca5a5}
+body.dark-mode .cc-new{background:#13261a;border-color:#265c33}
+body.dark-mode .cc-new h3{color:#86efac}
+body.dark-mode .cc ul{color:#c9d1d9}
+/* Key Claims green cards */
+body.dark-mode .kc-card{background:#052e16 !important;border-color:#14532d !important}
+body.dark-mode .kc-title{color:#86efac !important}
+body.dark-mode .kc-desc{color:#4ade80 !important}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .fig-grid-2{grid-template-columns:1fr}
+  .problem-grid{grid-template-columns:1fr}
+  .diff-boxes{grid-template-columns:1fr}
+  .compare-cards{grid-template-columns:1fr}
+  .method-grid{grid-template-columns:1fr 1fr}
+  .method-steps{grid-template-columns:1fr}
+  .results-grid{grid-template-columns:1fr 1fr}
+}
+@media print {
+  .site-masthead { display: none !important; }
+}
+</style>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Fine-tuning Flow Matching Generative Models with Intermediate Feedback",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Jiajun Fan"
+    },
+    {
+      "@type": "Person",
+      "name": "Chaoran Cheng"
+    },
+    {
+      "@type": "Person",
+      "name": "Shuaike Shen"
+    },
+    {
+      "@type": "Person",
+      "name": "Xiangxin Zhou"
+    },
+    {
+      "@type": "Person",
+      "name": "Ge Liu"
+    }
+  ],
+  "datePublished": "2025",
+  "publisher": {
+    "@type": "Organization",
+    "name": "arXiv 2025"
+  },
+  "url": "https://www.jiajunfan.com/projects/ac-flow/",
+  "sameAs": "https://arxiv.org/abs/2510.18072",
+  "keywords": "flow matching, actor-critic, reward fine-tuning, Stable Diffusion"
+}</script>
+</head>
+<body id="top">
+<script>try{if(localStorage.getItem('darkMode')==='true')document.body.classList.add('dark-mode');}catch(e){}</script>
+<header class="site-masthead">
+  <div class="masthead-inner">
+    <a class="masthead-title" href="/">Jiajun Fan</a>
+    <nav class="masthead-nav" aria-label="Site navigation">
+      <a href="/publications/">Publications</a>
+      <a href="/projects/" class="nav-active">Projects</a>
+      <a href="/year-archive/">Blog</a>
+      <a href="/cv/">CV</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner">
+  <div class="venue-badge">📝 Preprint 2025 · Under Review</div>
+  <h1>Fine-tuning Flow Matching Generative Models with Intermediate Feedback</h1>
+  <p class="short"><strong>AC-Flow</strong>: Robust actor-critic framework for flow matching — stable intermediate value learning without collapse</p>
+  <div class="authors">
+    <strong>Jiajun Fan</strong>&thinsp;<sup>1</sup>,
+    Chaoran Cheng&thinsp;<sup>1</sup>,
+    Shuaike Shen&thinsp;<sup>1</sup>,
+    Xiangxin Zhou&thinsp;<sup>1</sup>,
+    Ge Liu&thinsp;<sup>1</sup>
+  </div>
+  <div class="affil"><sup>1</sup>University of Illinois Urbana-Champaign</div>
+  <div class="btn-row">
+    <a class="btn btn-primary" href="https://arxiv.org/abs/2510.18072">arXiv:2510.18072</a>
+    <a class="btn btn-neutral" href="/">🏠 Homepage</a>
+  </div>
+</div></div>
+
+<div class="container">
+<section>
+  <div class="tldr">
+    <strong>TL;DR</strong> — Existing RLHF methods for flow matching only use <em>outcome rewards</em> (ORW-CFM-W2), suffering from credit assignment problems. AC-Flow introduces a full <strong>actor-critic framework</strong> with intermediate feedback — reward shaping + dual-stability + generalized critic weighting — achieving SOTA text-to-image alignment on SD3 without degrading diversity or stability.
+  </div>
+</section>
+
+<section>
+  <h2>🔧 Three Key Innovations</h2>
+  <div class="innovations">
+    <div class="inn-card">
+      <div class="inn-num">1</div>
+      <div class="inn-title">Reward Shaping</div>
+      <div class="inn-desc">Provides well-normalized learning signals for stable intermediate value learning and gradient control — enabling the critic to reason about multi-step trajectories.</div>
+    </div>
+    <div class="inn-card">
+      <div class="inn-num">2</div>
+      <div class="inn-title">Dual-Stability Mechanism</div>
+      <div class="inn-desc">Combines <em>advantage clipping</em> (prevents destructive policy updates) with a <em>critic warm-up phase</em> (lets critic mature before guiding the actor).</div>
+    </div>
+    <div class="inn-card">
+      <div class="inn-num">3</div>
+      <div class="inn-title">Generalized Critic Weighting</div>
+      <div class="inn-desc">Extends reward-weighted methods while preserving model diversity via Wasserstein regularization — compatible with ORW-CFM-W2 as a special case.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🧩 Why Intermediate Rewards Matter</h2>
+  <p>Standard RLHF for flow matching gives feedback only at the <strong>end of the denoising chain</strong> — a sparse signal over many steps. AC-Flow instead assigns <em>intermediate rewards</em> at each timestep via an actor-critic formulation:</p>
+  <ul style="font-size:0.88em;color:#444;padding-left:1.4em;line-height:2;margin-bottom:14px;">
+    <li><strong>Denser gradients</strong> → more stable learning, fewer catastrophic updates</li>
+    <li><strong>Critic as a value estimator</strong> → predicts future reward quality at each denoising step</li>
+    <li><strong>Decoupled stability</strong> → advantage clipping handles actor; critic warm-up handles the critic</li>
+  </ul>
+  <p>The result: fine-tuning that <strong>generalizes beyond direct reward optimization</strong> — improvements transfer to unseen LLM and audio tasks (not just image generation).</p>
+</section>
+
+<section>
+  <h2>🔄 AC-Flow vs ORW-CFM-W2</h2>
+  <div class="compare-cards">
+    <div class="cc cc-old">
+      <h3>ORW-CFM-W2 (ICLR 2025)</h3>
+      <ul>
+        <li>Outcome reward only</li>
+        <li>No intermediate value learning</li>
+        <li>Credit assignment challenge</li>
+        <li>First online RLHF for flow matching</li>
+      </ul>
+    </div>
+    <div class="cc cc-new">
+      <h3>AC-Flow (This Work)</h3>
+      <ul>
+        <li>Intermediate feedback + actor-critic</li>
+        <li>Stable value learning via reward shaping</li>
+        <li>Dual-stability prevents collapse</li>
+        <li>SOTA on SD3 with even less data</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:0.85em;color:#666;">AC-Flow generalizes ORW-CFM-W2 — the critic weighting scheme subsumes reward-weighted methods as a special case.</p>
+</section>
+
+<section>
+  <h2>📊 Key Claims</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0 24px;">
+  <div class="kc-card" style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px;text-align:center;">
+    <div class="kc-title" style="font-size:0.85em;font-weight:800;color:#065f46;">⚙️ Actor-Critic</div>
+    <div class="kc-desc" style="font-size:0.76em;color:#166534;margin-top:4px;">Step-level rewards via<br>intermediate feedback</div>
+  </div>
+  <div class="kc-card" style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px;text-align:center;">
+    <div class="kc-title" style="font-size:0.85em;font-weight:800;color:#065f46;">🛡️ Collapse-Free</div>
+    <div class="kc-desc" style="font-size:0.76em;color:#166534;margin-top:4px;">Wasserstein reg +<br>dual-stability mechanism</div>
+  </div>
+  <div class="kc-card" style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px;text-align:center;">
+    <div class="kc-title" style="font-size:0.85em;font-weight:800;color:#065f46;">🎯 SD3 Fine-Tuning</div>
+    <div class="kc-desc" style="font-size:0.76em;color:#166534;margin-top:4px;">Stable fine-tuning without<br>mode collapse</div>
+  </div>
+</div>
+
+<h2>🔗 Related Work in This Series</h2>
+<p>AC-Flow builds on the online RLHF series for generative models:</p>
+<ul>
+  <li><strong><a href="/projects/orw-cfm-w2/">ORW-CFM-W2 (ICLR 2025)</a></strong> — First online RLHF for flow matching</li>
+  <li><strong><a href="/projects/adrpo/">ADRPO (NeurIPS 2025)</a></strong> — Adaptive sample-level regularization for RLHF</li>
+  <li><strong>AC-Flow (This work)</strong> — Actor-critic with intermediate step-level rewards</li>
+</ul>
+
+<h2>📖 Cite This Paper</h2>
+  <button class="bib-copy-btn" aria-label="Copy BibTeX citation">📋 Copy BibTeX</button>
+  <pre class="bibtex-block" tabindex="0"><code>@misc{fan2025finetuningflowmatchinggenerative,
+  title={Fine-tuning Flow Matching Generative Models with Intermediate Feedback},
+  author={Jiajun Fan and Chaoran Cheng and Shuaike Shen and Xiangxin Zhou and Ge Liu},
+  year={2025},
+  eprint={2510.18072},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2510.18072}
+}</code></pre>
+</section>
+</div>
+<footer>
+  <p>AC-Flow · arXiv 2025 (Under Review) &nbsp;|&nbsp; <a href="/">Jiajun Fan</a> · UIUC &nbsp;|&nbsp; <a href="https://arxiv.org/abs/2510.18072">arXiv</a> &nbsp;|&nbsp; <a href="/publications/">All Publications</a> &nbsp;|&nbsp; <a href="#top">↑ Back to top</a></p>
+</footer>
+
+<script>
+// Dark mode: respect site-wide preference stored in localStorage
+(function(){
+  try { if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode'); } catch(e){}
+})();
+
+document.querySelectorAll('.bib-copy-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var pre=btn.nextElementSibling;
+    var text=pre?pre.innerText||pre.textContent:'';
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent='✅ Copied!';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='📋 Copy BibTeX';btn.classList.remove('copied');},2000);
+      });
+    } else {
+      btn.textContent='⚠️ Copy not supported';
+      setTimeout(function(){btn.textContent='📋 Copy BibTeX';},2000);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% include base_path %}
+
+{% if post.id %}
+  {% assign title = post.title | markdownify | remove: "<p>" | remove: "</p>" %}
+{% else %}
+  {% assign title = post.title %}
+{% endif %}
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="pub-cv-entry">
+      {% if post.venue %}<span class="pub-cv-venue">{{ post.venue }}</span>{% endif %}
+      <div class="pub-cv-title">
+        {% if post.paperurl != blank %}
+          <a href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">{{ title }}</a>
+        {% else %}
+          <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>
+        {% endif %}
+        {% if post.projectpage %}<a href="{{ post.projectpage }}" class="project-badge" target="_blank" rel="noopener">🔗 Project</a>{% endif %}
+      </div>
+      {% if post.citation %}<div class="pub-cv-authors">{{ post.citation }}</div>{% endif %}
+      {% if post.bibtex %}
+      <div class="pub-bib-wrap">
+        <button class="pub-bib-btn" aria-expanded="false" onclick="
+          var block=this.closest('.pub-bib-wrap').querySelector('.pub-bib-block');
+          var open=block.classList.toggle('open');
+          this.setAttribute('aria-expanded',open);
+          this.textContent=open?'▾ BibTeX':'▸ BibTeX';
+        ">▸ BibTeX</button>
+        <div class="pub-bib-block" role="region">
+          <button class="pub-bib-copy" onclick="
+            var pre=this.closest('.pub-bib-block').querySelector('pre');
+            if(navigator.clipboard&&navigator.clipboard.writeText){
+              navigator.clipboard.writeText(pre.textContent).then(function(){});
+            } else {
+              var r=document.createRange();r.selectNode(pre);
+              window.getSelection().removeAllRanges();window.getSelection().addRange(r);
+              document.execCommand('copy');window.getSelection().removeAllRanges();
+            }
+            var btn=this;btn.textContent='✓ Copied';setTimeout(function(){btn.textContent='Copy';},2000);
+          ">Copy</button>
+          <pre>{{ post.bibtex | escape }}</pre>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </article>
+</div>
