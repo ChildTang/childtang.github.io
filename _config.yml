@@ -7,10 +7,10 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Jiajun Fan"
+title                    : "Ye Li"
 title_separator          : "-"
-name                     : &name "Jiajun Fan"
-description              : &description "CS Ph.D. Student at UIUC · RL Post-Training · Agentic RL · ICLR / ICML / NeurIPS"
+name                     : &name "Ye Li"
+description              : &description "Ph.D. Student at Tsinghua University · Model Efficiency · Reinforcement Learning · Embodied AI · Control Theory for AI Systems"
 url                      : "https://www.jiajunfan.com" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "markerthu/markerthu.github.io"
@@ -84,14 +84,14 @@ analytics:
 
 # Site Author
 author:
-  name             : "Jiajun Fan"
+  name             : "Ye Li"
   avatar           : "profile.jpg"
-  bio              : "CS Ph.D. @ <a style='color:#1565c0; font-weight:700;' href='https://illinois.edu/'>UIUC</a> &nbsp;<br><span style='font-size:0.9em;'>RL Post-Training for Generative Models</span><br><span style='font-size:0.82em; color:#595959;'>ICLR · NeurIPS · ICML · TPAMI<br>343+ Citations · h-index 9 🎓</span>"
-  location         : "Urbana, IL, USA"
+  bio              : "Ph.D. Student @ <a style='color:#1565c0; font-weight:700;' href='https://www.tsinghua.edu.cn/'>Tsinghua</a> &nbsp;<br><span style='font-size:0.9em;'>Model Efficiency · Embodied AI</span><br><span style='font-size:0.82em; color:#595959;'>Reinforcement Learning<br>Control Theory for AI Systems</span>"
+  location         : "Beijing, China"
   employer         :
   pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "https://scholar.google.com/citations?user=EjmzseUAAAAJ&hl=en&authuser=1"
-  email            :  "jiajunf3@illinois.edu"
+  googlescholar    : "https://scholar.google.com.hk/citations?user=Nof6bfUAAAAJ&hl=zh-CN"
+  email            :  "liye23@mails.tsinghua.edu.cn"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
@@ -106,8 +106,8 @@ author:
   instagram        :
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         : "jiajun-fan-57b12b26b"
-  orcid            : "https://orcid.org/0000-0002-0263-2103"
+  linkedin         : "https://www.linkedin.com/feed/"
+  orcid            : "https://orcid.org/0009-0008-9690-2119"
   pinterest        :
   soundcloud       :
   stackoverflow    : # http://stackoverflow.com/users/123456/username

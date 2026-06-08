@@ -19,7 +19,7 @@ jobs:
           python3 << 'PYEOF'
           import json, urllib.request, re, datetime, time
 
-          SCHOLAR_ID = "EjmzseUAAAAJ"
+          SCHOLAR_ID = "Nof6bfUAAAAJ"
           URL = f"https://scholar.google.com/citations?user={SCHOLAR_ID}&hl=en&sortby=pubdate&cstart=0&pagesize=100"
 
           headers = {
@@ -75,11 +75,18 @@ jobs:
                 print(f"  {key} ({title[:50]}...): {count}")
                 break
 
-          # Also grab total citation count from stats table
-          total_m = re.search(r'gsc_rsb_std[^>]*>(\d+)<', html)
-          if total_m:
-            results["_total"] = int(total_m.group(1))
+          # Also grab summary stats table: [Citations(all), Citations(since),
+          # h-index(all), h-index(since), i10(all), i10(since)]
+          stds = re.findall(r'gsc_rsb_std[^>]*>(\d+)<', html)
+          if len(stds) >= 1:
+            results["_total"] = int(stds[0])
             print(f"  Total citations: {results['_total']}")
+          if len(stds) >= 3:
+            results["_hindex"] = int(stds[2])
+            print(f"  h-index: {results['_hindex']}")
+          if len(stds) >= 5:
+            results["_i10"] = int(stds[4])
+            print(f"  i10-index: {results['_i10']}")
 
           if not results:
             print("No results parsed — Scholar may have blocked; keeping existing file")
@@ -105,7 +112,7 @@ jobs:
 
           existing.update(results)
           existing["_updated"] = datetime.datetime.utcnow().strftime("%Y-%m-%d")
-          existing["_source"] = "Google Scholar (EjmzseUAAAAJ)"
+          existing["_source"] = "Google Scholar (Nof6bfUAAAAJ)"
 
           with open(citations_path, "w") as f:
             json.dump(existing, f, indent=2)

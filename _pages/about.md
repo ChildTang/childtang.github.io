@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Jiajun Fan"
+title: "Ye Li"
 excerpt: "CS Ph.D. Student at UIUC | RL Post-Training for Generative Models"
 author_profile: true
 redirect_from: 
@@ -10,7 +10,7 @@ redirect_from:
 
 <style>
 /* ── Intro ── */
-.tagline { font-size: 1.05em; line-height: 1.78; color: #333; margin-bottom: 1em; }
+.tagline { font-size: 1.05em; line-height: 1.78; color: #333; margin-bottom: 1em; text-align: justify; }
 
 /* ── Internship banner ── */
 .internship-banner-pulse {
@@ -73,13 +73,15 @@ body.dark-mode .qn-label { color: #58a6ff; }
 .news-date { min-width: 78px; color: #767676; font-size: 0.84em; font-weight: 700; padding-top: 2px; }
 .nbadge {
   display: inline-block; padding: 1px 7px; border-radius: 4px;
-  font-size: 0.74em; font-weight: 800; margin-right: 5px; vertical-align: middle;
+  font-size: 0.74em; font-weight: 800; margin-right: 10px; vertical-align: middle;
+  min-width: 58px; text-align: center; box-sizing: border-box;
 }
 .nb-top    { background: #ffd700; color: #5a4000; }
 .nb-accept { background: #d4edda; color: #155724; }
 .nb-service{ background: #e2e3e5; color: #383d41; }
 .nb-upcoming{ background: #dbeafe; color: #1e40af; }
 .nb-finish { background: #d4edda; color: #155724; }
+.nb-arxiv  { background: #fbe4e4; color: #b31b1b; }
 
 /* ── Publication list ── */
 .pub-list { margin: 0; padding: 0; }
@@ -537,6 +539,7 @@ body.dark-mode .nbadge.nb-finish { background: #122117 !important; color: #3fb95
 body.dark-mode .nbadge.nb-top { background: #2d2000 !important; color: #ffd54f !important; }
 body.dark-mode .nbadge.nb-service { background: #21262d !important; color: #8b949e !important; }
 body.dark-mode .nbadge.nb-upcoming { background: #0d2137 !important; color: #58a6ff !important; }
+body.dark-mode .nbadge.nb-arxiv { background: #2d1414 !important; color: #f87171 !important; }
 body.dark-mode .news-date { color: #8b949e !important; }
 body.dark-mode .news-toggle { border-color: #30363d !important; color: #58a6ff !important; }
 body.dark-mode .news-toggle:hover { background: #161b22 !important; }
@@ -871,20 +874,20 @@ body.dark-mode .hero-pill { background: rgba(255,255,255,0.12) !important; color
 <div id="read-progress" aria-hidden="true"></div>
 <div class="hero-banner">
   <canvas class="hero-particles" id="particles" aria-hidden="true"></canvas>
-  <div class="hero-name">Jiajun Fan</div>
+  <div class="hero-name">Ye Li</div>
   <div class="hero-subtitle" id="hero-typed"></div>
   <div class="hero-pills">
-    <span class="hero-pill">🌊 RL Post-Training for Generative Models</span>
-    <span class="hero-pill">🧠 Multimodal Reasoning LLMs</span>
-    <span class="hero-pill">🎮 Superhuman Deep RL</span>
-    <span class="hero-pill">🤖 Agentic RL</span>
+    <span class="hero-pill">⚡ Model Efficiency</span>
+    <span class="hero-pill">🎯 Reinforcement Learning</span>
+    <span class="hero-pill">🤖 Embodied AI</span>
+    <span class="hero-pill">🎛️ Control Theory for AI Systems</span>
   </div>
   <div class="hero-links">
     <a class="hero-link" href="/cv/">📋 CV</a>
-    <a class="hero-link" href="https://scholar.google.com/citations?user=EjmzseUAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">🎓 Scholar</a>
-    <a class="hero-link" href="mailto:jiajunf3@illinois.edu">✉️ Email</a>
-    <a class="hero-link" href="https://openreview.net/profile?id=~Jiajun_Fan1" target="_blank" rel="noopener noreferrer">📝 OpenReview</a>
-    <a class="hero-link" href="https://www.linkedin.com/in/jiajun-fan-57b12b26b" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a>
+    <a class="hero-link" href="https://scholar.google.com.hk/citations?user=Nof6bfUAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">🎓 Scholar</a>
+    <a class="hero-link" href="mailto:liye23@mails.tsinghua.edu.cn">✉️ Email</a>
+    <a class="hero-link" href="https://openreview.net/profile?id=%7EYe_Li2" target="_blank" rel="noopener noreferrer">📝 OpenReview</a>
+    <a class="hero-link" href="https://www.linkedin.com/feed/" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a>
   </div>
 </div>
 
@@ -892,13 +895,8 @@ body.dark-mode .hero-pill { background: rgba(255,255,255,0.12) !important; color
 <div class="quick-nav">
   <span class="qn-label">↓ Jump to:</span>
   <a href="#news"         data-qn="news">📰 News</a>
-  <a href="#featured"     data-qn="featured">🔥 Featured</a>
   <a href="#publications" data-qn="publications">📄 Publications</a>
-  <a href="#research"     data-qn="research">🔬 Research</a>
-  <a href="#impact"       data-qn="impact">⚡ Impact</a>
-  <a href="#vision"       data-qn="vision">💡 Vision</a>
   <a href="#awards"       data-qn="awards">🏅 Awards</a>
-  <a href="#deadlines"    data-qn="deadlines">📅 Deadlines</a>
   <a href="/year-archive/">✍️ Blog</a>
   <a href="/cv/">📋 CV</a>
   <a href="#contact">📬 Contact</a>
@@ -906,8 +904,17 @@ body.dark-mode .hero-pill { background: rgba(255,255,255,0.12) !important; color
 
 <!-- Intro -->
 <p class="tagline">
-CS Ph.D. student at <strong>UIUC</strong>. I work on <strong>RL post-training for generative models</strong> — making diffusion/flow models and multimodal reasoning LLMs continuously self-improve with minimal human supervision. Previously: <strong>24 Atari world records</strong>, 500× more data-efficient than Agent57, <strong>ICLR 2023 Oral</strong> (rank 5/4176).
+I am a Ph.D. student at the Multimedia Laboratory (<a href="https://mmlab-sigs.github.io/groups/efficient-deep-learning-and-embodiment-group/" target="_blank" rel="noopener noreferrer"><strong>MMLab@SIGS</strong></a>), Tsinghua Shenzhen International Graduate School, Tsinghua University, where I lead the <a href="https://mmlab-sigs.github.io/groups/efficient-deep-learning-and-embodiment-group/" target="_blank" rel="noopener noreferrer"><strong>Efficient Deep Learning and Embodiment Group</strong></a>. I am advised by <a href="https://www.sigs.tsinghua.edu.cn/xst/main.psp" target="_blank" rel="noopener noreferrer">Prof. Shu-Tao Xia</a> and <a href="https://mmlab-sigs.github.io/groups/zwang/" target="_blank" rel="noopener noreferrer">Prof. Zhi Wang</a>, and co-advised by <a href="https://mengyuan404.github.io/" target="_blank" rel="noopener noreferrer">Prof. Yuan Meng</a>. 
+Previously, I received my Master's degree from Nankai University, where I worked with <a href="https://ai.nankai.edu.cn/info/1033/4287.htm" target="_blank" rel="noopener noreferrer">Prof. Zhongxin Liu</a> on swarm intelligence. I obtained my Bachelor's degree from Nanjing Agricultural University, where I worked on robot teleoperation with <a href="https://faculty.njau.edu.cn/luwei1/zh_CN/more/124889/tdgd/index.htm" target="_blank" rel="noopener noreferrer">Prof. Wei Lu</a> in the <a href="https://www.njaurobot.cn/" target="_blank" rel="noopener noreferrer">Robotics Laboratory</a>.
 </p>
+
+<p class="tagline" style="margin-bottom:0.4em;">
+My research interests focus on:
+</p>
+<ul class="tagline" style="margin-top:0;">
+<li><strong>Embodied Intelligence</strong>: building accurate, efficient, and generalizable embodied large models that perceive, reason, and act in the physical world, such as Vision-Language-Action (VLA) models, Diffusion Policies (DP), World Action Models (WAM), etc.</li>
+<li><strong>Efficient Artificial Intelligence</strong>: making powerful large models available to everyone under limited compute, such as efficient inference and compression for large language models (LLMs), including token compression, network pruning, quantization, sparsity, caching, etc.</li>
+</ul>
 
 <div class="internship-banner internship-banner-pulse">
 🎓 <strong>Seeking research internship — Fall 2026 / 2027.</strong> RL · Generative Models · Reasoning LLMs · Agentic RL
@@ -921,53 +928,33 @@ CS Ph.D. student at <strong>UIUC</strong>. I work on <strong>RL post-training fo
 
 <ul class="news-list">
   <li>
-    <span class="news-date">Apr 2026</span>
-    <span><span class="nbadge nb-accept">Accept</span>Several papers accepted at <strong>ICML 2026</strong> (Seoul, Jul 6–11). See you in Seoul 🇰🇷</span>
+    <span class="news-date">May 2026</span>
+    <span><span class="nbadge nb-arxiv">arXiv</span><a href="https://arxiv.org/abs/2605.29438" target="_blank" rel="noopener noreferrer">ElegantVLA</a> is released — welcome to discuss! 💬</span>
   </li>
   <li>
-    <span class="news-date">Apr 2026</span>
-    <span><span class="nbadge nb-finish">Finish</span>🇧🇷 Presented CESAR &amp; SP-VLA at <strong>ICLR 2026</strong>, Rio de Janeiro, Apr 23–27.</span>
+    <span class="news-date">May 2026</span>
+    <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2601.12894" target="_blank" rel="noopener noreferrer">SAG</a> is accepted by <strong>ICML 2026</strong> — see you in Seoul 🇰🇷</span>
+  </li>
+  <li>
+    <span class="news-date">Feb 2026</span>
+    <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2605.13316" target="_blank" rel="noopener noreferrer">TTS</a> &amp; <a href="https://arxiv.org/abs/2511.13587" target="_blank" rel="noopener noreferrer">VVS</a> are accepted by <strong>CVPR 2026</strong> — see you in Denver 🇺🇸</span>
   </li>
   <li>
     <span class="news-date">Jan 2026</span>
-    <span><span class="nbadge nb-accept">Accept</span><strong>2 papers at ICLR 2026</strong> — CESAR &amp; SP-VLA. See you in Rio 🇧🇷</span>
+    <span><span class="nbadge nb-accept">Accept</span><a href="https://openreview.net/forum?id=RwdGIIjPlC" target="_blank" rel="noopener noreferrer">SP-VLA</a> &amp; <a href="https://arxiv.org/abs/2506.13456" target="_blank" rel="noopener noreferrer">BAC</a> are accepted by <strong>ICLR 2026</strong> — see you in Rio 🇧🇷</span>
   </li>
   <li>
-    <span class="news-date">Sep 2025</span>
-    <span><span class="nbadge nb-accept">Accept</span><strong>2 papers at NeurIPS 2025</strong> — ADRPO &amp; VarCon. See you in San Diego 🌊</span>
+    <span class="news-date">Dec 2025</span>
+    <span><span class="nbadge nb-arxiv">arXiv</span><a href="https://arxiv.org/abs/2512.15773" target="_blank" rel="noopener noreferrer">TS-DP</a> is released — welcome to discuss! 💬</span>
   </li>
   <li>
-    <span class="news-date">Jun 2025</span>
-    <span><span class="nbadge nb-accept">Accept</span>Paper accepted at <strong>IEEE TPAMI</strong>: PRANCE.</span>
-  </li>
-  <li>
-    <span class="news-date">Feb 2025</span>
-    <span><span class="nbadge nb-accept">Accept</span>Paper accepted at <strong>ICLR 2025</strong>: ORW-CFM-W2 (Flow Matching self-evolution).</span>
-  </li>
-  <li class="news-hidden" id="news-extra-1">
-    <span class="news-date">Jan 2025</span>
-    <span><span class="nbadge nb-service">Service</span>Reviewer: ICLR 2024–26, NeurIPS 2022–25, ICML 2023–26, CVPR 2026, AAAI 2025, AISTATS 2025, KDD 2024.</span>
-  </li>
-  <li class="news-hidden" id="news-extra-2">
-    <span class="news-date">Aug 2024</span>
-    <span>🎓 Started Ph.D. at <strong>UIUC CS</strong> (GPA 4.0/4.0).</span>
-  </li>
-  <li class="news-hidden" id="news-extra-3">
-    <span class="news-date">Jan 2023</span>
-    <span><span class="nbadge nb-top">Oral · Top 5%</span>LBC at <strong>ICLR 2023</strong>, ranked <strong>5/4176</strong> — broke 24 Atari world records.</span>
+    <span class="news-date">Oct 2025</span>
+    <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2407.05010" target="_blank" rel="noopener noreferrer">PRANCE</a> is accepted by <strong>IEEE TPAMI</strong></span>
   </li>
 </ul>
-<button class="news-toggle" id="news-toggle" aria-expanded="false" onclick="
-  var extras = document.querySelectorAll('.news-hidden');
-  var btn = document.getElementById('news-toggle');
-  var expanded = btn.getAttribute('data-expanded') === '1';
-  extras.forEach(function(e){ e.style.display = expanded ? 'none' : 'flex'; });
-  btn.setAttribute('data-expanded', expanded ? '0' : '1');
-  btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-  btn.textContent = expanded ? '▼ Show more news' : '▲ Show less';
-">▼ Show more news</button>
 
 <!-- ═══════════════════════════════ FEATURED ═══════════════════════════ -->
+{% comment %} ── Hidden per request: Featured Research ──
 <h2 class="section-header" id="featured">🔥 Featured Research</h2>
 
 <div class="featured-grid">
@@ -1013,7 +1000,7 @@ CS Ph.D. student at <strong>UIUC</strong>. I work on <strong>RL post-training fo
   </a>
 </div>
 
-<!-- ══════════════════ CONFERENCE DEADLINES ══════════════════ -->
+{% endcomment %}
 <!-- ═══════════════════════════════ PUBLICATIONS ═══════════════════════ -->
 <h2 class="section-header" id="publications">📄 Selected Publications</h2>
 
@@ -1182,6 +1169,7 @@ CS Ph.D. student at <strong>UIUC</strong>. I work on <strong>RL post-training fo
 </div>
 
 
+{% comment %} ── Hidden per request: Research Network / Interests / Impact / Vision ──
 <!-- ════════════ RESEARCH GRAPH ════════════ -->
 <h2 class="section-header" id="research-graph-section">🕸️ Research Paper Network</h2>
 <p style="font-size:0.88em;color:#595959;margin-bottom:14px;">Hover a node to highlight connections. Papers are grouped by research theme.</p>
@@ -1271,6 +1259,7 @@ Today's AI is frozen after training. I work to change that: AI that <strong>neve
   </div>
 </div>
 
+{% endcomment %}
 <!-- ═══════════════════════════════ AWARDS ════════════════════════════ -->
 <h2 class="section-header" id="awards">🏅 Awards &amp; Academic Service</h2>
 
@@ -1300,6 +1289,7 @@ Today's AI is frozen after training. I work to change that: AI that <strong>neve
 </div>
 
 <!-- ═══════════════════════════════ CONTACT ══════════════════════════ -->
+{% comment %} ── Hidden per request: Conference Deadlines ──
 <h2 class="section-header" id="deadlines">📅 Conference Deadlines</h2>
 <p style="font-size:0.84em;color:#595959;margin-bottom:14px;">Key AI/ML venue deadlines I track — for the full list see <a href="https://ccfddl.com/" target="_blank" rel="noopener noreferrer">ccfddl.com</a>.</p>
 <div id="conf-ddl-grid" class="conf-ddl-grid"></div>
@@ -1395,6 +1385,7 @@ Today's AI is frozen after training. I work to change that: AI that <strong>neve
   });
 })();
 </script>
+{% endcomment %}
 
 <h2 class="section-header" id="contact">📬 Contact</h2>
 <p style="font-size:0.94em;">
@@ -1688,11 +1679,10 @@ Happy to discuss research, internships, or collaborations. Best reached by email
   var el = document.getElementById('hero-typed');
   if(!el) return;
   var texts = [
-    'Reinforcement Learning · Post-Training',
-    'Self-Improvement for Generative Models',
-    'Multimodal & Audio Reasoning',
-    'Agentic RL',
-    'CS Ph.D. Student @ UIUC'
+    'Model Efficiency',
+    'Reinforcement Learning',
+    'Embodied AI',
+    'Control Theory for AI Systems'
   ];
   /* Respect prefers-reduced-motion: show static text, skip the animation loop */
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
