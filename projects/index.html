@@ -7,17 +7,17 @@ permalink: /projects/
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Research project pages for Jiajun Fan's publications — ICLR, NeurIPS, ICML, TPAMI.">
-<meta property="og:title" content="Research Projects — Jiajun Fan">
-<meta property="og:description" content="Project pages for CESAR, ADRPO, ORW-CFM-W2, LBC, GDI, and AC-Flow.">
-<meta property="og:url" content="https://www.jiajunfan.com/projects/">
+<meta name="description" content="Research projects by Ye Li — efficient AI and embodied intelligence: VLA acceleration, diffusion policy, and model compression.">
+<meta property="og:title" content="Research Projects — Ye Li">
+<meta property="og:description" content="Project pages for SP-VLA, PRANCE, TS-DP, ElegantVLA, and more.">
+<meta property="og:url" content="{{ site.url }}/projects/">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://www.jiajunfan.com/images/profile.jpg">
+<meta property="og:image" content="{{ site.url }}/images/profile.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Research Projects — Jiajun Fan">
-<meta name="twitter:description" content="Project pages for CESAR, ADRPO, ORW-CFM-W2, LBC, GDI, and AC-Flow.">
-<link rel="canonical" href="https://www.jiajunfan.com/projects/">
-<title>Research Projects — Jiajun Fan</title>
+<meta name="twitter:title" content="Research Projects — Ye Li">
+<meta name="twitter:description" content="Project pages for SP-VLA, PRANCE, TS-DP, ElegantVLA, and more.">
+<link rel="canonical" href="{{ site.url }}/projects/">
+<title>Research Projects — Ye Li</title>
 <link rel="icon" href="/images/favicon.ico">
 <meta name="robots" content="index,follow">
 <script>try{if(localStorage.getItem('darkMode')==='true'){document.documentElement.style.background='#0d1117';}}catch(e){}</script>
@@ -28,7 +28,7 @@ permalink: /projects/
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:#f8faff;color:#1a1a2e;line-height:1.7}
 a{text-decoration:none}
-/* ── Site masthead (matches jiajunfan.com MM theme) ── */
+/* ── Site masthead ── */
 .site-masthead{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:200}
 .site-masthead::after{content:'';display:block;height:3px;background:linear-gradient(to right,#1565c0 0%,#7c4dff 50%,#00897b 100%)}
 .masthead-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
@@ -44,25 +44,19 @@ a{text-decoration:none}
 .container{max-width:960px;margin:0 auto;padding:40px 24px}
 .year-group h3{font-size:0.78em;font-weight:800;color:#595959;text-transform:uppercase;letter-spacing:.1em;margin:32px 0 14px;padding-bottom:6px;border-bottom:1px solid #e0e0e0}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-bottom:4px}
-.project-card{background:#fff;border-radius:14px;border:1.5px solid #e0e8f0;overflow:hidden;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.project-card{background:#fff;border-radius:14px;border:1.5px solid #e0e8f0;overflow:hidden;transition:transform .2s,box-shadow .2s;display:grid;grid-template-rows:subgrid;grid-row:span 5;row-gap:0}
 .project-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(21,101,192,.15)}
 .card-thumb{width:100%;height:140px;object-fit:cover;object-position:top;border-bottom:1px solid #e0e8f0;display:block}
-.card-header{padding:18px 20px 14px;flex:1}
-.venue-tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7em;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.vt-iclr26{background:#1565c0;color:#fff}
-.vt-neurips25{background:#6a1b9a;color:#fff}
-.vt-iclr25{background:#1976d2;color:#fff}
-.vt-icml22{background:#b71c1c;color:#fff}
-.vt-iclr23{background:#1b5e20;color:#fff}
-.vt-oral{display:inline-block;background:#ffd700;color:#3a2800;padding:2px 7px;border-radius:8px;font-size:.72em;font-weight:900;margin-left:5px}
-.vt-preprint{background:#546e7a;color:#fff}
+.card-thumb--none{height:0;border-bottom:none}
+.card-header{padding:16px 20px 4px}
+.venue-tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7em;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;background:#546e7a;color:#fff}
 .card-header h2{font-size:0.92em;font-weight:800;color:#1a1a2e;line-height:1.4;margin-bottom:7px}
-.card-header .authors{font-size:0.76em;color:#595959}
+.card-header .authors{font-size:0.76em;color:#595959;line-height:1.5}
 .card-header .authors strong{color:#1a1a2e}
-.card-body{padding:0 20px 16px}
-.hl-tag{display:inline-block;background:#fff8e1;color:#5a4000;padding:2px 8px;border-radius:4px;font-size:0.75em;font-weight:700;border-left:2px solid #ffa000;margin-bottom:10px;line-height:1.5}
-.card-body p{font-size:0.82em;color:#555;line-height:1.5;margin-bottom:12px}
-.card-links{display:flex;gap:7px;flex-wrap:wrap}
+.card-hl{padding:10px 20px 0;display:flex;align-items:flex-start}
+.hl-tag{display:inline-block;background:#fff8e1;color:#5a4000;padding:2px 8px;border-radius:4px;font-size:0.75em;font-weight:700;border-left:2px solid #ffa000;line-height:1.5}
+.card-desc{padding:10px 20px 0;font-size:0.82em;color:#555;line-height:1.5;margin:0}
+.card-links{display:flex;gap:7px;flex-wrap:wrap;padding:14px 20px 16px;align-content:flex-end}
 .cl{padding:5px 13px;border-radius:6px;font-size:0.77em;font-weight:700;transition:opacity .2s}
 .cl:hover{opacity:.8}
 .cl-project{background:#1565c0;color:#fff}
@@ -70,12 +64,7 @@ a{text-decoration:none}
 .cl-arxiv{background:#fce4ec;color:#c62828}
 footer{background:#f5f7fa;color:#595959;text-align:center;padding:24px;font-size:.84em;border-top:1px solid #e0e8f0}
 footer a{color:#1565c0}
-
-/* ── Reduced motion ── */
-@media (prefers-reduced-motion: reduce) {
-  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
-}
-
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}}
 /* ── Dark mode ── */
 body.dark-mode{background:#0d1117;color:#c9d1d9}
 body.dark-mode a{color:#58a6ff !important}
@@ -94,24 +83,21 @@ body.dark-mode .card-thumb{border-bottom-color:#30363d}
 body.dark-mode .card-header h2{color:#e6edf3}
 body.dark-mode .card-header .authors{color:#8b949e}
 body.dark-mode .card-header .authors strong{color:#c9d1d9}
-body.dark-mode .card-body p{color:#adbac7}
+body.dark-mode .card-desc{color:#adbac7}
 body.dark-mode .hl-tag{background:#2d2400;color:#e3b341;border-left-color:#d29922}
 body.dark-mode .cl-paper{background:#0d2137;color:#79c0ff}
 body.dark-mode .cl-arxiv{background:#3d1f25;color:#f7a8b8}
 body.dark-mode .cl-project{background:#1d3461;color:#93c5fd}
 body.dark-mode footer{background:#161b22;color:#8b949e;border-top-color:#30363d}
-body.dark-mode footer a{color:#58a6ff}
 @media(max-width:640px){.grid{grid-template-columns:1fr}}
-@media print {
-  .site-masthead { display: none !important; }
-}
+@media print{.site-masthead{display:none !important}}
 </style>
 </head>
 <body id="top">
 <script>try{if(localStorage.getItem('darkMode')==='true')document.body.classList.add('dark-mode');}catch(e){}</script>
 <header class="site-masthead">
   <div class="masthead-inner">
-    <a class="masthead-title" href="/">Jiajun Fan</a>
+    <a class="masthead-title" href="/">Ye Li</a>
     <nav class="masthead-nav" aria-label="Site navigation">
       <a href="/publications/">Publications</a>
       <a href="/projects/" class="nav-active">Projects</a>
@@ -123,131 +109,51 @@ body.dark-mode footer a{color:#58a6ff}
 </header>
 <div class="hero">
   <h1>Research Projects</h1>
-  <p>Project pages for selected publications — with method overview, results, and BibTeX</p>
+  <p>Selected projects on efficient AI &amp; embodied intelligence — with method, results, and code</p>
 </div>
 <div class="container">
-
-<div class="year-group"><h3>2026</h3></div>
+{% assign projs_by_year = site.publications | group_by_exp: "p", "p.date | date: '%Y'" | sort: "name" | reverse %}
+{% for yr in projs_by_year %}
+{% assign items = yr.items | sort: "date" | reverse %}
+{% assign yrcount = 0 %}{% for pub in items %}{% if pub.projectpage and pub.projectpage != '' %}{% assign yrcount = yrcount | plus: 1 %}{% endif %}{% endfor %}
+{% if yrcount > 0 %}
+<div class="year-group"><h3>{{ yr.name }}</h3></div>
 <div class="grid">
+{% for pub in items %}{% if pub.projectpage and pub.projectpage != '' %}
+{% assign vcolor = '#546e7a' %}
+{% case pub.badge %}
+  {% when 'iclr' %}{% assign vcolor = '#1565c0' %}
+  {% when 'cvpr' %}{% assign vcolor = '#00838f' %}
+  {% when 'icml' %}{% assign vcolor = '#b71c1c' %}
+  {% when 'neurips' %}{% assign vcolor = '#6a1b9a' %}
+  {% when 'journal' %}{% assign vcolor = '#e65100' %}
+  {% when 'oral' %}{% assign vcolor = '#1b5e20' %}
+{% endcase %}
   <div class="project-card">
-    <img class="card-thumb" src="cesar/images/teaser.png" alt="CESAR framework overview">
+    {% if pub.thumbnail and pub.thumbnail != '' %}<img class="card-thumb" src="{{ pub.thumbnail }}?v={{ site.time | date: '%s' }}" alt="{{ pub.title | escape }}" loading="lazy">{% else %}<span class="card-thumb card-thumb--none"></span>{% endif %}
     <div class="card-header">
-      <span class="venue-tag vt-iclr26">ICLR 2026</span>
-      <h2>CESAR: Audio LLM Reasoning via Process Rewards</h2>
-      <div class="authors"><strong>J. Fan*</strong>, R. Ren, J. Li, R. Pandey, P.G. Shivakumar, I. Bulyko, A. Gandhe, G. Liu, Y. Gu</div>
+      <span class="venue-tag" style="background:{{ vcolor }};color:#fff">{{ pub.venue_label | default: pub.venue_short }}</span>
+      <h2>{{ pub.title }}</h2>
+      {% if pub.authors %}<div class="authors">{{ pub.authors }}</div>{% endif %}
     </div>
-    <div class="card-body">
-      <div class="hl-tag">🏆 SOTA MMAU · Beats Gemini 2.5 Pro &amp; GPT-4o Audio</div>
-      <p>Resolves test-time inverse scaling in Audio LLMs by rewarding the reasoning process.</p>
-      <div class="card-links">
-        <a class="cl cl-project" href="/projects/cesar/">Project Page</a>
-        <a class="cl cl-paper" href="https://openreview.net/forum?id=DUr48hxO2h">OpenReview</a>
-        <a class="cl cl-arxiv" href="https://arxiv.org/abs/2510.20867">arXiv</a>
-      </div>
+    <div class="card-hl">{% if pub.highlight %}<span class="hl-tag">{{ pub.highlight }}</span>{% endif %}</div>
+    <p class="card-desc">{{ pub.description }}</p>
+    <div class="card-links">
+      {% if pub.paperurl %}<a class="cl cl-paper" href="{{ pub.paperurl }}" target="_blank" rel="noopener noreferrer">📄 Paper</a>{% endif %}
+      {% if pub.code %}<a class="cl cl-project" href="{{ pub.code }}" target="_blank" rel="noopener noreferrer">💻 Code</a>{% endif %}
+      {% if pub.projectpage %}<a class="cl cl-project" href="{{ pub.projectpage }}" target="_blank" rel="noopener noreferrer">🔗 Project</a>{% endif %}
+      {% if pub.arxiv %}<a class="cl cl-arxiv" href="{{ pub.arxiv }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{% endif %}
     </div>
   </div>
-
+{% endif %}{% endfor %}
 </div>
-
-<div class="year-group"><h3>2025</h3></div>
-<div class="grid">
-  <div class="project-card">
-    <img class="card-thumb" src="adrpo/images/teaser.png" alt="ADRPO results">
-    <div class="card-header">
-      <span class="venue-tag vt-neurips25">NeurIPS 2025</span>
-      <h2>ADRPO: Adaptive Divergence for Generative Models</h2>
-      <div class="authors"><strong>J. Fan*</strong>, T. Wei, C. Cheng, Y. Chen, G. Liu</div>
-    </div>
-    <div class="card-body">
-      <div class="hl-tag">🚀 2B SD3 surpasses 4.8B &amp; 12B models</div>
-      <p>Sample-level adaptive divergence regularization — high-value samples explore freely, poor samples stay constrained.</p>
-      <div class="card-links">
-        <a class="cl cl-project" href="/projects/adrpo/">Project Page</a>
-        <a class="cl cl-paper" href="https://openreview.net/forum?id=aXO0xg0ttW">OpenReview</a>
-        <a class="cl cl-arxiv" href="https://arxiv.org/abs/2510.18053">arXiv</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="project-card">
-    <img class="card-thumb" src="orw-cfm-w2/images/method.png" alt="ORW-CFM-W2 method">
-    <div class="card-header">
-      <span class="venue-tag vt-iclr25">ICLR 2025</span>
-      <h2>ORW-CFM-W2: Flow Matching Self-Evolution</h2>
-      <div class="authors"><strong>J. Fan*</strong>, S. Shen, C. Cheng, Y. Chen, C. Liang, G. Liu</div>
-    </div>
-    <div class="card-body">
-      <div class="hl-tag">✨ First online RLHF for flow matching models</div>
-      <p>No human data, no mode collapse. W2 regularization preserves generation diversity.</p>
-      <div class="card-links">
-        <a class="cl cl-project" href="/projects/orw-cfm-w2/">Project Page</a>
-        <a class="cl cl-paper" href="https://openreview.net/forum?id=2IoFFexvuw">OpenReview</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="project-card">
-    <div class="card-header">
-      <span class="venue-tag vt-preprint">Preprint 2025</span>
-      <h2>AC-Flow: Actor-Critic for Flow Matching</h2>
-      <div class="authors"><strong>J. Fan*</strong>, C. Cheng, S. Shen, X. Zhou, G. Liu</div>
-    </div>
-    <div class="card-body">
-      <div class="hl-tag">📝 Under Review</div>
-      <p>Intermediate feedback + dual-stability for robust flow matching fine-tuning on SD3.</p>
-      <div class="card-links">
-        <a class="cl cl-project" href="/projects/ac-flow/">Project Page</a>
-        <a class="cl cl-arxiv" href="https://arxiv.org/abs/2510.18072">arXiv</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="year-group"><h3>2023</h3></div>
-<div class="grid">
-  <div class="project-card">
-    <div class="card-header">
-      <span class="venue-tag vt-iclr23">ICLR 2023</span>
-      <span class="vt-oral">⭐ Oral · 5/4176</span>
-      <h2 style="margin-top:8px;">LBC: Breaking 24 Atari World Records</h2>
-      <div class="authors"><strong>J. Fan*</strong>, Y. Zhuang, Y. Liu, J. Hao, B. Wang, J. Zhu, H. Wang, S.-T. Xia</div>
-    </div>
-    <div class="card-body">
-      <div class="hl-tag">🏅 10,077% HNS · 24 records · 500× data efficient</div>
-      <p>Learnable behavior control via hybrid policy mapping + bandit meta-controller.</p>
-      <div class="card-links">
-        <a class="cl cl-project" href="/projects/lbc/">Project Page</a>
-        <a class="cl cl-paper" href="https://openreview.net/forum?id=FeWvD0L_a4">OpenReview</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="year-group"><h3>2022</h3></div>
-<div class="grid">
-  <div class="project-card">
-    <div class="card-header">
-      <span class="venue-tag vt-icml22">ICML 2022</span>
-      <h2>GDI: Generalized Data Distribution Iteration</h2>
-      <div class="authors"><strong>J. Fan*</strong>, C. Xiao</div>
-    </div>
-    <div class="card-body">
-      <div class="hl-tag">📈 22 world records · 9,620% HNS · 500× vs Agent57</div>
-      <p>Unified RL framework showing data distribution is the key to superhuman efficiency.</p>
-      <div class="card-links">
-        <a class="cl cl-project" href="/projects/gdi/">Project Page</a>
-        <a class="cl cl-paper" href="https://proceedings.mlr.press/v162/fan22c.html">PMLR</a>
-      </div>
-    </div>
-  </div>
-</div>
-
+{% endif %}
+{% endfor %}
 </div>
 <footer>
-  <p><a href="/">Jiajun Fan</a> · UIUC · <a href="/publications/">All Publications</a></p>
+  <p><a href="/">Ye Li</a> · Tsinghua University · <a href="/publications/">All Publications</a></p>
 </footer>
 <script>
-// Dark mode: respect site-wide preference stored in localStorage
 (function(){
   try { if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode'); } catch(e){}
 })();

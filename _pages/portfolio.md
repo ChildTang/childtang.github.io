@@ -9,7 +9,7 @@ permalink: /portfolio/
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="refresh" content="0; url=/projects/">
-<link rel="canonical" href="https://www.jiajunfan.com/projects/">
+<link rel="canonical" href="{{ site.url }}/projects/">
 <title>Redirecting…</title>
 </head>
 <body>

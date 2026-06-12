@@ -1,18 +1,10 @@
 # Authors
 
-Name Name:
-  name        : "Jiajun Fan"
-  uri         : "markerthu.github.io"
-  email       : "jiajunf3@illinois.edu"
-  bio         : "RL researcher"
-  avatar      : "bio_photo.jpg"
-  # twitter     : "name"
-  # google_plus : "Name"
-
-# Name2 Name2:
-#   name        : "Name2 Name2"
-#   email       : "name2@name2.com"
-#   bio         : "I ordered what?"
-#   avatar      : "bio-photo.jpg"
-#   twitter     : "name2"
-#   google_plus : "Name"
+Ye Li:
+  name        : "Ye Li"
+  uri         : "/"
+  email       : "liye23@mails.tsinghua.edu.cn"
+  bio         : "Ph.D. student at Tsinghua SIGS — embodied intelligence & efficient deep learning"
+  avatar      : "profile.jpg"
+  googlescholar : "https://scholar.google.com/citations?user=Nof6bfUAAAAJ"
+  orcid       : "https://orcid.org/0009-0008-9690-2119"

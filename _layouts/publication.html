@@ -1,0 +1,22 @@
+---
+layout: single
+---
+
+{% if page.thumbnail and page.thumbnail != "" %}
+<p><img src="{{ page.thumbnail }}" alt="{{ page.title | escape }}" style="max-width:100%;border-radius:8px;"></p>
+{% endif %}
+
+{% if page.authors and page.authors != "" %}
+<p class="pub-detail-authors">{{ page.authors }}</p>
+{% endif %}
+
+{% if page.paperurl or page.arxiv or page.projectpage or page.code %}
+<p class="pub-detail-links">
+  {% if page.paperurl and page.paperurl != "" %}<a href="{{ page.paperurl }}" target="_blank" rel="noopener noreferrer">📄 Paper</a>{% endif %}
+  {% if page.code and page.code != "" %} &nbsp;·&nbsp; <a href="{{ page.code }}" target="_blank" rel="noopener noreferrer">💻 Code</a>{% endif %}
+  {% if page.arxiv and page.arxiv != "" %} &nbsp;·&nbsp; <a href="{{ page.arxiv }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{% endif %}
+  {% if page.projectpage and page.projectpage != "" %} &nbsp;·&nbsp; <a href="{{ page.projectpage }}">🔗 Project</a>{% endif %}
+</p>
+{% endif %}
+
+{{ content }}

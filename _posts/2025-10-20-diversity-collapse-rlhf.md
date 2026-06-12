@@ -1,4 +1,9 @@
 ---
+# TEMPLATE blog post — kept as a reference only.
+# It is hidden from the site via `published: false`.
+# To create a real post: copy this file, rename to YYYY-MM-DD-your-slug.md,
+# edit the front matter + content, then set `published: true`.
+published: false
 title: 'The Exploration-Exploitation Dilemma in RLHF for Generative Models'
 date: 2025-10-20
 permalink: /posts/2025/10/diversity-collapse-rlhf/

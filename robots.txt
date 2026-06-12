@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.jiajunfan.com/sitemap.xml
+Sitemap: https://childtang.github.io/sitemap.xml

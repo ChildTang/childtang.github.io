@@ -1,5 +1,10 @@
 _site/
 
+# Local-only: rollback archive of old files
+_archive/
+
+# Local-only: paper sources / drafts / assets
+paper/
 
 
 

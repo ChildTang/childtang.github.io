@@ -16,9 +16,16 @@
         {% else %}
           <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>
         {% endif %}
-        {% if post.projectpage %}<a href="{{ post.projectpage }}" class="project-badge" target="_blank" rel="noopener">🔗 Project</a>{% endif %}
       </div>
-      {% if post.citation %}<div class="pub-cv-authors">{{ post.citation }}</div>{% endif %}
+      {% if post.citation %}<div class="pub-cv-authors">{{ post.citation | split: "&quot;" | first | strip | replace: "Ye Li", "<strong>Ye Li</strong>" }}</div>{% endif %}
+      {% if post.paperurl or post.code or post.projectpage or post.arxiv %}
+      <div class="pub-cv-links">
+        {% if post.paperurl %}<a class="pub-cv-link" href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">📄 Paper</a>{% endif %}
+        {% if post.code %}<a class="pub-cv-link" href="{{ post.code }}" target="_blank" rel="noopener noreferrer">💻 Code</a>{% endif %}
+        {% if post.projectpage %}<a class="pub-cv-link" href="{{ post.projectpage }}" target="_blank" rel="noopener noreferrer">🔗 Project</a>{% endif %}
+        {% if post.arxiv %}<a class="pub-cv-link" href="{{ post.arxiv }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{% endif %}
+      </div>
+      {% endif %}
       {% if post.bibtex %}
       <div class="pub-bib-wrap">
         <button class="pub-bib-btn" aria-expanded="false" onclick="

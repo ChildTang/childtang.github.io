@@ -2,7 +2,7 @@ name: Update Citation Counts
 
 on:
   schedule:
-    - cron: '0 6 * * 1'   # Every Monday 6:00 UTC
+    - cron: '0 22 * * *'   # Every day 06:00 Beijing time (UTC+8) = 22:00 UTC
   workflow_dispatch:
 
 jobs:

@@ -9,7 +9,7 @@ permalink: /talks/
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="refresh" content="0; url=/">
-<link rel="canonical" href="https://www.jiajunfan.com/">
+<link rel="canonical" href="{{ site.url }}/">
 <title>Redirecting…</title>
 </head>
 <body>

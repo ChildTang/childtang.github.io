@@ -2,7 +2,7 @@
 layout: single
 permalink: /contact/
 title: "Contact"
-excerpt: "Contact Jiajun Fan"
+excerpt: "Contact Ye Li"
 author_profile: true
 ---
 
@@ -42,32 +42,32 @@ I'm always happy to chat about research, collaborations, or internship opportuni
   <div class="contact-card">
     <div class="cc-icon">📧</div>
     <div class="cc-title">Email</div>
-    <div class="cc-link"><a href="mailto:jiajunf3@illinois.edu">jiajunf3@illinois.edu</a></div>
+    <div class="cc-link"><a href="mailto:liye23@mails.tsinghua.edu.cn">liye23@mails.tsinghua.edu.cn</a></div>
   </div>
   <div class="contact-card">
     <div class="cc-icon">📍</div>
     <div class="cc-title">Office</div>
-    <div class="cc-link">Thomas M. Siebel Center for Computer Science<br>Urbana, IL 61801</div>
+    <div class="cc-link">Tsinghua Shenzhen International Graduate School (SIGS)<br>Shenzhen, China</div>
   </div>
   <div class="contact-card">
     <div class="cc-icon">🎓</div>
     <div class="cc-title">Google Scholar</div>
-    <div class="cc-link"><a href="https://scholar.google.com/citations?user=EjmzseUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">author: Jiajun Fan</a></div>
-  </div>
-  <div class="contact-card">
-    <div class="cc-icon">💼</div>
-    <div class="cc-title">LinkedIn</div>
-    <div class="cc-link"><a href="https://www.linkedin.com/in/jiajun-fan-57b12b26b" target="_blank" rel="noopener noreferrer">jiajun-fan-57b12b26b</a></div>
-  </div>
-  <div class="contact-card">
-    <div class="cc-icon">📄</div>
-    <div class="cc-title">ORCID</div>
-    <div class="cc-link"><a href="https://orcid.org/0000-0002-0263-2103" target="_blank" rel="noopener noreferrer">0000-0002-0263-2103</a></div>
+    <div class="cc-link"><a href="https://scholar.google.com/citations?user=Nof6bfUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">author: Ye Li</a></div>
   </div>
   <div class="contact-card">
     <div class="cc-icon">🔬</div>
     <div class="cc-title">OpenReview</div>
-    <div class="cc-link"><a href="https://openreview.net/profile?id=~Jiajun_Fan1" target="_blank" rel="noopener noreferrer">~Jiajun_Fan1</a></div>
+    <div class="cc-link"><a href="https://openreview.net/profile?id=~Ye_Li2" target="_blank" rel="noopener noreferrer">~Ye_Li2</a></div>
+  </div>
+  <div class="contact-card">
+    <div class="cc-icon">📄</div>
+    <div class="cc-title">ORCID</div>
+    <div class="cc-link"><a href="https://orcid.org/0009-0008-9690-2119" target="_blank" rel="noopener noreferrer">0009-0008-9690-2119</a></div>
+  </div>
+  <div class="contact-card">
+    <div class="cc-icon">🏛</div>
+    <div class="cc-title">Group</div>
+    <div class="cc-link"><a href="https://mmlab-sigs.github.io/groups/efficient-deep-learning-and-embodiment-group/" target="_blank" rel="noopener noreferrer">Efficient Deep Learning &amp; Embodiment Group</a></div>
   </div>
 </div>
 
