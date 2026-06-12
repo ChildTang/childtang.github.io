@@ -72,7 +72,7 @@ jobs:
             existing = {}
 
           existing.update(results)
-          existing["_updated"] = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+          existing["_updated"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
           existing["_source"] = "Google Scholar via SerpAPI (Nof6bfUAAAAJ)"
 
           with open(path, "w") as f:
