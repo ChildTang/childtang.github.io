@@ -14,110 +14,71 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch citations from Google Scholar profile
+      - name: Fetch citations via SerpAPI (Google Scholar Author)
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: |
           python3 << 'PYEOF'
-          import json, urllib.request, re, datetime, time
+          import json, urllib.request, urllib.parse, datetime, os
 
-          SCHOLAR_ID = "Nof6bfUAAAAJ"
-          URL = f"https://scholar.google.com/citations?user={SCHOLAR_ID}&hl=en&sortby=pubdate&cstart=0&pagesize=100"
+          key = os.environ.get("SERPAPI_KEY", "").strip()
+          if not key:
+            print("SERPAPI_KEY secret not set; skipping (keeping existing citations).")
+            raise SystemExit(0)
 
-          headers = {
-            "User-Agent": "Mozilla/5.0 (compatible; academic-citation-bot/1.0)"
+          AUTHOR_ID = "Nof6bfUAAAAJ"
+          params = {
+            "engine": "google_scholar_author",
+            "author_id": AUTHOR_ID,
+            "api_key": key,
+            "hl": "en",
           }
-          req = urllib.request.Request(URL, headers=headers)
+          url = "https://serpapi.com/search.json?" + urllib.parse.urlencode(params)
 
           try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
-              html = resp.read().decode("utf-8", errors="ignore")
+            with urllib.request.urlopen(url, timeout=40) as resp:
+              data = json.loads(resp.read().decode("utf-8", errors="ignore"))
           except Exception as e:
-            print(f"Fetch error: {e}")
-            exit(0)
+            print(f"SerpAPI request failed: {e} (keeping existing citations).")
+            raise SystemExit(0)
 
-          # Map paper title keywords → citation key
-          paper_map = {
-            "Incentivizing Consistent": "2510.20867",   # CESAR
-            "Adaptive Divergence":      "2510.18053",   # ADRPO
-            "Fine-tuning Flow Matching Generative Models with Intermediate": "2510.18072",  # AC-Flow
-            "Prance":                   "2407.05010",   # PRANCE
-            "Online Reward-Weighted":   "ORW-CFM-W2",  # ORW-CFM-W2
-            "Learnable Behavior Control": "LBC",        # LBC
-            "Generalized Data Distribution Iteration": "GDI",   # GDI
-            "Variational Supervised Contrastive": "VarCon",     # VarCon
-            "Sp-vla":                   "SP-VLA",       # SP-VLA
-            "ProteinZero":              "ProteinZero",  # ProteinZero
-            "Optimal Transport for Treatment Effect": "OT-Treat", # OT-Treat
-            "Entire Space Counterfactual": "ES-CF",     # Entire Space CF
-            "Entropy Regularization Free": "ERF",       # Entropy Reg Free
-            "Critic PI2":               "CriticPI2",    # Critic PI2
-            "Casa":                     "CASA",         # CASA (both versions)
-            "Efficient Design":         "EffDesign",    # Efficient Design NeurIPS24
-          }
+          if data.get("error"):
+            print(f"SerpAPI error: {data['error']} (keeping existing citations).")
+            raise SystemExit(0)
 
-          # Each paper block: title cell followed by citation count cell
-          # Pattern: data-title="..." ... <a ...>(\d+)</a>.*?cites=
           results = {}
-          # Find all citation rows: look for title+cited-by count pairs
-          rows = re.findall(
-            r'<tr[^>]*class="[^"]*gsc_a_tr[^"]*"[^>]*>(.*?)</tr>',
-            html, re.DOTALL
-          )
-          for row in rows:
-            title_m = re.search(r'class="gsc_a_at"[^>]*>(.*?)</a>', row, re.DOTALL)
-            cite_m  = re.search(r'class="gsc_a_ac[^"]*"[^>]*>(?:<a[^>]*>)?(\d+)', row, re.DOTALL)
-            if not title_m or not cite_m:
-              continue
-            title = re.sub(r'<[^>]+>', '', title_m.group(1)).strip()
-            count = int(cite_m.group(1))
-            for keyword, key in paper_map.items():
-              if keyword.lower() in title.lower():
-                results[key] = count
-                print(f"  {key} ({title[:50]}...): {count}")
-                break
-
-          # Also grab summary stats table: [Citations(all), Citations(since),
-          # h-index(all), h-index(since), i10(all), i10(since)]
-          stds = re.findall(r'gsc_rsb_std[^>]*>(\d+)<', html)
-          if len(stds) >= 1:
-            results["_total"] = int(stds[0])
-            print(f"  Total citations: {results['_total']}")
-          if len(stds) >= 3:
-            results["_hindex"] = int(stds[2])
-            print(f"  h-index: {results['_hindex']}")
-          if len(stds) >= 5:
-            results["_i10"] = int(stds[4])
-            print(f"  i10-index: {results['_i10']}")
-
-          if not results:
-            print("No results parsed — Scholar may have blocked; keeping existing file")
-            exit(0)
-
-          citations_path = "_data/citations.json"
           try:
-            with open(citations_path) as f:
-              existing = json.load(f)
-          except:
-            existing = {}
+            table = data["cited_by"]["table"]
+            for row in table:
+              if "citations" in row:
+                results["_total"] = int(row["citations"]["all"])
+              elif "h_index" in row:
+                results["_hindex"] = int(row["h_index"]["all"])
+              elif "i10_index" in row:
+                results["_i10"] = int(row["i10_index"]["all"])
+          except Exception as e:
+            print(f"Could not parse cited_by table: {e} (keeping existing citations).")
+            raise SystemExit(0)
 
-          # Sanity check: _total must be >= sum of tracked paper citations
-          tracked_sum = sum(v for k, v in results.items() if not k.startswith("_"))
-          if "_total" in results:
-            if results["_total"] < tracked_sum:
-              print(f"WARN: Scholar returned total={results['_total']} < tracked_sum={tracked_sum}; discarding bad total")
-              del results["_total"]
-            else:
-              print(f"  Total sanity check passed: {results['_total']} >= {tracked_sum}")
-          else:
-            print(f"  No total from Scholar (bot-blocked?); keeping existing _total={existing.get('_total','?')}")
+          if "_total" not in results:
+            print("No citation total parsed; keeping existing file.")
+            raise SystemExit(0)
+
+          path = "_data/citations.json"
+          try:
+            with open(path) as f:
+              existing = json.load(f)
+          except Exception:
+            existing = {}
 
           existing.update(results)
           existing["_updated"] = datetime.datetime.utcnow().strftime("%Y-%m-%d")
-          existing["_source"] = "Google Scholar (Nof6bfUAAAAJ)"
+          existing["_source"] = "Google Scholar via SerpAPI (Nof6bfUAAAAJ)"
 
-          with open(citations_path, "w") as f:
+          with open(path, "w") as f:
             json.dump(existing, f, indent=2)
 
-          print(f"\nUpdated {len(results)} papers in {citations_path}")
+          print(f"Updated: total={results.get('_total')} h-index={results.get('_hindex')} i10={results.get('_i10')}")
           PYEOF
 
       - name: Commit if changed
@@ -125,5 +86,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add _data/citations.json
-          git diff --staged --quiet || git commit -m "chore: auto-update citations from Google Scholar [skip ci]"
+          git diff --staged --quiet || git commit -m "chore: auto-update citations via SerpAPI [skip ci]"
           git push

@@ -1,6 +1,7 @@
 ---
 permalink: /
 title: "Ye Li"
+tab_title: "ChildTang's Homepage"
 excerpt: "Ph.D. Student at Tsinghua SIGS | Embodied Intelligence (VLA) & Efficient Deep Learning"
 author_profile: true
 redirect_from: 
