@@ -33,7 +33,10 @@ export default {
     if (request.method !== 'GET') return new Response('Method Not Allowed', { status: 405, headers: cors() });
 
     const cf = request.cf || {};
-    const country = (cf.country || 'XX').toUpperCase();
+    let country = (cf.country || 'XX').toUpperCase();
+    // Count Hong Kong / Macao / Taiwan under China (CN). The glowing dot is
+    // still placed at the visitor's real coordinates, so locations stay visible.
+    if (country === 'HK' || country === 'MO' || country === 'TW') country = 'CN';
     const ua = request.headers.get('User-Agent') || '';
     const isBot = /bot|crawl|spider|slurp|bing|preview|monitor|headless|curl|wget/i.test(ua);
 
