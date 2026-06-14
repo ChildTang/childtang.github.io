@@ -39,9 +39,11 @@ export default {
     if (country === 'HK' || country === 'MO' || country === 'TW') country = 'CN';
     const ua = request.headers.get('User-Agent') || '';
     const isBot = /bot|crawl|spider|slurp|bing|preview|monitor|headless|curl|wget/i.test(ua);
+    // Owner opt-out: the site owner's own browser sends ?norecord=1 (read-only).
+    const noRecord = new URL(request.url).searchParams.has('norecord');
 
     // Record a visit. Isolated so a write error can never zero the response.
-    if (!isBot && country !== 'XX' && country !== 'T1') {
+    if (!isBot && !noRecord && country !== 'XX' && country !== 'T1') {
       try {
         const ip = request.headers.get('CF-Connecting-IP') || '';
         // De-dup per 30-minute slot: same visitor counts again after 30 min.

@@ -17,6 +17,17 @@
     var reduceMotion = window.matchMedia &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Owner opt-out: visit with ?vgowner=1 once to stop counting this browser's
+    // own visits (stored locally); ?vgowner=0 re-enables counting.
+    try {
+      var qp = new URLSearchParams(location.search);
+      if (qp.has('vgowner')) {
+        if (qp.get('vgowner') === '0') localStorage.removeItem('vg_owner');
+        else localStorage.setItem('vg_owner', '1');
+      }
+    } catch (e) {}
+    var isOwner = (function () { try { return localStorage.getItem('vg_owner') === '1'; } catch (e) { return false; } })();
+
     var EMPTY = { total: 0, countries: {} };
 
     function normalize(d, fallback) {
@@ -218,7 +229,10 @@
     // layered in as soon as they arrive.
     var hasRemote = !!(cfg.endpoint || cfg.snapshot);
     // Stats sources, by preference: live server, then same-origin snapshot.
-    var serverP = fetchJSON(cfg.endpoint);
+    // Owners send norecord=1 so their own visit is read-only (not counted).
+    var endpoint = cfg.endpoint;
+    if (endpoint && isOwner) endpoint += (endpoint.indexOf('?') === -1 ? '?' : '&') + 'norecord=1';
+    var serverP = fetchJSON(endpoint);
     var snapshotP = fetchJSON(cfg.snapshot);
     var geoP = fetchJSON(GEO_URL);
 
