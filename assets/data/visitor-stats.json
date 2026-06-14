@@ -1,1 +1,1 @@
-{"total":6,"countries":{"US":3,"CN":3},"points":[{"lat":22.3,"lng":114.2,"city":"Hong Kong","n":3},{"lat":37.3,"lng":-121.9,"city":"San Jose","n":2},{"lat":47.6,"lng":-122.3,"city":"Seattle","n":1}]}
+{"total":13,"countries":{"US":5,"CN":8},"points":[{"lat":22.3,"lng":114.2,"city":"Hong Kong","n":8},{"lat":47.6,"lng":-122.3,"city":"Seattle","n":2},{"lat":37.3,"lng":-121.9,"city":"San Jose","n":2},{"lat":47.4,"lng":-122.2,"city":"Kent","n":1}]}
