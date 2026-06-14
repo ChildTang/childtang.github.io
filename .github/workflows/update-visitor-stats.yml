@@ -1,0 +1,36 @@
+name: Update Visitor Stats Snapshot
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # every hour (on the hour, UTC)
+  workflow_dispatch:
+
+jobs:
+  update-visitor-stats:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch stats snapshot from Worker
+        run: |
+          # UA contains "bot" so the Worker skips counting this sync request.
+          curl -sS -A "visitor-stats-sync-bot" \
+            "https://visitor-globe-api.childtang.workers.dev" -o /tmp/stats.json || true
+          if python3 -c "import json; d=json.load(open('/tmp/stats.json')); assert isinstance(d.get('countries'), dict)" 2>/dev/null; then
+            mkdir -p assets/data
+            cp /tmp/stats.json assets/data/visitor-stats.json
+            echo "Snapshot updated:"; cat assets/data/visitor-stats.json
+          else
+            echo "Invalid/empty stats response; keeping existing snapshot."
+          fi
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/data/visitor-stats.json
+          git diff --staged --quiet || git commit -m "chore: update visitor stats snapshot [skip ci]"
+          git push

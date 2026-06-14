@@ -1,10 +1,13 @@
 /* ============================================================
    Visitor Globe API — Cloudflare Worker + D1
    GET  ->  records a visit (unique per IP per day) and returns:
-            { "total": <int>, "countries": { "CN": 12, "US": 3, ... } }
+            { "total": <int>,
+              "countries": { "CN": 12, "US": 3, ... },
+              "points": [ { "lat": 39.9, "lng": 116.4, "city": "Beijing", "n": 12 }, ... ] }
 
-   Privacy: stores only country code + a salted SHA-256 hash of
-   (IP + day) for daily de-duplication. No raw IPs, no personal data.
+   Privacy: stores only country code, city-level rounded coordinates
+   (~11km), and a salted SHA-256 hash of (IP + day) for daily
+   de-duplication. No raw IPs, no precise location, no personal data.
    ============================================================ */
 
 const SALT = 'ye-li-globe-v1';   // any random string; rotating it resets daily de-dup
@@ -47,6 +50,19 @@ export default {
           await env.DB.prepare(
             'INSERT INTO counts (country, n) VALUES (?, 1) ON CONFLICT(country) DO UPDATE SET n = n + 1'
           ).bind(country).run();
+
+          // Record an approximate (city-level) location for the glowing dot.
+          const lat = parseFloat(cf.latitude), lng = parseFloat(cf.longitude);
+          if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            const rlat = Math.round(lat * 10) / 10;   // ~11km cell, privacy-safe
+            const rlng = Math.round(lng * 10) / 10;
+            const cell = rlat + ',' + rlng;
+            const city = cf.city || '';
+            await env.DB.prepare(
+              'INSERT INTO points (cell, lat, lng, city, n) VALUES (?, ?, ?, ?, 1) ' +
+              'ON CONFLICT(cell) DO UPDATE SET n = n + 1'
+            ).bind(cell, rlat, rlng, city).run();
+          }
         }
       }
 
@@ -56,12 +72,18 @@ export default {
       const countries = {};
       for (const r of (rows.results || [])) { countries[r.country] = r.n; total += r.n; }
 
-      return new Response(JSON.stringify({ total, countries }), {
+      // Top visitor locations for the glowing dots (capped to keep payload small)
+      const pts = await env.DB.prepare(
+        'SELECT lat, lng, city, n FROM points ORDER BY n DESC LIMIT 500'
+      ).all();
+      const points = (pts.results || []).map(r => ({ lat: r.lat, lng: r.lng, city: r.city, n: r.n }));
+
+      return new Response(JSON.stringify({ total, countries, points }), {
         headers: cors({ 'Content-Type': 'application/json' })
       });
     } catch (e) {
       // Never break the page; return empty stats on error.
-      return new Response(JSON.stringify({ total: 0, countries: {}, error: String(e) }), {
+      return new Response(JSON.stringify({ total: 0, countries: {}, points: [], error: String(e) }), {
         status: 200, headers: cors({ 'Content-Type': 'application/json' })
       });
     }

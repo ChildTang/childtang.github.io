@@ -1,7 +1,9 @@
 /* Visitor globe: globe.gl + Cloudflare Worker country counts. */
 (function () {
-  var IMG = 'https://cdn.jsdelivr.net/npm/three-globe/example/img/';
-  var GEO_URL = 'https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson';
+  // Self-hosted (same-origin) so the globe works even when CDNs are blocked.
+  var IMG = '/assets/img/';
+  var GEO_URL = '/assets/data/ne_110m_admin_0_countries.geojson';
+  var STATS_CACHE_KEY = 'vg_stats_cache';
 
   function init() {
     var rootEl = document.getElementById('visitor-globe');
@@ -16,19 +18,29 @@
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     var EMPTY = { total: 0, countries: {} };
-    var DEMO = {
-      total: 1480,
-      countries: {
-        CN: 620, US: 240, GB: 110, JP: 95, SG: 80, DE: 70,
-        FR: 60, AU: 55, IN: 90, CA: 50, AE: 30, BR: 40, KR: 40
-      }
-    };
 
     function normalize(d, fallback) {
       if (!d || typeof d !== 'object' || !d.countries) return fallback;
-      return { total: Number.isFinite(d.total) ? d.total : sum(d.countries), countries: d.countries };
+      return {
+        total: Number.isFinite(d.total) ? d.total : sum(d.countries),
+        countries: d.countries,
+        points: Array.isArray(d.points) ? d.points : []
+      };
     }
     function sum(obj) { var t = 0; for (var k in obj) t += obj[k] || 0; return t; }
+
+    // Local cache of last-seen stats, so the globe still shows data when the
+    // backend can't be reached. We always display whichever has the larger total.
+    function readCache() { try { return JSON.parse(localStorage.getItem(STATS_CACHE_KEY) || 'null'); } catch (e) { return null; } }
+    function writeCache(d) { try { localStorage.setItem(STATS_CACHE_KEY, JSON.stringify(d)); } catch (e) {} }
+    function totalOf(d) { return (d && Number.isFinite(d.total)) ? d.total : -1; }
+    function bigger(a, b) { return totalOf(b) > totalOf(a) ? b : a; }
+    function fetchJSON(url) {
+      if (!url) return Promise.resolve(null);
+      return fetch(url, { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; });
+    }
 
     function animateCount(el, to) {
       if (!el) return;
@@ -97,6 +109,20 @@
         .atmosphereColor('#7db1ff')
         .atmosphereAltitude(0.18);
 
+      // Static styling for visitor markers + pulsing rings (data set later).
+      world
+        .pointLat('lat').pointLng('lng')
+        .pointColor(function () { return '#ff7a1a'; })
+        .pointAltitude(0.012)
+        .pointRadius(function (d) { return 0.28 + Math.min(Math.sqrt(d.count) * 0.12, 0.7); })
+        .pointLabel(function (d) {
+          return (d.name ? d.name + ' &middot; ' : '') + d.count + ' visits';
+        })
+        .ringColor(function () { return function (t) { return 'rgba(255,122,26,' + (1 - t) + ')'; }; })
+        .ringMaxRadius(2.6)
+        .ringPropagationSpeed(2)
+        .ringRepeatPeriod(1300);
+
       currentWorld = world;
 
       var controls = world.controls();
@@ -138,61 +164,65 @@
         .polygonsTransitionDuration(250);
     }
 
+    // Build glowing dots. Prefer real city-level coordinates from the backend;
+    // fall back to one dot per country (at its centroid) when no points exist.
+    function markersFrom(geometry, data) {
+      if (data.points && data.points.length) {
+        return data.points
+          .filter(function (p) { return Number.isFinite(+p.lat) && Number.isFinite(+p.lng); })
+          .map(function (p) {
+            return { lat: +p.lat, lng: +p.lng, name: p.city || p.country || '', count: p.n || 1 };
+          });
+      }
+      var counts = data.countries || {};
+      var markers = [];
+      if (!geometry || !geometry.features) return markers;
+      geometry.features.forEach(function (f) {
+        var v = counts[isoOf(f)] || 0;
+        if (v <= 0) return;
+        var p = f.properties || {};
+        var lat = (p.LABEL_Y != null) ? +p.LABEL_Y : null;
+        var lng = (p.LABEL_X != null) ? +p.LABEL_X : null;
+        if (lat == null || lng == null) { var c = centroid(f); if (c) { lng = c[0]; lat = c[1]; } }
+        if (lat != null && lng != null) markers.push({ lat: lat, lng: lng, name: nameOf(f), count: v });
+      });
+      return markers;
+    }
+
     function updateStats(world, countries, data) {
       if (!world) return;
-      var counts = data.countries || {};
       currentData = data;
-      world.pointsData([]);
-      world.ringsData([]);
-
-      // Add small markers at visited countries when country geometry is available.
-      var visitMarkers = [];
-      var geometry = countries || currentCountries;
-      if (geometry && geometry.features) {
-        geometry.features.forEach(function (f) {
-          var v = counts[isoOf(f)] || 0;
-          if (v <= 0) return;
-          var p = f.properties || {};
-          var lat = (p.LABEL_Y != null) ? +p.LABEL_Y : null;
-          var lng = (p.LABEL_X != null) ? +p.LABEL_X : null;
-          if (lat == null || lng == null) { var c = centroid(f); if (c) { lng = c[0]; lat = c[1]; } }
-          if (lat != null && lng != null) visitMarkers.push({ lat: lat, lng: lng, name: nameOf(f), count: v });
-        });
-      }
-      world
-        .pointsData(visitMarkers)
-        .pointLat('lat').pointLng('lng')
-        .pointColor(function () { return '#ff7a1a'; })
-        .pointAltitude(0.012)
-        .pointRadius(0.5)
-        .pointLabel(function (d) { return d.name + ' &middot; ' + d.count + ' visits'; })
-        .ringsData(visitMarkers)
-        .ringColor(function () { return function (t) { return 'rgba(255,122,26,' + (1 - t) + ')'; }; })
-        .ringMaxRadius(2.6)
-        .ringPropagationSpeed(2)
-        .ringRepeatPeriod(1300);
-
+      var markers = markersFrom(countries || currentCountries, data);
+      world.pointsData(markers).ringsData(markers);
       animateCount(countEl, data.total);
-      if (geometry && geometry.features) world.polygonLabel(polygonLabel);
     }
 
     // Render the globe immediately; country geometry and visitor data are
     // layered in as soon as they arrive.
-    var dataP = cfg.endpoint
-      ? fetch(cfg.endpoint, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
-      : Promise.resolve(null);
-    var geoP = fetch(GEO_URL).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    var hasRemote = !!(cfg.endpoint || cfg.snapshot);
+    // Stats sources, by preference: live server, then same-origin snapshot.
+    var serverP = fetchJSON(cfg.endpoint);
+    var snapshotP = fetchJSON(cfg.snapshot);
+    var geoP = fetchJSON(GEO_URL);
 
-    var fallback = cfg.endpoint ? EMPTY : DEMO;
-    currentData = fallback;
+    var cached = hasRemote ? readCache() : null;
+    var initial = cached || EMPTY;
+    currentData = initial;
     renderBaseGlobe();
-    animateCount(countEl, fallback.total);
+    animateCount(countEl, initial.total);
 
     geoP.then(function (geo) {
       applyCountries(currentWorld, geo);
       updateStats(currentWorld, geo, currentData);
-      dataP.then(function (d) {
-        updateStats(currentWorld, geo, normalize(d, fallback));
+
+      Promise.all([serverP, snapshotP]).then(function (res) {
+        var server = normalize(res[0], null);   // preferred (usually the largest)
+        var snapshot = normalize(res[1], null); // same-origin fallback
+        // Pick whichever source has the most data; cache it so we never go backwards.
+        var best = [server, snapshot, cached].reduce(function (a, b) { return bigger(a, b); }, null);
+        if (!best) return;                        // all sources unavailable -> keep initial
+        writeCache(best);
+        updateStats(currentWorld, geo, best);
       });
     });
   }
