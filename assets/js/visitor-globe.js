@@ -35,13 +35,18 @@
     function writeCache(d) { try { localStorage.setItem(STATS_CACHE_KEY, JSON.stringify(d)); } catch (e) {} }
     function totalOf(d) { return (d && Number.isFinite(d.total)) ? d.total : -1; }
     function bigger(a, b) { return totalOf(b) > totalOf(a) ? b : a; }
-    function fetchJSON(url) {
+    function fetchJSON(url, timeoutMs) {
       if (!url) return Promise.resolve(null);
       // Cache-bust so a stale CDN/browser copy never sticks (files are tiny).
       var bust = (url.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
-      return fetch(url + bust, { cache: 'no-store' })
+      // Abort slow requests (e.g. an unreachable Worker) so they never block
+      // a faster source like the same-origin snapshot.
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, timeoutMs || 8000) : null;
+      return fetch(url + bust, { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
         .then(function (r) { return r.ok ? r.json() : null; })
-        .catch(function () { return null; });
+        .catch(function () { return null; })
+        .then(function (d) { if (timer) clearTimeout(timer); return d; });
     }
 
     function animateCount(el, to) {
@@ -213,19 +218,22 @@
     renderBaseGlobe();
     animateCount(countEl, initial.total);
 
+    // Apply each source as soon as it arrives, always keeping the largest
+    // total so a slow/unreachable Worker never blocks the fast snapshot.
+    var best = cached;
+    function consider(d) {
+      var n = normalize(d, null);
+      if (!n) return;
+      best = bigger(best, n);
+      writeCache(best);
+      updateStats(currentWorld, currentCountries, best);
+    }
+
     geoP.then(function (geo) {
       applyCountries(currentWorld, geo);
-      updateStats(currentWorld, geo, currentData);
-
-      Promise.all([serverP, snapshotP]).then(function (res) {
-        var server = normalize(res[0], null);   // preferred (usually the largest)
-        var snapshot = normalize(res[1], null); // same-origin fallback
-        // Pick whichever source has the most data; cache it so we never go backwards.
-        var best = [server, snapshot, cached].reduce(function (a, b) { return bigger(a, b); }, null);
-        if (!best) return;                        // all sources unavailable -> keep initial
-        writeCache(best);
-        updateStats(currentWorld, geo, best);
-      });
+      updateStats(currentWorld, geo, best || currentData);
+      snapshotP.then(consider);   // same-origin, usually instant
+      serverP.then(consider);     // live, may be slow or unreachable
     });
   }
 
