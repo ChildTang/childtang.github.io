@@ -13,10 +13,10 @@ Library/textures/geojson are self-hosted (no CDN) for reliability.{%- endcomment
 </div>
 
 <script>
-  window.VISITOR_GLOBE_CONFIG = {
-    endpoint: "https://visitor-globe-api.childtang.workers.dev", // live server (preferred)
-    snapshot: "/assets/data/visitor-stats.json"                  // same-origin fallback (auto-synced)
-  };
+  /* endpoint = live Worker (preferred); snapshot = same-origin fallback (auto-synced).
+     Keep this as block comments only: the HTML compress layout strips newlines,
+     and any // comment would then swallow the rest of the object. */
+  window.VISITOR_GLOBE_CONFIG = { endpoint: "https://visitor-globe-api.childtang.workers.dev", snapshot: "/assets/data/visitor-stats.json" };
 </script>
 <script src="/assets/vendor/globe.gl.min.js" defer></script>
 <script src="/assets/js/visitor-globe.js?v={{ site.time | date: '%s' }}" defer></script>
