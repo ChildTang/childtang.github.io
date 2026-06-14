@@ -89,18 +89,29 @@
     }
 
     var currentWorld = null, currentCountries = null, currentData = null;
-    var hoverD = null;
+    var hoverKey = null;
+
+    // Group key for counting/highlighting: Taiwan / Hong Kong / Macao -> China.
+    function groupKey(f) {
+      var iso = isoOf(f);
+      return (iso === 'TW' || iso === 'HK' || iso === 'MO') ? 'CN' : iso;
+    }
+    function groupName(f) {
+      return groupKey(f) === 'CN' ? 'China' : nameOf(f);
+    }
+    function inHovered(f) { return hoverKey != null && groupKey(f) === hoverKey; }
 
     function capColor(f) {
-      return f === hoverD ? 'rgba(40,220,255,0.9)' : 'rgba(255,255,255,0)';
+      return inHovered(f) ? 'rgba(40,220,255,0.9)' : 'rgba(255,255,255,0)';
     }
+    function capAltitude(f) { return inHovered(f) ? 0.05 : 0.008; }
 
     function polygonLabel(f) {
       var counts = (currentData && currentData.countries) || {};
-      var v = counts[isoOf(f)] || 0;
+      var v = counts[groupKey(f)] || 0;
       return '<div style="font:600 13px Inter,sans-serif;color:#fff;background:rgba(15,23,42,.85);'
         + 'padding:5px 9px;border-radius:7px;border:1px solid rgba(255,255,255,.15)">'
-        + nameOf(f) + (v > 0 ? ' &middot; <span style="color:#22d3ee">' + v + ' visits</span>' : '')
+        + groupName(f) + (v > 0 ? ' &middot; <span style="color:#22d3ee">' + v + ' visits</span>' : '')
         + '</div>';
     }
 
@@ -161,12 +172,11 @@
         .polygonCapColor(capColor)
         .polygonSideColor(function () { return 'rgba(0,0,0,0)'; })
         .polygonStrokeColor(function () { return 'rgba(255,255,255,0.28)'; })
-        .polygonAltitude(function (f) { return f === hoverD ? 0.05 : 0.008; })
+        .polygonAltitude(capAltitude)
         .polygonLabel(polygonLabel)
         .onPolygonHover(function (h) {
-          hoverD = h;
-          world.polygonAltitude(function (f) { return f === hoverD ? 0.05 : 0.008; })
-               .polygonCapColor(capColor);
+          hoverKey = h ? groupKey(h) : null;
+          world.polygonAltitude(capAltitude).polygonCapColor(capColor);
         })
         .polygonsTransitionDuration(250);
     }
