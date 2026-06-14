@@ -1,0 +1,63 @@
+# Visitor Globe API (Cloudflare Worker + D1)
+
+Backend for the homepage visitor globe. Records one **unique visitor per
+country per day** and returns aggregate stats as JSON:
+
+```json
+{ "total": 1284, "countries": { "CN": 620, "US": 240, "GB": 110 } }
+```
+
+Privacy: only the country code and a salted SHA-256 hash of `(IP + day)`
+are stored (for daily de-dup). No raw IPs, no personal data.
+
+## One-time deploy
+
+Requires a free Cloudflare account.
+
+```bash
+cd worker
+
+# 1. Install + log in
+npm install -g wrangler
+wrangler login
+
+# 2. Create the D1 database, then paste the printed database_id into wrangler.toml
+wrangler d1 create visitor_globe
+
+# 3. Create the tables (run once, on the remote DB)
+wrangler d1 execute visitor_globe --remote --file=schema.sql
+
+# 4. Deploy the Worker
+wrangler deploy
+```
+
+`wrangler deploy` prints the public URL, e.g.:
+
+```
+https://visitor-globe-api.<your-subdomain>.workers.dev
+```
+
+## Hook it up to the site
+
+Edit `_includes/visitor-globe.html` and set the endpoint to that URL:
+
+```html
+<script>
+  window.VISITOR_GLOBE_CONFIG = {
+    endpoint: "https://visitor-globe-api.<your-subdomain>.workers.dev"
+  };
+</script>
+```
+
+The globe then shows real visitors instead of demo data.
+
+## Notes
+- Free tier (100k req/day) is far beyond a personal site's needs.
+- Country comes from Cloudflare's `request.cf.country` (accurate at country
+  level; VPN/proxy users are attributed to the proxy's country).
+- `SALT` in `index.js` can be any random string; changing it just resets
+  the per-day de-dup window.
+- To lock the API to your site only, set `ALLOW_ORIGIN` in `index.js` to
+  `https://childtang.github.io`.
+- Optional cleanup of old de-dup rows (keeps DB tiny):
+  `wrangler d1 execute visitor_globe --remote --command "DELETE FROM daily_visitors WHERE day < date('now','-30 day')"`

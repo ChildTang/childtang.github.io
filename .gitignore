@@ -6,6 +6,9 @@ _archive/
 # Local-only: paper sources / drafts / assets
 paper/
 
+# Local-only: Cloudflare Wrangler state
+.wrangler/
+worker/.wrangler/
 
 
 

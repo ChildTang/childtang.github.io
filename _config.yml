@@ -156,6 +156,7 @@ exclude:
   - talkmap
   - paper
   - _archive
+  - worker
 keep_files:
   - .git
   - .svn

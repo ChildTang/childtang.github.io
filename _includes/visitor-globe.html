@@ -1,0 +1,20 @@
+{%- comment -%}Visitor globe. Endpoint returns { total, countries: { CN: 12, US: 3 } }.{%- endcomment -%}
+<link rel="stylesheet" href="/assets/css/visitor-globe.css?v={{ site.time | date: '%s' }}">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/globe.gl">
+<link rel="preload" as="image" href="https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg">
+
+<div id="visitor-globe" class="vg-widget">
+  <div class="vg-globe-wrap">
+    <div class="vg-globe" role="img" aria-label="Rotating globe showing where visitors come from"></div>
+  </div>
+  <div class="vg-stats">
+    <div class="vg-count">0</div>
+    <div class="vg-label">visits</div>
+  </div>
+</div>
+
+<script>window.VISITOR_GLOBE_CONFIG = { endpoint: "https://visitor-globe-api.childtang.workers.dev" };</script>
+<script src="https://cdn.jsdelivr.net/npm/globe.gl" defer></script>
+<script src="/assets/js/visitor-globe.js?v={{ site.time | date: '%s' }}" defer></script>

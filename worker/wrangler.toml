@@ -1,0 +1,9 @@
+name = "visitor-globe-api"
+main = "index.js"
+compatibility_date = "2024-11-01"
+
+# D1 database binding (fill database_id after `wrangler d1 create`)
+[[d1_databases]]
+binding = "DB"
+database_name = "visitor_globe"
+database_id = "85cfe946-2326-48ef-a22e-cbc956be0c7e"

@@ -1,0 +1,65 @@
+/* ============================================================
+   Visitor Globe — minimal: just the globe + a number below.
+   No card background, no title. Centered. Light/Dark aware.
+   ============================================================ */
+
+.vg-widget {
+  --vg-accent: #1565c0;
+  width: 100%;
+  margin: -10px auto 0;
+  text-align: center;
+}
+
+.vg-globe-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.vg-globe {
+  position: relative;
+  width: 100%;
+  max-width: 182px;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  border-radius: 50%;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.vg-globe:active { cursor: grabbing; }
+.vg-globe canvas { display: block; margin: 0 auto; outline: none; }
+
+.vg-stats {
+  width: 182px;
+  max-width: 100%;
+  text-align: center;
+  margin-top: 4px;
+}
+.vg-count {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.05em;
+  font-weight: 800;
+  color: var(--vg-accent);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.vg-label {
+  font-size: 0.68em;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 3px;
+}
+
+/* If globe.gl fails to load, collapse the globe area (counter still shows). */
+.vg-unavailable .vg-globe-wrap { display: none; }
+
+/* ---- Dark mode ---- */
+body.dark-mode .vg-count { color: #58a6ff; }
+body.dark-mode .vg-label { color: #8b949e; }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .vg-globe { transition: none; }
+}

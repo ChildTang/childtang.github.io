@@ -165,9 +165,7 @@ Happy to discuss research, internships, or collaborations. Best reached by email
   <p>© {{ site.time | date: '%Y' }} Ye Li · Ph.D. @ Tsinghua · Built with ☕ and curiosity</p>
 </div>
 
-<!-- Scroll-to-top + Dark mode buttons -->
-<button class="scroll-top" id="scrollTop" onclick="window.scrollTo(0,0)" aria-label="Back to top">↑</button>
-<button class="dark-toggle" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+<!-- Floating dark-mode + back-to-top controls are injected globally via footer/custom.html -->
 
 <!-- Homepage scripts (extracted) -->
 <script>window.__CITATIONS__ = {{ site.data.citations | jsonify }};</script>
