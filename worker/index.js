@@ -6,7 +6,7 @@
               "points": [ { "lat": 39.9, "lng": 116.4, "city": "Beijing", "n": 12 }, ... ] }
 
    Privacy: stores only country code, city-level rounded coordinates
-   (~11km), and a salted SHA-256 hash of (IP + day) for daily
+   (~11km), and a salted SHA-256 hash of (IP + 30-min time slot) for
    de-duplication. No raw IPs, no precise location, no personal data.
    ============================================================ */
 
@@ -41,11 +41,13 @@ export default {
     if (!isBot && country !== 'XX' && country !== 'T1') {
       try {
         const ip = request.headers.get('CF-Connecting-IP') || '';
-        const day = new Date().toISOString().slice(0, 10);
-        const iphash = await sha256(ip + '|' + day + '|' + SALT);
+        // De-dup per 30-minute slot: same visitor counts again after 30 min.
+        const SLOT_MS = 30 * 60 * 1000;
+        const slot = new Date(Math.floor(Date.now() / SLOT_MS) * SLOT_MS).toISOString().slice(0, 16);
+        const iphash = await sha256(ip + '|' + slot + '|' + SALT);
         const ins = await env.DB.prepare(
           'INSERT OR IGNORE INTO daily_visitors (day, iphash) VALUES (?, ?)'
-        ).bind(day, iphash).run();
+        ).bind(slot, iphash).run();
         if (ins.meta && ins.meta.changes > 0) {
           await env.DB.prepare(
             'INSERT INTO counts (country, n) VALUES (?, 1) ON CONFLICT(country) DO UPDATE SET n = n + 1'

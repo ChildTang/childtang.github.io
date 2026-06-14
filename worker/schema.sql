@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS counts (
   n       INTEGER NOT NULL DEFAULT 0
 );
 
--- Daily de-duplication: one row per (day, hashed IP).
+-- De-duplication: one row per (time slot, hashed IP).
+-- `day` holds a 30-minute slot string (e.g. "2026-06-14T13:30").
 -- Stores only a salted hash, never the raw IP.
 CREATE TABLE IF NOT EXISTS daily_visitors (
   day    TEXT NOT NULL,
