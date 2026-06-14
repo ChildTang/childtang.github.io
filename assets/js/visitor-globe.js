@@ -37,7 +37,9 @@
     function bigger(a, b) { return totalOf(b) > totalOf(a) ? b : a; }
     function fetchJSON(url) {
       if (!url) return Promise.resolve(null);
-      return fetch(url, { cache: 'no-store' })
+      // Cache-bust so a stale CDN/browser copy never sticks (files are tiny).
+      var bust = (url.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
+      return fetch(url + bust, { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : null; })
         .catch(function () { return null; });
     }
