@@ -1,14 +1,44 @@
 # Visitor Globe API (Cloudflare Worker + D1)
 
 Backend for the homepage visitor globe. Records one **unique visitor per
-country per day** and returns aggregate stats as JSON:
+30-minute slot** and returns aggregate stats as JSON:
 
 ```json
-{ "total": 1284, "countries": { "CN": 620, "US": 240, "GB": 110 } }
+{ "total": 1284,
+  "countries": { "CN": 620, "US": 240, "GB": 110 },
+  "points": [ { "lat": 39.9, "lng": 116.4, "city": "Beijing", "n": 12 } ] }
 ```
 
-Privacy: only the country code and a salted SHA-256 hash of `(IP + day)`
-are stored (for daily de-dup). No raw IPs, no personal data.
+Behavior:
+- De-dup key is a salted SHA-256 hash of `(IP + 30-min slot)`. No raw IPs.
+- City-level coordinates (rounded to ~11km) drive the glowing dots.
+- Hong Kong / Macao / Taiwan are counted under China (`CN`); the dot still
+  sits at the visitor's real location.
+- Owner opt-out: a request with `?norecord=1` is read-only (not counted).
+
+## Cheatsheet (运维速查)
+
+Owner opt-out — open once per browser/device (stops counting your own visits):
+
+```
+https://childtang.github.io/?vgowner=1     # exempt this browser
+https://childtang.github.io/?vgowner=0     # undo (count again)
+```
+
+Useful D1 queries (run from this `worker/` folder):
+
+```bash
+# Visitor distribution by country
+npx wrangler d1 execute visitor_globe --remote --command "SELECT country,n FROM counts ORDER BY n DESC;"
+# Visitor distribution by city
+npx wrangler d1 execute visitor_globe --remote --command "SELECT city,n FROM points ORDER BY n DESC;"
+# Reset ALL stats (clears counts, dedup and points)
+npx wrangler d1 execute visitor_globe --remote --command "DELETE FROM counts; DELETE FROM daily_visitors; DELETE FROM points;"
+```
+
+The same-origin snapshot `assets/data/visitor-stats.json` is refreshed hourly
+by `.github/workflows/update-visitor-stats.yml` (used as a fallback when the
+Worker is unreachable, e.g. on some mainland-China networks).
 
 ## One-time deploy
 
