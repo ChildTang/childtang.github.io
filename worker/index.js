@@ -37,9 +37,9 @@ export default {
     const ua = request.headers.get('User-Agent') || '';
     const isBot = /bot|crawl|spider|slurp|bing|preview|monitor|headless|curl|wget/i.test(ua);
 
-    try {
-      // Count one unique visitor per country per day (skip bots / unknown / Tor)
-      if (!isBot && country !== 'XX' && country !== 'T1') {
+    // Record a visit. Isolated so a write error can never zero the response.
+    if (!isBot && country !== 'XX' && country !== 'T1') {
+      try {
         const ip = request.headers.get('CF-Connecting-IP') || '';
         const day = new Date().toISOString().slice(0, 10);
         const iphash = await sha256(ip + '|' + day + '|' + SALT);
@@ -51,41 +51,43 @@ export default {
             'INSERT INTO counts (country, n) VALUES (?, 1) ON CONFLICT(country) DO UPDATE SET n = n + 1'
           ).bind(country).run();
 
-          // Record an approximate (city-level) location for the glowing dot.
+          // Approximate (city-level) location for the glowing dot. Best-effort.
           const lat = parseFloat(cf.latitude), lng = parseFloat(cf.longitude);
           if (Number.isFinite(lat) && Number.isFinite(lng)) {
             const rlat = Math.round(lat * 10) / 10;   // ~11km cell, privacy-safe
             const rlng = Math.round(lng * 10) / 10;
-            const cell = rlat + ',' + rlng;
-            const city = cf.city || '';
             await env.DB.prepare(
               'INSERT INTO points (cell, lat, lng, city, n) VALUES (?, ?, ?, ?, 1) ' +
               'ON CONFLICT(cell) DO UPDATE SET n = n + 1'
-            ).bind(cell, rlat, rlng, city).run();
+            ).bind(rlat + ',' + rlng, rlat, rlng, cf.city || '').run();
           }
         }
-      }
+      } catch (e) { /* recording is best-effort; never block the response */ }
+    }
 
-      // Return the aggregate for the globe
+    // Read country counts (the core number). If this fails, return zeros.
+    let total = 0;
+    const countries = {};
+    try {
       const rows = await env.DB.prepare('SELECT country, n FROM counts').all();
-      let total = 0;
-      const countries = {};
       for (const r of (rows.results || [])) { countries[r.country] = r.n; total += r.n; }
-
-      // Top visitor locations for the glowing dots (capped to keep payload small)
-      const pts = await env.DB.prepare(
-        'SELECT lat, lng, city, n FROM points ORDER BY n DESC LIMIT 500'
-      ).all();
-      const points = (pts.results || []).map(r => ({ lat: r.lat, lng: r.lng, city: r.city, n: r.n }));
-
-      return new Response(JSON.stringify({ total, countries, points }), {
-        headers: cors({ 'Content-Type': 'application/json' })
-      });
     } catch (e) {
-      // Never break the page; return empty stats on error.
       return new Response(JSON.stringify({ total: 0, countries: {}, points: [], error: String(e) }), {
         status: 200, headers: cors({ 'Content-Type': 'application/json' })
       });
     }
+
+    // Read visitor locations. Isolated so a points error keeps counts intact.
+    let points = [];
+    try {
+      const pts = await env.DB.prepare(
+        'SELECT lat, lng, city, n FROM points ORDER BY n DESC LIMIT 500'
+      ).all();
+      points = (pts.results || []).map(r => ({ lat: r.lat, lng: r.lng, city: r.city, n: r.n }));
+    } catch (e) { /* dots are optional; keep the counts working */ }
+
+    return new Response(JSON.stringify({ total, countries, points }), {
+      headers: cors({ 'Content-Type': 'application/json' })
+    });
   }
 };
