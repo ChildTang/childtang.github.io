@@ -436,7 +436,6 @@ body.dark-mode .sidebar { background: #0d1117 !important; }
 body.dark-mode .author__name { color: #e6edf3 !important; }
 body.dark-mode .author__bio, body.dark-mode .author__bio span { color: #8b949e !important; }
 body.dark-mode .author__bio a { color: #58a6ff !important; }
-body.dark-mode .author__avatar img { border-color: #388bfd !important; box-shadow: 0 4px 20px rgba(56,139,253,0.2) !important; }
 body.dark-mode .author__urls a { color: #58a6ff !important; }
 body.dark-mode .author__urls-wrapper .btn { background: #21262d !important; color: #c9d1d9 !important; border-color: #30363d !important; }
 

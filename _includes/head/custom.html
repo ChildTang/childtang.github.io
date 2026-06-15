@@ -44,16 +44,49 @@
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   }
 
-  /* ── Author sidebar polished ── */
-  .author__avatar img {
-    border-radius: 50%;
-    border: 3px solid #1565c0;
-    box-shadow: 0 4px 20px rgba(21,101,192,0.22);
-    transition: transform 0.3s, box-shadow 0.3s;
+  /* ── Author sidebar avatar: gradient ring + subtle hover mismatch ── */
+  .author__avatar {
+    position: relative;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0;
+    background: none;
   }
-  .author__avatar img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 28px rgba(21,101,192,0.3);
+  /* gradient ring behind the photo */
+  .author__avatar::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1565c0, #7c4dff, #00897b);
+    box-shadow: 0 6px 22px rgba(21,101,192,0.22);
+    z-index: 0;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  /* on hover both scale; the photo grows a touch more — a subtle mismatch,
+     while the ring stays visible */
+  .author__avatar:hover::before {
+    transform: scale(1.065);
+    box-shadow: 0 12px 30px rgba(21,101,192,0.30);
+  }
+  .author__avatar-clip {
+    position: relative;
+    z-index: 1;
+    display: block;
+    border-radius: 50%;
+    overflow: hidden;
+    line-height: 0;
+    transition: transform 0.4s ease;
+  }
+  .author__avatar:hover .author__avatar-clip {
+    transform: scale(1.07);
+  }
+  .author__avatar-clip img {
+    display: block;
+    width: 100%;
+    padding: 0 !important;
+    border: none !important;
   }
   .author__name {
     font-size: 1.18em;
