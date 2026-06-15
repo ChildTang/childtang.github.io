@@ -98,15 +98,28 @@ a:hover{text-decoration:underline}
   border-bottom:2px solid #1565c0;
 }
 
-/* ── Education ── */
-.edu-card{background:#fff;border-radius:12px;border:1.5px solid #e0e8f0;padding:18px 20px;margin-bottom:14px;transition:box-shadow .2s}
-.edu-card:hover{box-shadow:0 4px 18px rgba(21,101,192,.10)}
-.edu-school{font-weight:800;font-size:1.0em;color:#1a2332}
-.edu-degree{font-size:0.87em;color:#333;margin-top:2px}
-.edu-meta{font-size:0.78em;color:#595959;margin-top:2px;display:flex;gap:12px;flex-wrap:wrap}
-.edu-gpa{display:inline-block;background:#e3f2fd;color:#0d47a1;padding:1px 8px;border-radius:4px;font-weight:700;font-size:0.85em}
+/* ── Education (minimalist: white card · hairline · school-color spine + name + crest) ── */
+.edu-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e8eaee;border-radius:12px;padding:18px 22px;margin-bottom:14px;transition:box-shadow .25s,transform .25s,border-color .25s}
+.edu-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,30,50,.08);border-color:#dfe2e7}
+/* slim school-color spine on the left */
+.edu-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--school,#1565c0);transition:width .25s}
+.edu-card:hover::before{width:6px}
+/* crisp full-color crest, top-right */
+.edu-logo{position:absolute;right:18px;top:16px;width:44px;height:44px;z-index:2;background-size:contain;background-repeat:no-repeat;background-position:center;transition:transform .3s}
+.edu-card:hover .edu-logo{transform:scale(1.1)}
+.edu-school{font-weight:800;font-size:1.05em;letter-spacing:-.01em;padding-right:56px}
+.edu-school a{color:var(--school,#1565c0)}
+.edu-degree{font-size:0.87em;color:#333;margin-top:3px;padding-right:56px}
+.edu-meta{font-size:0.78em;color:#595959;margin-top:3px;display:flex;gap:12px;flex-wrap:wrap}
 .edu-notes{font-size:0.82em;color:#555;margin-top:8px;line-height:1.6;padding-left:1em}
 .edu-notes li{margin-bottom:2px}
+/* per-school official colors + crest */
+.edu-tsinghua{--school:#82318e}  /* 清华紫 (CMYK 58/90/0/0) */
+.edu-nankai{--school:#711a5f}    /* 南开紫·青莲紫 (RGB 126,12,110) */
+.edu-njau{--school:#008d36}      /* 南农深绿 (CMYK 80/0/100/0) */
+.edu-tsinghua .edu-logo{background-image:url(/images/logo-tsinghua.png)}
+.edu-nankai .edu-logo{background-image:url(/images/logo-nankai.png)}
+.edu-njau .edu-logo{background-image:url(/images/logo-njau.png)}
 
 /* ── Publications ── */
 .pub-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #eef0f4;align-items:flex-start}
@@ -182,17 +195,20 @@ body.dark-mode .masthead-nav a{color:#c9d1d9 !important}
 body.dark-mode .masthead-nav a:hover{color:#58a6ff !important;background:#21262d}
 body.dark-mode .masthead-nav a.nav-active{color:#58a6ff !important}
 body.dark-mode .sec-title{color:#58a6ff;border-bottom-color:#388bfd}
-body.dark-mode .edu-card,
 body.dark-mode .sidebar-card,
-body.dark-mode .main-section{background:#161b22;border-color:#30363d}
-body.dark-mode .edu-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.5)}
-body.dark-mode .edu-school,
+body.dark-mode .main-section,
+body.dark-mode .edu-card{background:#161b22;border-color:#30363d}
+body.dark-mode .edu-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.5);border-color:#3a414b}
 body.dark-mode .pub-title,
 body.dark-mode .pub-authors strong{color:#e6edf3}
 body.dark-mode .edu-degree{color:#c9d1d9}
 body.dark-mode .edu-meta{color:#8b949e}
+/* lighten school colors on dark bg for the spine + school name */
+body.dark-mode .edu-tsinghua{--school:#d18fd8}
+body.dark-mode .edu-nankai{--school:#d77ec0}
+body.dark-mode .edu-njau{--school:#45c46e}
+body.dark-mode .edu-school a{color:var(--school)}
 body.dark-mode .edu-notes{color:#adbac7}
-body.dark-mode .edu-gpa{background:#0d2137;color:#79c0ff}
 body.dark-mode .pub-item{border-bottom-color:#30363d}
 body.dark-mode .pub-title a{color:#58a6ff}
 body.dark-mode .pub-authors{color:#8b949e}
@@ -272,7 +288,8 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
   <div class="main-section">
     <div class="sec-title">🎓 Education</div>
 
-    <div class="edu-card">
+    <div class="edu-card edu-tsinghua">
+      <div class="edu-logo" aria-hidden="true"></div>
       <div class="edu-school"><a href="https://www.tsinghua.edu.cn/en/" target="_blank" rel="noopener noreferrer">Tsinghua University</a></div>
       <div class="edu-degree">Ph.D. Student · <a href="https://www.sigs.tsinghua.edu.cn/" target="_blank" rel="noopener noreferrer">Tsinghua Shenzhen International Graduate School (SIGS)</a></div>
       <div class="edu-meta"><span>📍 Shenzhen, China</span><span>Sept 2023 – Present</span></div>
@@ -285,7 +302,8 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
       </ul>
     </div>
 
-    <div class="edu-card">
+    <div class="edu-card edu-nankai">
+      <div class="edu-logo" aria-hidden="true"></div>
       <div class="edu-school"><a href="https://en.nankai.edu.cn/" target="_blank" rel="noopener noreferrer">Nankai University</a></div>
       <div class="edu-degree">M.Eng. · <a href="https://ai.nankai.edu.cn/" target="_blank" rel="noopener noreferrer">College of Artificial Intelligence</a></div>
       <div class="edu-meta"><span>📍 Tianjin, China</span><span>Sept 2020 – Jun 2023</span></div>
@@ -297,7 +315,8 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
       </ul>
     </div>
 
-    <div class="edu-card">
+    <div class="edu-card edu-njau">
+      <div class="edu-logo" aria-hidden="true"></div>
       <div class="edu-school"><a href="https://english.njau.edu.cn/" target="_blank" rel="noopener noreferrer">Nanjing Agricultural University</a></div>
       <div class="edu-degree">B.Eng. · <a href="https://ai.njau.edu.cn/" target="_blank" rel="noopener noreferrer">College of Artificial Intelligence</a></div>
       <div class="edu-meta"><span>📍 Nanjing, China</span><span>Sept 2016 – Jun 2020</span></div>
