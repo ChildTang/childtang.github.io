@@ -121,6 +121,15 @@ a:hover{text-decoration:underline}
 .edu-nankai .edu-logo{background-image:url(/images/logo-nankai.png)}
 .edu-njau .edu-logo{background-image:url(/images/logo-njau.png)}
 
+/* ── Experience: reuses the education card, themed in site blue (--school), no crest ── */
+.edu-card.exp{--school:#1565c0}
+.edu-card.exp .edu-school{color:var(--school);padding-right:0}
+.edu-card.exp .edu-degree{padding-right:0}
+/* unified caption above each entry's bullet list */
+.exp-cap{font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--school,#1565c0);margin:10px 0 3px}
+/* location left, dates pinned to the right edge (clean timeline column) */
+.edu-card.exp .edu-meta{justify-content:space-between}
+
 /* ── Publications ── */
 .pub-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #eef0f4;align-items:flex-start}
 .pub-item:last-child{border-bottom:none}
@@ -209,6 +218,7 @@ body.dark-mode .edu-nankai{--school:#d77ec0}
 body.dark-mode .edu-njau{--school:#45c46e}
 body.dark-mode .edu-school a{color:var(--school)}
 body.dark-mode .edu-notes{color:#adbac7}
+body.dark-mode .edu-card.exp{--school:#58a6ff}
 body.dark-mode .pub-item{border-bottom-color:#30363d}
 body.dark-mode .pub-title a{color:#58a6ff}
 body.dark-mode .pub-authors{color:#8b949e}
@@ -325,6 +335,44 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
         <li><strong>Lab:</strong> <a href="https://www.njaurobot.cn/" target="_blank" rel="noopener noreferrer">NJAUROBOT_LAB</a></li>
         <li><strong>Advisor:</strong> <a href="https://faculty.njau.edu.cn/luwei1/zh_CN/more/124889/tdgd/index.htm" target="_blank" rel="noopener noreferrer">Prof. Wei Lu</a></li>
         <li><strong>Research:</strong> Robot vision · robot structural design · teleoperation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div class="main-section">
+    <div class="sec-title">💼 Experience</div>
+
+    <div class="edu-card exp">
+      <div class="edu-school">Huawei (华为)</div>
+      <div class="edu-degree">Project Lead · Embodied-AI Data Preparation · industry research collaboration</div>
+      <div class="edu-meta"><span>📍 Shenzhen, China</span><span>Aug 2025 – Aug 2026</span></div>
+      <div class="exp-cap">Highlights</div>
+      <ul class="edu-notes">
+        <li><strong>Led the full embodied-data-preparation project.</strong> Directed four workstreams — simulation platform, VLA algorithm development, VLA spatial-perception enhancement, and VLA inference acceleration.</li>
+        <li><strong>Built the VLA inference-acceleration workstream.</strong> Optimized model execution to enable efficient collection of high-quality embodied data.</li>
+      </ul>
+    </div>
+
+    <div class="edu-card exp">
+      <div class="edu-school">YXGN Robotics (远行光年)</div>
+      <div class="edu-degree">Core Algorithm Member (intern) · embodied-AI startup incubated by our research group</div>
+      <div class="edu-meta"><span>📍 Shenzhen, China</span><span>Oct 2025 – Mar 2026</span></div>
+      <div class="exp-cap">Highlights</div>
+      <ul class="edu-notes">
+        <li><strong>Built the lab's embodied-AI research platform that backed 10+ CCF-A submissions.</strong> Delivered a Franka + GELLO teleoperation stack — arm control, hand-eye calibration (eye-to-hand / eye-in-hand), and object detection &amp; tracking.</li>
+        <li><strong>Led a team to curate 10 TB+ of manipulation data.</strong> Developed the robot-arm data-collection system (recording, management, visualization) used for embodied-model training.</li>
+      </ul>
+    </div>
+
+    <div class="edu-card exp">
+      <div class="edu-school">4Paradigm (第四范式)</div>
+      <div class="edu-degree">Algorithm Intern</div>
+      <div class="edu-meta"><span>📍 Beijing, China</span><span>Apr 2023 – Aug 2023</span></div>
+      <div class="exp-cap">Highlights</div>
+      <ul class="edu-notes">
+        <li><strong>Contributed to <a href="https://github.com/OpenRL-Lab/openrl" target="_blank" rel="noopener noreferrer">OpenRL</a>, a unified open-source RL framework (800+ ★).</strong> Integrated RL algorithms and simulation environments, refactored the codebase, and improved stability &amp; extensibility.</li>
+        <li><strong>Developed multi-agent cooperative strategies for the Jidi (及第) football competition.</strong> Built and validated policies on the team's TMARL framework, covering policy training and environment adaptation.</li>
       </ul>
     </div>
   </div>
