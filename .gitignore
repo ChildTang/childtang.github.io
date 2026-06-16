@@ -15,3 +15,5 @@ worker/.wrangler/
 # macOS
 .DS_Store
 **/.DS_Store
+# Personal PDF archive (not published)
+pdf/

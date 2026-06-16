@@ -14,7 +14,7 @@ description: "SP-VLA is the first method to exploit temporal redundancy in VLA i
 highlight: "⚡ 2.5x lossless (Franka) 1.5× lossless (LIBERO) · 2.4× (SimplerEnv)"
 abstract: "Vision-Language-Action (VLA) models deliver strong control but are too slow for real-time robotics. SP-VLA accelerates them by removing two kinds of redundancy that prior compression overlooks: temporal redundancy across sequential actions and spatial redundancy in visual input. An action-aware scheduler routes intuitive steps to a lightweight generator and deliberative ones to the full VLA model, while a spatio-semantic dual-aware token pruner keeps only the most informative tokens. Together they achieve 1.5× lossless speedup on LIBERO and 2.4× on SimplerEnv, with up to 6% average performance gain."
 venue: 'International Conference on Learning Representations 2026 (<strong>ICLR 2026</strong>)'
-paperurl: 'https://openreview.net/forum?id=RwdGIIjPlC'
+paperurl: 'https://arxiv.org/abs/2506.12723'
 code: 'https://github.com/ChildTang/SP-VLA'
 citation: 'Ye Li, Yuan Meng, Zewen Sun, Kangye Ji, Chen Tang, Jiajun Fan, Xinzhu Ma, Shu-Tao Xia, Zhi Wang, Wenwu Zhu. &quot;SP-VLA: A Joint Model Scheduling and Token Pruning Approach for VLA Model Acceleration.&quot; ICLR 2026.'
 bibtex: |

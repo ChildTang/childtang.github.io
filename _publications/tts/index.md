@@ -14,7 +14,9 @@ description: "TTS accelerates action diffusion to real time via test-time sparsi
 highlight: "⚡ 92% fewer FLOPs · 5× faster · 47.5 Hz real-time · lossless"
 abstract: "Action diffusion produces high-fidelity actions but is costly due to iterative denoising, and feature-caching accelerators struggle to adapt to the policy dynamics of open-environment rollouts. TTS proposes test-time sparsity: it dynamically predicts prunable residual computations for each model forward at test time. To keep the savings real, a highly parallelized pipeline shares a lightweight pruner with the diffusion transformer and overlaps pruning with decoding (cutting non-decoder delay to milliseconds); an omnidirectional reuse strategy then reaches 95% sparsity by reusing features cached within the current forward, across denoising timesteps, and across rollout iterations. TTS reduces FLOPs by 92% and accelerates action generation by 5×, achieving lossless performance at 47.5 Hz."
 venue: 'IEEE/CVF Conference on Computer Vision and Pattern Recognition 2026 (<strong>CVPR 2026</strong>)'
-paperurl: 'https://arxiv.org/abs/2605.13316'
+paperurl: 'https://openaccess.thecvf.com/content/CVPR2026/html/Ji_Test-time_Sparsity_for_Extreme_Fast_Action_Diffusion_CVPR_2026_paper.html'
+pdf: 'https://arxiv.org/pdf/2605.13316'
+arxiv: 'https://arxiv.org/abs/2605.13316'
 code: 'https://github.com/ky-ji/Test-time-Sparsity'
 citation: 'Kangye Ji, Yuan Meng, Jianbo Zhou, Ye Li, Chen Tang, Zhi Wang. &quot;Test-time Sparsity for Extreme Fast Action Diffusion.&quot; CVPR 2026.'
 bibtex: |

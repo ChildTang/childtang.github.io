@@ -1,29 +1,31 @@
-{% include base_path %}
-
 {% if post.id %}
   {% assign title = post.title | markdownify | remove: "<p>" | remove: "</p>" %}
 {% else %}
   {% assign title = post.title %}
 {% endif %}
 
+{% comment %}Title link priority: explicit `pdf` (direct PDF) → arXiv abs→/pdf/ → local paper.pdf. Non-direct links (IEEE/Springer/DOI) fall through to local.{% endcomment %}
+{% assign pathparts = post.path | split: "/" %}
+{% assign pubslug = pathparts[1] %}
+{% assign localpdf = "/publications/" | append: pubslug | append: "/paper.pdf" %}
+{% if post.pdf and post.pdf != "" %}{% assign titlelink = post.pdf %}
+{% elsif post.paperurl contains "arxiv.org/abs/" %}{% assign titlelink = post.paperurl | replace: "arxiv.org/abs/", "arxiv.org/pdf/" %}
+{% else %}{% assign titlelink = localpdf %}{% endif %}
+
 <div class="list__item">
   <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
     <div class="pub-cv-entry">
       {% if post.venue %}<span class="pub-cv-venue">{{ post.venue }}</span>{% endif %}
       <div class="pub-cv-title">
-        {% if post.paperurl != blank %}
-          <a href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">{{ title }}</a>
-        {% else %}
-          <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>
-        {% endif %}
+        <a href="{{ titlelink }}" target="_blank" rel="noopener noreferrer">{{ title }}</a>
       </div>
       {% if post.citation %}<div class="pub-cv-authors">{{ post.citation | split: "&quot;" | first | strip | replace: "Ye Li", "<strong>Ye Li</strong>" }}</div>{% endif %}
       {% if post.paperurl or post.code or post.projectpage or post.arxiv %}
       <div class="pub-cv-links">
-        {% if post.paperurl %}<a class="pub-cv-link" href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">📄 Paper</a>{% endif %}
+        {% if post.paperurl %}{% if post.paperurl contains "arxiv" %}<a class="pub-cv-link" href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{% else %}<a class="pub-cv-link" href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">🌐 Official</a>{% endif %}{% endif %}
+        {% if post.arxiv %}<a class="pub-cv-link" href="{{ post.arxiv }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{% endif %}
         {% if post.code %}<a class="pub-cv-link" href="{{ post.code }}" target="_blank" rel="noopener noreferrer">💻 Code</a>{% endif %}
         {% if post.projectpage %}<a class="pub-cv-link" href="{{ post.projectpage }}" target="_blank" rel="noopener noreferrer">🔗 Project</a>{% endif %}
-        {% if post.arxiv %}<a class="pub-cv-link" href="{{ post.arxiv }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{% endif %}
       </div>
       {% endif %}
       {% if post.bibtex %}

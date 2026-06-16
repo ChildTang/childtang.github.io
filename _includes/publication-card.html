@@ -5,7 +5,15 @@ Falls back gracefully when optional fields are absent.
 {%- endcomment -%}
 {%- assign pub = include.pub -%}
 {%- assign year = pub.date | date: "%Y" -%}
-{%- assign link = pub.paperurl | default: pub.arxiv -%}
+{%- comment -%}Title link priority: explicit `pdf` (a direct PDF URL) → arXiv abs
+auto-converted to its /pdf/ link → self-hosted local paper.pdf. Non-direct links
+(IEEE/Springer/DOI) intentionally fall through to the local copy.{%- endcomment -%}
+{%- assign pathparts = pub.path | split: "/" -%}
+{%- assign pubslug = pathparts[1] -%}
+{%- assign localpdf = "/publications/" | append: pubslug | append: "/paper.pdf" -%}
+{%- if pub.pdf and pub.pdf != "" -%}{%- assign titlelink = pub.pdf -%}
+{%- elsif pub.paperurl contains "arxiv.org/abs/" -%}{%- assign titlelink = pub.paperurl | replace: "arxiv.org/abs/", "arxiv.org/pdf/" -%}
+{%- else -%}{%- assign titlelink = localpdf -%}{%- endif -%}
 <div class="pub-entry" role="article" data-venue="{{ pub.venue_short }}" data-year="{{ year }}" data-abstract="{{ pub.abstract | strip_html | escape }}">
   <div class="pub-left"><span class="pb pb-{{ pub.badge | default: 'arxiv' }}">{{ pub.venue_label | default: pub.venue_short | default: pub.venue }}</span>{%- if pub.tags %}{%- for t in pub.tags %}<span class="pub-tag">{{ t }}</span>{%- endfor %}{%- endif %}<span class="pub-year">{{ year }}</span></div>
   <div class="pub-right">
@@ -14,7 +22,7 @@ Falls back gracefully when optional fields are absent.
     <div class="pub-thumb-wrap"><img loading="lazy" src="{{ pub.thumbnail }}" alt="{{ pub.title | escape }}"></div>
     {%- endif %}
     <div class="pub-title">
-      {% if link %}<a href="{{ link }}" target="_blank" rel="noopener noreferrer">{{ pub.title }}</a>{% else %}{{ pub.title }}{% endif %}
+      <a href="{{ titlelink }}" target="_blank" rel="noopener noreferrer">{{ pub.title }}</a>
       {%- if pub.projectpage and pub.projectpage != "" %}<a class="pub-project" href="{{ pub.projectpage }}">Project Page</a>{%- endif %}
       {%- if pub.abstract and pub.abstract != "" %}
       <button class="pub-abst-btn" aria-expanded="false" aria-label="Toggle abstract">▾ Abstract</button>
@@ -24,12 +32,12 @@ Falls back gracefully when optional fields are absent.
     {%- if pub.authors and pub.authors != "" %}<div class="pub-authors">{{ pub.authors }}</div>{%- endif %}
     {%- if pub.description and pub.description != "" %}<div class="pub-desc">{{ pub.description }}</div>{%- endif %}
     {%- if pub.highlight and pub.highlight != "" %}<div class="pub-hl">{{ pub.highlight }}</div>{%- endif %}
-    {%- if link or pub.projectpage or pub.arxiv or pub.code %}
+    {%- if pub.paperurl or pub.projectpage or pub.arxiv or pub.code %}
     <div class="pub-links">
-      {%- if pub.paperurl and pub.paperurl != "" %}<a class="pub-link pl-paper" href="{{ pub.paperurl }}" target="_blank" rel="noopener noreferrer">📄 Paper</a>{%- endif %}
+      {%- if pub.paperurl and pub.paperurl != "" %}{%- if pub.paperurl contains "arxiv" %}<a class="pub-link pl-arxiv" href="{{ pub.paperurl }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{%- else %}<a class="pub-link pl-official" href="{{ pub.paperurl }}" target="_blank" rel="noopener noreferrer">🌐 Official</a>{%- endif %}{%- endif %}
+      {%- if pub.arxiv and pub.arxiv != "" %}<a class="pub-link pl-arxiv" href="{{ pub.arxiv }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{%- endif %}
       {%- if pub.code and pub.code != "" %}<a class="pub-link pl-code" href="{{ pub.code }}" target="_blank" rel="noopener noreferrer">💻 Code</a>{%- endif %}
       {%- if pub.projectpage and pub.projectpage != "" %}<a class="pub-link pl-project" href="{{ pub.projectpage }}">🔗 Project</a>{%- endif %}
-      {%- if pub.arxiv and pub.arxiv != "" %}<a class="pub-link pl-arxiv" href="{{ pub.arxiv }}" target="_blank" rel="noopener noreferrer">📎 arXiv</a>{%- endif %}
     </div>
     {%- endif %}
   </div>

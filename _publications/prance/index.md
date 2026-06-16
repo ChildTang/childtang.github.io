@@ -14,7 +14,8 @@ description: "PRANCE performs per-input joint optimization of computational redu
 highlight: "⚡ ~50% FLOPs reduction · keeps ~10% of tokens · lossless Top-1 accuracy"
 abstract: "Vision Transformers are costly due to model size and quadratic token complexity, yet existing compression is static and single-domain — fixing a sparsity ratio or treating architecture and token selection separately — causing sharp accuracy drops under aggressive rates. PRANCE jointly optimizes activated channels and token count per input: a weight-sharing meta-network supports arbitrary channel widths for attention/MLP layers, and a lightweight PPO selector navigates the huge (~10^14) decision space, trained via a 'Result-to-Go' mechanism that casts ViT inference as a Markov decision process. PRANCE cuts FLOPs by ~50% while retaining only ~10% of tokens at lossless Top-1 accuracy, and is compatible with pruning, merging, and sequential pruning-merging."
 venue: 'IEEE Transactions on Pattern Analysis and Machine Intelligence (<strong>TPAMI</strong>), 2026'
-paperurl: 'https://arxiv.org/abs/2407.05010'
+paperurl: 'https://ieeexplore.ieee.org/document/11146899'
+arxiv: 'https://arxiv.org/abs/2407.05010'
 code: 'https://github.com/ChildTang/PRANCE'
 citation: 'Ye Li, Chen Tang, Yuan Meng, Jiajun Fan, Zenghao Chai, Xinzhu Ma, Zhi Wang, Wenwu Zhu. &quot;PRANCE: Joint Token-Optimization and Structural Channel-Pruning for Adaptive ViT Inference.&quot; TPAMI 2026.'
 bibtex: |

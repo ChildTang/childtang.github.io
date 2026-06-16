@@ -328,6 +328,8 @@ body.dark-mode .fv-iclr23oral { background: #5b21b6 !important; color: #e9d5ff !
 .pl-code:hover { background: #f8bbd0; }
 .pl-arxiv { background: #fff3e0; color: #bf360c; }
 .pl-arxiv:hover { background: #ffe0b2; }
+.pl-official { background: #ede7f6; color: #4527a0; }
+.pl-official:hover { background: #d1c4e9; }
 
 /* ── Research timeline ── */
 .research-timeline {
@@ -504,6 +506,7 @@ body.dark-mode .pub-link.pl-paper  { background: #1c2333 !important; color: #58a
 body.dark-mode .pub-link.pl-project{ background: #122117 !important; color: #3fb950 !important; }
 body.dark-mode .pub-link.pl-code   { background: #3d1526 !important; color: #f48fb1 !important; }
 body.dark-mode .pub-link.pl-arxiv  { background: #3d2410 !important; color: #ffb74d !important; }
+body.dark-mode .pub-link.pl-official { background: #241b3a !important; color: #b39ddb !important; }
 
 /* ── BibTeX cite button & popup ── */
 .pl-cite { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; cursor: pointer; font-family: inherit; font-size: 0.78em; font-weight: 600; padding: 3px 9px; border-radius: 20px; transition: background .15s, color .15s; }
