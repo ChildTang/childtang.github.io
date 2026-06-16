@@ -4,20 +4,14 @@
   {% assign title = post.title %}
 {% endif %}
 
-{% comment %}Title link priority: explicit `pdf` (direct PDF) → arXiv abs→/pdf/ → local paper.pdf. Non-direct links (IEEE/Springer/DOI) fall through to local.{% endcomment %}
-{% assign pathparts = post.path | split: "/" %}
-{% assign pubslug = pathparts[1] %}
-{% assign localpdf = "/publications/" | append: pubslug | append: "/paper.pdf" %}
-{% if post.pdf and post.pdf != "" %}{% assign titlelink = post.pdf %}
-{% elsif post.paperurl contains "arxiv.org/abs/" %}{% assign titlelink = post.paperurl | replace: "arxiv.org/abs/", "arxiv.org/pdf/" %}
-{% else %}{% assign titlelink = localpdf %}{% endif %}
+{% include pub-pdf.html doc=post %}
 
 <div class="list__item">
   <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
     <div class="pub-cv-entry">
       {% if post.venue %}<span class="pub-cv-venue">{{ post.venue }}</span>{% endif %}
       <div class="pub-cv-title">
-        <a href="{{ titlelink }}" target="_blank" rel="noopener noreferrer">{{ title }}</a>
+        <a href="{{ pdf_link }}" target="_blank" rel="noopener noreferrer">{{ title }}</a>
       </div>
       {% if post.citation %}<div class="pub-cv-authors">{{ post.citation | split: "&quot;" | first | strip | replace: "Ye Li", "<strong>Ye Li</strong>" }}</div>{% endif %}
       {% if post.paperurl or post.code or post.projectpage or post.arxiv %}

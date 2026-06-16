@@ -1,0 +1,13 @@
+{%- comment -%}
+Resolves the best PDF link for a publication doc and exposes it as `pdf_link`.
+Usage: {% include pub-pdf.html doc=pub %}  then use {{ pdf_link }}.
+
+Priority: explicit `pdf` (a direct PDF URL) → arXiv abs auto-converted to its
+/pdf/ link → self-hosted local paper.pdf. Non-direct links (IEEE/Springer/DOI)
+fall through to the local copy.
+{%- endcomment -%}
+{%- assign _doc = include.doc -%}
+{%- assign _parts = _doc.path | split: "/" -%}
+{%- assign pdf_link = "/publications/" | append: _parts[1] | append: "/paper.pdf" -%}
+{%- if _doc.pdf and _doc.pdf != "" -%}{%- assign pdf_link = _doc.pdf -%}
+{%- elsif _doc.paperurl contains "arxiv.org/abs/" -%}{%- assign pdf_link = _doc.paperurl | replace: "arxiv.org/abs/", "arxiv.org/pdf/" -%}{%- endif -%}

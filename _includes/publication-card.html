@@ -5,15 +5,7 @@ Falls back gracefully when optional fields are absent.
 {%- endcomment -%}
 {%- assign pub = include.pub -%}
 {%- assign year = pub.date | date: "%Y" -%}
-{%- comment -%}Title link priority: explicit `pdf` (a direct PDF URL) → arXiv abs
-auto-converted to its /pdf/ link → self-hosted local paper.pdf. Non-direct links
-(IEEE/Springer/DOI) intentionally fall through to the local copy.{%- endcomment -%}
-{%- assign pathparts = pub.path | split: "/" -%}
-{%- assign pubslug = pathparts[1] -%}
-{%- assign localpdf = "/publications/" | append: pubslug | append: "/paper.pdf" -%}
-{%- if pub.pdf and pub.pdf != "" -%}{%- assign titlelink = pub.pdf -%}
-{%- elsif pub.paperurl contains "arxiv.org/abs/" -%}{%- assign titlelink = pub.paperurl | replace: "arxiv.org/abs/", "arxiv.org/pdf/" -%}
-{%- else -%}{%- assign titlelink = localpdf -%}{%- endif -%}
+{%- include pub-pdf.html doc=pub -%}
 <div class="pub-entry" role="article" data-venue="{{ pub.venue_short }}" data-year="{{ year }}" data-abstract="{{ pub.abstract | strip_html | escape }}">
   <div class="pub-left"><span class="pb pb-{{ pub.badge | default: 'arxiv' }}">{{ pub.venue_label | default: pub.venue_short | default: pub.venue }}</span>{%- if pub.tags %}{%- for t in pub.tags %}<span class="pub-tag">{{ t }}</span>{%- endfor %}{%- endif %}<span class="pub-year">{{ year }}</span></div>
   <div class="pub-right">
@@ -22,7 +14,7 @@ auto-converted to its /pdf/ link → self-hosted local paper.pdf. Non-direct lin
     <div class="pub-thumb-wrap"><img loading="lazy" src="{{ pub.thumbnail }}" alt="{{ pub.title | escape }}"></div>
     {%- endif %}
     <div class="pub-title">
-      <a href="{{ titlelink }}" target="_blank" rel="noopener noreferrer">{{ pub.title }}</a>
+      <a href="{{ pdf_link }}" target="_blank" rel="noopener noreferrer">{{ pub.title }}</a>
       {%- if pub.projectpage and pub.projectpage != "" %}<a class="pub-project" href="{{ pub.projectpage }}">Project Page</a>{%- endif %}
       {%- if pub.abstract and pub.abstract != "" %}
       <button class="pub-abst-btn" aria-expanded="false" aria-label="Toggle abstract">▾ Abstract</button>
