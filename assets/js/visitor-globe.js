@@ -9,6 +9,8 @@
     var rootEl = document.getElementById('visitor-globe');
     if (!rootEl) return;
     var holder = rootEl.querySelector('.vg-globe');
+    // Optional visitor counter: null unless a .vg-count element is added to the
+    // markup (intentionally kept — animateCount() no-ops when it's absent).
     var countEl = rootEl.querySelector('.vg-count');
     if (!holder) return;
     if (typeof Globe === 'undefined') { rootEl.classList.add('vg-unavailable'); return; }
@@ -73,8 +75,10 @@
     }
 
     function sizeOf() {
-      var w = holder.offsetWidth || 200;
-      return Math.max(120, Math.min(w, 460));
+      // Measure the holder; fall back to its parent if it hasn't laid out yet.
+      var w = holder.offsetWidth ||
+              (holder.parentElement && holder.parentElement.offsetWidth) || 0;
+      return Math.max(48, Math.min(w, 460));
     }
 
     function isoOf(f) { var p = f.properties || {}; return p.ISO_A2 || p.ISO_A2_EH || p.iso_a2 || ''; }
@@ -166,12 +170,20 @@
         mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
       }
 
-      var t = null;
-      window.addEventListener('resize', function () {
-        clearTimeout(t);
-        t = setTimeout(function () { var n = sizeOf(); world.width(n).height(n); }, 150);
-      });
-      requestAnimationFrame(function () { holder.style.opacity = '1'; });
+      // Keep the canvas matched to its container. A ResizeObserver catches
+      // every layout change (responsive breakpoints, flex reflow, the initial
+      // 0-width race) — not just window resizes.
+      function resize() { var n = sizeOf(); if (n) world.width(n).height(n); }
+      if (window.ResizeObserver) {
+        new ResizeObserver(resize).observe(holder);
+      } else {
+        var t = null;
+        window.addEventListener('resize', function () {
+          clearTimeout(t);
+          t = setTimeout(resize, 150);
+        });
+      }
+      requestAnimationFrame(function () { resize(); holder.style.opacity = '1'; });
       return world;
     }
 

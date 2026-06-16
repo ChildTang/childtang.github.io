@@ -45,10 +45,10 @@
   }
 
   /* ── Author sidebar avatar ──────────────────────────────────────────────
-     Full-body portrait as a vertical oval with a gradient ring. Width scales
-     fluidly with the viewport; height is derived from the photo aspect ratio.
-     The ring is a fixed-size box (not `inset`), so the theme's table-cell
-     header can't stretch it into a thin ellipse on narrow screens.
+     Desktop: full-body portrait as a vertical oval with a gradient ring.
+     The clip fills its box (width:100%) and uses aspect-ratio for height, so
+     it always matches the actual rendered width — even when the narrow sidebar
+     column caps it — and never overflows onto the name below.
        --aw : fluid avatar width (min / scale / max)
        --ar : photo width ÷ height (2461 × 3249)
        --rg : ring thickness                                                  */
@@ -63,35 +63,33 @@
     padding: 0;
     background: none;
   }
-  /* gradient ring behind the photo, top-aligned to the clip */
+  .author__avatar-clip {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ar);
+    border-radius: 50%;
+    overflow: hidden;
+    line-height: 0;
+    transition: transform 0.4s ease;
+  }
   .author__avatar::before {
     content: "";
     position: absolute;
     top: calc(-1 * var(--rg));
-    left: 50%;
-    width: calc(var(--aw) + 2 * var(--rg));
-    height: calc(var(--aw) / var(--ar) + 2 * var(--rg));
-    transform: translateX(-50%);
+    left: calc(-1 * var(--rg));
+    width: calc(100% + 2 * var(--rg));
+    aspect-ratio: var(--ar);
     border-radius: 50%;
     background: linear-gradient(135deg, #1565c0, #7c4dff, #00897b);
     box-shadow: 0 6px 22px rgba(21, 101, 192, 0.22);
     z-index: 0;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
   }
-  .author__avatar-clip {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: var(--aw);
-    height: calc(var(--aw) / var(--ar));
-    border-radius: 50%;
-    overflow: hidden;
-    line-height: 0;
-    transition: transform 0.4s ease;
-  }
   /* subtle hover mismatch: photo grows a touch more than the ring */
   .author__avatar:hover::before {
-    transform: translateX(-50%) scale(1.055);
+    transform: scale(1.055);
     box-shadow: 0 12px 30px rgba(21, 101, 192, 0.3);
   }
   .author__avatar:hover .author__avatar-clip {
@@ -106,6 +104,38 @@
     border: none !important;
     box-shadow: none;
     object-fit: cover;
+  }
+
+  /* Narrow / mobile: a compact two-column header — a narrow left column with
+     the round avatar (top) and mini globe (bottom), and the text filling the
+     wider right column. Grid areas reorder visually without touching the DOM,
+     so the desktop layout is unaffected. The fake "Follow" button is dropped
+     (the social links live in the homepage hero card). */
+  @media (max-width: 924px) {
+    .author-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        "avatar content"
+        "globe  content";
+      column-gap: 18px;
+      row-gap: 12px;
+      align-items: start;
+    }
+    .author-card .author__avatar { grid-area: avatar; }
+    .author-card .author__content { grid-area: content; min-width: 0; }
+    .author-card .author__globe { grid-area: globe; }
+    .author-card .author__urls-wrapper { display: none; }
+
+    .author__avatar { --aw: 66px; margin: 0; justify-self: center; }
+    /* square the clip + ring so the avatar becomes a circle on mobile */
+    .author__avatar-clip { aspect-ratio: 1; }
+    .author__avatar::before { aspect-ratio: 1; }
+    .author__avatar-clip img { object-position: center 12%; }
+
+    .author__globe { width: 120px; margin: 0; justify-self: center; }
+    .author__globe .vg-widget { margin: 0; }
+    .author__globe .vg-globe { max-width: 100%; }
   }
   .author__name {
     font-size: 1.18em;

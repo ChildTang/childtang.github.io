@@ -1,6 +1,7 @@
 /* ============================================================
-   Visitor Globe — minimal: just the globe + a number below.
-   No card background, no title. Centered. Light/Dark aware.
+   Visitor Globe — the interactive globe only (no card / title).
+   Centered, light/dark aware. The numeric visitor counter is kept
+   but not currently rendered (see the ".vg-stats" block below).
    ============================================================ */
 
 .vg-widget {
@@ -42,6 +43,12 @@
   .vg-stats { margin-left: auto; margin-right: auto; }
 }
 
+/* ── Optional visitor counter (intentionally kept, not rendered) ──────────
+   The globe markup currently omits the .vg-stats block, so this is dormant.
+   To show a live visitor count again, add inside #visitor-globe:
+     <div class="vg-stats"><span class="vg-count">0</span>
+       <div class="vg-label">Visitors</div></div>
+   visitor-globe.js already animates .vg-count when present. Keep these. */
 .vg-stats {
   width: 182px;
   max-width: 100%;
@@ -64,7 +71,7 @@
   margin-top: 3px;
 }
 
-/* If globe.gl fails to load, collapse the globe area (counter still shows). */
+/* If globe.gl fails to load, collapse the globe area. */
 .vg-unavailable .vg-globe-wrap { display: none; }
 
 /* ---- Dark mode ---- */

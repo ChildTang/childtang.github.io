@@ -4,7 +4,7 @@
   {% assign author = site.data.authors[page.author] %}{% else %}{% assign author = site.author %}
 {% endif %}
 
-<div itemscope itemtype="http://schema.org/Person">
+<div class="author-card" itemscope itemtype="http://schema.org/Person">
 
   <div class="author__avatar">
     <span class="author__avatar-clip">
@@ -124,11 +124,12 @@
       {% endif %}
       {% if author.wikipedia %}
         <li><a href="https://en.wikipedia.org/wiki/User:{{ author.wikipedia }}"><i class="fab fa-fw fa-wikipedia-w" aria-hidden="true"></i> Wikipedia</a></li>
-  {% endif %}
+      {% endif %}
 
     </ul>
-    <div class="author__globe">
-      {% include visitor-globe.html %}
-    </div>
+  </div>
+
+  <div class="author__globe">
+    {% include visitor-globe.html %}
   </div>
 </div>
