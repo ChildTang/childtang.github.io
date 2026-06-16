@@ -44,49 +44,68 @@
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   }
 
-  /* ── Author sidebar avatar: gradient ring + subtle hover mismatch ── */
+  /* ── Author sidebar avatar ──────────────────────────────────────────────
+     Full-body portrait as a vertical oval with a gradient ring. Width scales
+     fluidly with the viewport; height is derived from the photo aspect ratio.
+     The ring is a fixed-size box (not `inset`), so the theme's table-cell
+     header can't stretch it into a thin ellipse on narrow screens.
+       --aw : fluid avatar width (min / scale / max)
+       --ar : photo width ÷ height (2461 × 3249)
+       --rg : ring thickness                                                  */
   .author__avatar {
+    --aw: clamp(100px, 13vw, 175px);
+    --ar: 0.7575;
+    --rg: 3px;
     position: relative;
-    width: -moz-fit-content;
-    width: fit-content;
+    width: var(--aw);
+    max-width: 100%;
     margin: 0 auto;
     padding: 0;
     background: none;
   }
-  /* gradient ring behind the photo */
+  /* gradient ring behind the photo, top-aligned to the clip */
   .author__avatar::before {
     content: "";
     position: absolute;
-    inset: -3px;
+    top: calc(-1 * var(--rg));
+    left: 50%;
+    width: calc(var(--aw) + 2 * var(--rg));
+    height: calc(var(--aw) / var(--ar) + 2 * var(--rg));
+    transform: translateX(-50%);
     border-radius: 50%;
     background: linear-gradient(135deg, #1565c0, #7c4dff, #00897b);
-    box-shadow: 0 6px 22px rgba(21,101,192,0.22);
+    box-shadow: 0 6px 22px rgba(21, 101, 192, 0.22);
     z-index: 0;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-  }
-  /* on hover both scale; the photo grows a touch more — a subtle mismatch,
-     while the ring stays visible */
-  .author__avatar:hover::before {
-    transform: scale(1.065);
-    box-shadow: 0 12px 30px rgba(21,101,192,0.30);
   }
   .author__avatar-clip {
     position: relative;
     z-index: 1;
     display: block;
+    width: var(--aw);
+    height: calc(var(--aw) / var(--ar));
     border-radius: 50%;
     overflow: hidden;
     line-height: 0;
     transition: transform 0.4s ease;
   }
+  /* subtle hover mismatch: photo grows a touch more than the ring */
+  .author__avatar:hover::before {
+    transform: translateX(-50%) scale(1.055);
+    box-shadow: 0 12px 30px rgba(21, 101, 192, 0.3);
+  }
   .author__avatar:hover .author__avatar-clip {
-    transform: scale(1.07);
+    transform: scale(1.06);
   }
   .author__avatar-clip img {
     display: block;
     width: 100%;
+    height: 100%;
+    max-width: none !important;
     padding: 0 !important;
     border: none !important;
+    box-shadow: none;
+    object-fit: cover;
   }
   .author__name {
     font-size: 1.18em;
