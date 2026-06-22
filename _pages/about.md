@@ -69,6 +69,10 @@ My research interests focus on:
 
 <ul class="news-list">
   <li>
+    <span class="news-date">Jun 2026</span>
+    <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2603.12939" target="_blank" rel="noopener noreferrer">RoboStream</a> is accepted by <strong>ECCV 2026</strong> — see you in Malmö 🇸🇪</span>
+  </li>
+  <li>
     <span class="news-date">May 2026</span>
     <span><span class="nbadge nb-arxiv">arXiv</span><a href="https://arxiv.org/abs/2605.29438" target="_blank" rel="noopener noreferrer">ElegantVLA</a> is released — welcome to discuss! 💬</span>
   </li>

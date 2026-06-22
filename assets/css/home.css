@@ -115,6 +115,7 @@ body.dark-mode .qn-label { color: #58a6ff; }
 .pb-cvpr   { background: #00838f; color: #fff; }
 .pb-neurips{ background: #6a1b9a; color: #fff; }
 .pb-icml   { background: #b71c1c; color: #fff; }
+.pb-eccv   { background: #2e7d32; color: #fff; }
 .pb-journal{ background: #e65100; color: #fff; }
 .pb-arxiv  { background: #546e7a; color: #fff; }
 .pub-year  { font-size: 0.77em; color: #767676; font-weight: 700; }
