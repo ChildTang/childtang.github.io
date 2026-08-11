@@ -157,6 +157,7 @@ exclude:
   - paper
   - _archive
   - worker
+  - 参考
 keep_files:
   - .git
   - .svn

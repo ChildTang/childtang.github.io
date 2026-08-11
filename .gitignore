@@ -3,6 +3,9 @@ _site/
 # Local-only: rollback archive of old files
 _archive/
 
+# Local-only: reference sites / material (not published)
+参考/
+
 # Local-only: paper sources / drafts / assets
 paper/
 
