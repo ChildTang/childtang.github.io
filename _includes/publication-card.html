@@ -9,7 +9,10 @@ Falls back gracefully when optional fields are absent.
 <div class="pub-entry" role="article" data-venue="{{ pub.venue_short }}" data-year="{{ year }}" data-abstract="{{ pub.abstract | strip_html | escape }}">
   <div class="pub-left"><span class="pb pb-{{ pub.badge | default: 'arxiv' }}">{{ pub.venue_label | default: pub.venue_short | default: pub.venue }}</span>{%- if pub.tags %}{%- for t in pub.tags %}<span class="pub-tag">{{ t }}</span>{%- endfor %}{%- endif %}<span class="pub-year">{{ year }}</span></div>
   <div class="pub-right">
-    {%- if pub.bibtex and pub.bibtex != "" %}<script type="text/bibtex" class="bib-src">{{ pub.bibtex }}</script>{%- endif %}
+    {%- comment -%}Must be a <pre>: the compress layout collapses newlines
+    everywhere else, which would flatten the BibTeX into one line in production.
+    {%- endcomment -%}
+    {%- if pub.bibtex and pub.bibtex != "" %}<pre class="bib-src" hidden>{{ pub.bibtex | escape }}</pre>{%- endif %}
     {%- if pub.thumbnail and pub.thumbnail != "" %}
     <div class="pub-thumb-wrap"><img loading="lazy" src="{{ pub.thumbnail }}" alt="{{ pub.title | escape }}"></div>
     {%- endif %}
