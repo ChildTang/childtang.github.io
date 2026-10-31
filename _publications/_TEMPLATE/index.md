@@ -11,7 +11,7 @@ permalink: /publications/<slug>/      # clean URL for this paper's detail page
 date: 2026-01-01                       # used for sorting (newest first)
 
 # ── Homepage Selected Publications (optional) ──
-selected: false                        # true => shown on homepage Selected list
+selected: false                        # true => shown on homepage + CV Selected list (keep EXACTLY 10 selected in total; max 10)
 venue_short: ICLR                      # filter key: ICLR | NeurIPS | ICML | CVPR | TPAMI | Preprint
 venue_label: "ICLR 2026"               # badge text
 badge: iclr                            # badge color: iclr | neurips | icml | cvpr | journal | oral | arxiv

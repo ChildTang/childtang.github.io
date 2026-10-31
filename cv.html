@@ -33,21 +33,43 @@ a{color:#1565c0;text-decoration:none}
 a:hover{text-decoration:underline}
 
 /* ── Site masthead ── */
-.site-masthead{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:200}
-.site-masthead::after{content:'';display:block;height:3px;background:linear-gradient(to right,#1565c0 0%,#7c4dff 50%,#00897b 100%)}
-.masthead-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
-.masthead-title{font-weight:800;font-size:1.05em;color:#1a2332!important;text-decoration:none!important;letter-spacing:-.02em}
-.masthead-nav{display:flex;gap:2px;align-items:center}
-.masthead-nav a{font-weight:600;font-size:0.88em;color:#333!important;text-decoration:none!important;padding:6px 10px;border-radius:6px;transition:color .2s,background .2s;letter-spacing:.01em}
-.masthead-nav a:hover{color:#1565c0!important;background:#f0f4ff}
-.masthead-nav a.nav-active{color:#1565c0!important;font-weight:700}
-.masthead-nav .pdf-dl{background:#1565c0;color:#fff!important;border-radius:6px;font-weight:700;margin-left:6px}
+.site-masthead{position:relative;background:#fff;border-bottom:1px solid #f2f3f3;box-shadow:0 2px 12px rgba(0,0,0,.06);z-index:20}
+.site-masthead::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:3px;background:linear-gradient(to right,#1565c0 0%,#7c4dff 50%,#00897b 100%)}
+.masthead-inner{max-width:1280px;margin:0 auto;padding:18px}
+.masthead-nav{position:relative;display:flex;align-items:center}
+.masthead-title,.masthead-nav a{font-family:'Inter','Segoe UI',Arial,sans-serif;font-weight:600;letter-spacing:.01em;color:#333!important;text-decoration:none!important;white-space:nowrap;transition:color .2s}
+.masthead-title,.nav-links a{position:relative;display:block;font-size:16.2px;line-height:1.5;padding:9px 0;margin:0 18px}
+.masthead-title{flex:none;margin:0 54px 0 0}
+.nav-links{display:flex;align-items:center;flex:1;min-width:0;overflow:hidden}
+.nav-links a:last-child{margin-right:0}
+.masthead-title::before,.nav-links a::before{content:'';position:absolute;left:0;bottom:0;width:100%;height:4px;background:#1565c0;transform:scaleX(0);transition:all .2s ease-in-out}
+.masthead-title:hover::before,.nav-links a:hover::before{transform:scaleX(1)}
+.masthead-title:hover,.masthead-nav a:hover,.masthead-nav a.nav-active{color:#1565c0!important;text-decoration:none!important}
+.nav-toggle{flex:none;align-self:stretch;margin-left:30px;padding:0 9px;border:0;outline:none;background:#7a8288;color:#fff;cursor:pointer}
+.navicon{position:relative;width:28px;height:4px;background:#fff;margin:auto;transition:.3s}
+.navicon::before,.navicon::after{content:'';position:absolute;left:0;width:28px;height:4px;background:#fff;transition:.3s}
+.navicon::before{top:-8px}
+.navicon::after{bottom:-8px}
+.nav-toggle.close .navicon{background:transparent}
+.nav-toggle.close .navicon::before,.nav-toggle.close .navicon::after{top:0;transform-origin:50% 50%}
+.nav-toggle.close .navicon::before{transform:rotate(45deg)}
+.nav-toggle.close .navicon::after{transform:rotate(-45deg)}
+.nav-more{position:absolute;top:100%;right:0;margin-top:15px;padding:5px;border:1px solid #f2f3f3;border-radius:4px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.25);z-index:30}
+.nav-more::before,.nav-more::after{content:'';position:absolute;right:10px;width:0;border-style:solid;border-width:0 10px 10px;display:block}
+.nav-more::before{top:-11px;border-color:#f2f3f3 transparent;z-index:0}
+.nav-more::after{top:-10px;border-color:#fff transparent;z-index:1}
+.nav-more a{display:block;margin:0;padding:10px 20px;font-size:18px;line-height:1.5;border-bottom:1px solid #f2f3f3}
+.nav-more a:last-child{border-bottom:none}
+.nav-more a:hover{background:#dee0e1}
+.nav-toggle.hidden,.nav-more.hidden{display:none}
+.masthead-nav .pdf-dl{flex:none;margin-left:18px;padding:6px 12px;font-size:16.2px;line-height:1.5;background:#1565c0;color:#fff!important;border-radius:6px;font-weight:700}
 .masthead-nav .pdf-dl:hover{background:#1976d2!important;color:#fff!important}
 .masthead-nav .pdf-dl--soon{background:#c2cdd9;color:#fff!important;cursor:not-allowed}
 .masthead-nav .pdf-dl--soon:hover{background:#c2cdd9!important;color:#fff!important;text-decoration:none!important}
 .cv-contact a.cv-pdf-soon{opacity:.55;cursor:not-allowed}
 .cv-contact a.cv-pdf-soon:hover{background:rgba(255,255,255,0.12)}
-@media(max-width:560px){.masthead-nav a{font-size:0.78em;padding:5px 6px}.masthead-title{font-size:0.95em}.masthead-nav .pdf-dl{display:none}}
+@media(max-width:499px){.masthead-inner{padding:16px}.masthead-title,.nav-links a{font-size:14.4px;padding:8px 0;margin:0 16px}.masthead-title{margin:0 48px 0 0}.nav-links a:last-child{margin-right:0}.nav-toggle{padding:0 8px}.nav-more a{font-size:16px}}
+@media(max-width:560px){.masthead-nav .pdf-dl{display:none}}
 
 /* ── Hero header ── */
 @keyframes gradientShift{
@@ -198,11 +220,16 @@ body.dark-mode #theme-toggle { color: #fff !important; border-color: rgba(255,25
 /* ── Dark mode ── */
 body.dark-mode{background:#0d1117;color:#c9d1d9}
 body.dark-mode a{color:#58a6ff}
-body.dark-mode .site-masthead{background:#161b22;box-shadow:0 2px 12px rgba(0,0,0,.4)}
-body.dark-mode .masthead-title{color:#e6edf3 !important}
-body.dark-mode .masthead-nav a{color:#c9d1d9 !important}
-body.dark-mode .masthead-nav a:hover{color:#58a6ff !important;background:#21262d}
-body.dark-mode .masthead-nav a.nav-active{color:#58a6ff !important}
+body.dark-mode .site-masthead{background:#161b22;border-bottom-color:#21262d;box-shadow:0 1px 8px rgba(0,0,0,.4)}
+body.dark-mode .masthead-title,body.dark-mode .masthead-nav a{color:#8b949e !important}
+body.dark-mode .masthead-title:hover,body.dark-mode .masthead-nav a:hover,body.dark-mode .masthead-nav a.nav-active{color:#58a6ff !important}
+body.dark-mode .masthead-title::before,body.dark-mode .nav-links a::before{background:#58a6ff}
+body.dark-mode .nav-more{background:#161b22;border-color:#30363d}
+body.dark-mode .nav-more::before{border-color:#30363d transparent}
+body.dark-mode .nav-more::after{border-color:#161b22 transparent}
+body.dark-mode .nav-more a{border-bottom-color:#30363d}
+body.dark-mode .nav-more a:hover{background:#21262d}
+body.dark-mode .masthead-nav .pdf-dl{color:#fff !important}
 body.dark-mode .sec-title{color:#58a6ff;border-bottom-color:#388bfd}
 body.dark-mode .sidebar-card,
 body.dark-mode .main-section,
@@ -260,17 +287,39 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
 
 <header class="site-masthead">
   <div class="masthead-inner">
-    <a class="masthead-title" href="/">Ye Li</a>
     <nav class="masthead-nav" aria-label="Site navigation">
-      <a href="/publications/">Publications</a>
-      <a href="/projects/">Projects</a>
-      <a href="/year-archive/">Blog</a>
-      <a href="/cv/" class="nav-active">CV</a>
-      <a href="/contact/">Contact</a>
+      <a class="masthead-title" href="/">Ye Li</a>
+      <div class="nav-links">
+        <a href="/publications/">Publications</a>
+        <a href="/projects/">Projects</a>
+        <a href="/year-archive/">Blog</a>
+        <a href="/cv/" class="nav-active" aria-current="page">CV</a>
+        <a href="/contact/">Contact</a>
+      </div>
       <a class="pdf-dl pdf-dl--soon" href="#" aria-disabled="true" title="PDF coming soon" onclick="return false;">⬇ PDF</a>
+      <button class="nav-toggle hidden" type="button" aria-label="More links" aria-expanded="false"><div class="navicon"></div></button>
+      <div class="nav-more hidden"></div>
     </nav>
   </div>
 </header>
+<script>
+(function(){
+  var nav=document.querySelector('.masthead-nav');if(!nav)return;
+  var list=nav.querySelector('.nav-links'),btn=nav.querySelector('.nav-toggle'),menu=nav.querySelector('.nav-more');
+  function overflowing(){return list.scrollWidth>list.clientWidth+1;}
+  function update(){
+    while(menu.firstChild)list.appendChild(menu.firstChild);
+    btn.classList.add('hidden');
+    if(!overflowing()){menu.classList.add('hidden');btn.classList.remove('close');btn.setAttribute('aria-expanded','false');return;}
+    btn.classList.remove('hidden');
+    while(list.children.length&&overflowing())menu.insertBefore(list.lastElementChild,menu.firstChild);
+  }
+  btn.addEventListener('click',function(){var open=menu.classList.toggle('hidden')===false;btn.classList.toggle('close',open);btn.setAttribute('aria-expanded',String(open));});
+  window.addEventListener('resize',update);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(update);
+  update();
+})();
+</script>
 
 <div class="cv-hero">
   <div class="cv-name">Ye Li</div>
@@ -344,6 +393,16 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
     <div class="sec-title">💼 Experience</div>
 
     <div class="edu-card exp">
+      <div class="edu-school">AgiBot (智元机器人)</div>
+      <div class="edu-degree">Project Lead · On-Device VLA Inference Acceleration</div>
+      <div class="edu-meta"><span>📍 Shanghai, China</span><span>Jun 2026 – Jun 2027</span></div>
+      <div class="exp-cap">Highlights</div>
+      <ul class="edu-notes">
+        <li><strong>Led on-device acceleration of π0.5 &amp; GR00T N1.7 on RTX 4090 and Jetson AGX Thor.</strong> Custom operators, graph fusion, and a rebuilt runtime met latency targets with lossless dual-arm task accuracy.</li>
+        <li><strong>Proposed the core acceleration algorithm and set the project's technical roadmap.</strong> Designed an input-adaptive optimization spanning vision encoder, LLM, and action head, delivered in the inference engines on both platforms.</li>
+      </ul>
+    </div>
+    <div class="edu-card exp">
       <div class="edu-school">Huawei (华为)</div>
       <div class="edu-degree">Project Lead · Embodied-AI Data Preparation · industry research collaboration</div>
       <div class="edu-meta"><span>📍 Shenzhen, China</span><span>Aug 2025 – Aug 2026</span></div>
@@ -381,6 +440,7 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
   <div class="main-section">
     <div class="sec-title">📄 Selected Publications <span style="font-size:0.85em;font-weight:400;color:#6b7280;text-transform:none;letter-spacing:0">* = first / co-first author</span></div>
 
+    {% comment %} Selected list = papers with `selected: true` (shared with homepage). Keep EXACTLY 10 (max 10). {% endcomment %}
     {% assign sel_first = site.publications | where: "selected", true | where: "first_author", true | sort: "date" | reverse %}
     {% assign sel_co = site.publications | where: "selected", true | where_exp: "p", "p.first_author != true" | sort: "date" | reverse %}
 
@@ -447,11 +507,13 @@ body.dark-mode .sec-title span[style*="color:#6b7280"]{color:#8b949e !important}
   <!-- Academic Service -->
   <div class="sidebar-card">
     <div class="sec-title">🔍 Reviewer</div>
+    {% comment %} Reviewer list: newest venue first. Keep in sync with the homepage "Conference Reviewer" row in _pages/about.md. {% endcomment %}
     <ul class="service-list">
-      <li><span class="s-venue">CVPR</span> 2026</li>
-      <li><span class="s-venue">ECCV</span> 2026</li>
+      <li><span class="s-venue">ICLR</span> 2027</li>
       <li><span class="s-venue">NeurIPS</span> 2026</li>
       <li><span class="s-venue">ACM MM</span> 2026</li>
+      <li><span class="s-venue">ECCV</span> 2026</li>
+      <li><span class="s-venue">CVPR</span> 2026</li>
     </ul>
   </div>
 

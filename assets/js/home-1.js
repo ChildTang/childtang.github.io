@@ -30,7 +30,7 @@
         {label:'Conference',       date:'2026-04-23', passed:true},
       ]},
     { name:'NeurIPS 2026', abbr:'NeurIPS', type:'ML', color:'#2563eb',
-      location:'San Diego, CA, USA', conf:'Dec 6–12, 2026', url:'https://neurips.cc/Conferences/2026',
+      location:'Sydney, Australia', conf:'Dec 6–12, 2026', url:'https://neurips.cc/Conferences/2026',
       deadlines:[
         {label:'Abstract',         date:'2026-05-04', passed:true},
         {label:'Full Paper',       date:'2026-05-06', passed:true},

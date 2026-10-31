@@ -3,7 +3,7 @@ title: "Block-wise Adaptive Caching for Accelerating Diffusion Policy"
 collection: publications
 permalink: /publications/bac/
 date: 2026-04-23
-selected: true
+selected: false
 first_author: false
 venue_short: ICLR
 venue_label: "ICLR 2026"

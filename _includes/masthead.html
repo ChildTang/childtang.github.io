@@ -13,7 +13,16 @@
               {% else %}
               {% assign domain = base_path %}
             {% endif %}
-            <li class="masthead__menu-item"><a href="{{ domain }}{{ link.url }}">{{ link.title }}</a></li>
+            {% assign nav_active = false %}
+            {% unless link.url contains 'http' %}
+              {% assign url_prefix = page.url | slice: 0, link.url.size %}
+              {% if url_prefix == link.url %}{% assign nav_active = true %}{% endif %}
+              {% if link.url == '/year-archive/' %}
+                {% assign url_head = page.url | split: '/' | slice: 1 | first %}
+                {% if page.collection == 'posts' or url_head == 'posts' or url_head == 'tags' or url_head == 'categories' %}{% assign nav_active = true %}{% endif %}
+              {% endif %}
+            {% endunless %}
+            <li class="masthead__menu-item"><a href="{{ domain }}{{ link.url }}"{% if nav_active %} class="nav-active" aria-current="page"{% endif %}>{{ link.title }}</a></li>
           {% endfor %}
         </ul>
         <ul class="hidden-links hidden"></ul>

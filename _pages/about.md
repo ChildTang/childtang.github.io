@@ -67,14 +67,29 @@ My research interests focus on:
 <!-- ═══════════════════════════════ NEWS ═══════════════════════════════ -->
 <h2 class="section-header" id="news">📰 Latest News</h2>
 
-<ul class="news-list">
+{% comment %}
+  News rules:
+  - ONE item per paper: when a released (arXiv) paper gets accepted, replace its
+    "is released" item with the "is accepted" item (do not keep both).
+  - Newest first. Only the first 10 items are shown; any extra items are folded
+    automatically behind the "Show all" button below the list.
+{% endcomment %}
+<ul class="news-list" id="news-list">
+  <li>
+    <span class="news-date">Oct 2026</span>
+    <span><span class="nbadge nb-arxiv">arXiv</span><a href="https://arxiv.org/abs/2610.34959" target="_blank" rel="noopener noreferrer">GUIFlow</a> is released — welcome to discuss! 💬</span>
+  </li>
+  <li>
+    <span class="news-date">Sep 2026</span>
+    <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2605.29438" target="_blank" rel="noopener noreferrer">ElegantVLA</a> is accepted by <strong>NeurIPS 2026</strong> — see you in Sydney 🇦🇺</span>
+  </li>
+  <li>
+    <span class="news-date">Sep 2026</span>
+    <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2512.15773" target="_blank" rel="noopener noreferrer">TS-DP</a> is accepted by <strong>IEEE TMM</strong></span>
+  </li>
   <li>
     <span class="news-date">Jun 2026</span>
     <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2603.12939" target="_blank" rel="noopener noreferrer">RoboStream</a> is accepted by <strong>ECCV 2026</strong> — see you in Malmö 🇸🇪</span>
-  </li>
-  <li>
-    <span class="news-date">May 2026</span>
-    <span><span class="nbadge nb-arxiv">arXiv</span><a href="https://arxiv.org/abs/2605.29438" target="_blank" rel="noopener noreferrer">ElegantVLA</a> is released — welcome to discuss! 💬</span>
   </li>
   <li>
     <span class="news-date">May 2026</span>
@@ -89,14 +104,32 @@ My research interests focus on:
     <span><span class="nbadge nb-accept">Accept</span><a href="https://openreview.net/forum?id=RwdGIIjPlC" target="_blank" rel="noopener noreferrer">SP-VLA</a> &amp; <a href="https://arxiv.org/abs/2506.13456" target="_blank" rel="noopener noreferrer">BAC</a> are accepted by <strong>ICLR 2026</strong> — see you in Rio 🇧🇷</span>
   </li>
   <li>
-    <span class="news-date">Dec 2025</span>
-    <span><span class="nbadge nb-arxiv">arXiv</span><a href="https://arxiv.org/abs/2512.15773" target="_blank" rel="noopener noreferrer">TS-DP</a> is released — welcome to discuss! 💬</span>
-  </li>
-  <li>
     <span class="news-date">Oct 2025</span>
     <span><span class="nbadge nb-accept">Accept</span><a href="https://arxiv.org/abs/2407.05010" target="_blank" rel="noopener noreferrer">PRANCE</a> is accepted by <strong>IEEE TPAMI</strong></span>
   </li>
 </ul>
+<!-- News fold toggle: hidden by default; shown by the script below only when there are more than LIMIT items. -->
+<button class="news-toggle" id="news-toggle" type="button" aria-expanded="false" aria-controls="news-list" hidden>▾ Show all</button>
+<script>
+/* News fold: show the first LIMIT items, fold the rest behind the "Show all" button. */
+(function(){
+  var LIMIT = 10;                      // max number of news items visible by default
+  var list = document.getElementById('news-list'), btn = document.getElementById('news-toggle');
+  if (!list || !btn) return;
+  var extra = Array.prototype.slice.call(list.children, LIMIT);  // items beyond LIMIT (oldest ones)
+  if (!extra.length) return;           // <= LIMIT items: nothing to fold, button stays hidden
+  var label = '▾ Show all (' + list.children.length + ')';
+  extra.forEach(function(li){ li.classList.add('news-hidden'); });  // .news-hidden => display:none (home.css)
+  btn.textContent = label;
+  btn.hidden = false;
+  btn.addEventListener('click', function(){
+    var open = btn.getAttribute('aria-expanded') !== 'true';       // toggle expanded / collapsed
+    extra.forEach(function(li){ li.classList.toggle('news-hidden', !open); });
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? '▴ Show less' : label;
+  });
+})();
+</script>
 
 <!-- ═══════════════════════════════ PUBLICATIONS ═══════════════════════ -->
 <h2 class="section-header" id="publications">📄 Selected Publications</h2>
@@ -109,14 +142,22 @@ My research interests focus on:
   <input class="filter-search" id="pubSearch" type="text" placeholder="🔍  Search papers…" aria-label="Search publications" oninput="filterPubs()">
   <button class="filter-btn active" aria-label="Show all papers" onclick="filterByVenue(this,'all')">All</button>
   <button class="filter-btn" aria-label="Filter by ICLR papers" onclick="filterByVenue(this,'ICLR')">ICLR</button>
+  <button class="filter-btn" aria-label="Filter by NeurIPS papers" onclick="filterByVenue(this,'NeurIPS')">NeurIPS</button>
   <button class="filter-btn" aria-label="Filter by CVPR papers" onclick="filterByVenue(this,'CVPR')">CVPR</button>
   <button class="filter-btn" aria-label="Filter by ICML papers" onclick="filterByVenue(this,'ICML')">ICML</button>
   <button class="filter-btn" aria-label="Filter by TPAMI papers" onclick="filterByVenue(this,'TPAMI')">TPAMI</button>
+  <button class="filter-btn" aria-label="Filter by TMM papers" onclick="filterByVenue(this,'TMM')">TMM</button>
   <button class="filter-btn" aria-label="Filter by preprints" onclick="filterByVenue(this,'Preprint')">Preprint</button>
 </div>
 
 <div class="pub-list">
 
+{% comment %}
+  Selected Publications: keep EXACTLY 10 papers (max 10).
+  Controlled by `selected: true` in _publications/<slug>/index.md (also feeds the CV page).
+  When adding a new selected paper, set another one to `selected: false`.
+  Order: first-author papers first, then the rest, each newest-first by `date`.
+{% endcomment %}
 {% assign selected_sorted = site.publications | where_exp: "p", "p.selected" | sort: "date" | reverse %}
 {% for pub in selected_sorted %}{% if pub.first_author %}{% include publication-card.html pub=pub %}
 {% endif %}{% endfor %}
@@ -132,11 +173,13 @@ My research interests focus on:
 <h2 class="section-header" id="awards">🏅 Academic Service</h2>
 
 <p class="awards-col-title" style="margin-bottom:8px;">🔍 Conference Reviewer</p>
+{% comment %} Reviewer list: newest venue first. Keep in sync with the "Reviewer" card in cv.html. {% endcomment %}
 <div class="service-row">
-  <span class="service-tag">CVPR 2026</span>
-  <span class="service-tag">ECCV 2026</span>
+  <span class="service-tag">ICLR 2027</span>
   <span class="service-tag">NeurIPS 2026</span>
   <span class="service-tag">ACM MM 2026</span>
+  <span class="service-tag">ECCV 2026</span>
+  <span class="service-tag">CVPR 2026</span>
 </div>
 
 <!-- ═══════════════════════════════ CONTACT ══════════════════════════ -->

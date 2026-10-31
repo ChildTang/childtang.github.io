@@ -372,8 +372,9 @@ body.dark-mode .rt-year-ongoing { color: #fb923c !important; }
 .scroll-top:hover { transform: scale(1.1); }
 .scroll-top.show { display: flex; }
 
-/* ── News toggle ── */
-.news-hidden { display: none; }
+/* ── News toggle (fold items beyond the first 10; script lives in _pages/about.md) ── */
+/* `.news-list li.news-hidden` is needed to beat the `display:flex` of `.news-list li`. */
+.news-hidden, .news-list li.news-hidden { display: none; }
 .news-toggle {
   background: none; border: 1px solid #ddd; border-radius: 6px;
   padding: 5px 14px; font-size: 0.82em; color: #1565c0;
